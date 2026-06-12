@@ -1,0 +1,112 @@
+# Common Labels
+labels:
+  app: "asset-amc"
+  group: "core"
+
+# Init Containers Configs
+initContainers:
+  dbMigration:
+    enabled: true
+    schemaTable: "amc_service_schema"
+    image:
+      repository: "selcohub/amc-service-db"
+      tag: develop-0214f52984b750fb97d7bc41728e0074e95414fc
+
+# Ingress Configs
+ingress:
+  enabled: true
+  zuul: true
+  context: "asset-amc"
+
+# Container Configs
+image:
+  repository: "selcohub/amc-service"
+  tag: develop-0214f52984b750fb97d7bc41728e0074e95414fc
+replicas: "1"
+healthChecks:
+  enabled: true
+  livenessProbePath: "/asset-amc/health"
+  readinessProbePath: "/asset-amc/health"
+appType: "java-spring"
+tracing-enabled: true
+heap: "-Xmx192m -Xms192m"
+
+persistence:
+  enabled: false
+
+# Additional Container Envs
+env: |
+  - name: SERVER_PORT
+    value: "8080"
+  - name: EGOV_OTP_BYPASS_VALIDATION
+    value: "false"
+  - name: SERVER_SERVLET_CONTEXT_PATH
+    value: /asset-amc
+  - name: JAVA_OPTS
+    value: {{ index .Values "heap" | quote }}
+  - name: SPRING_REDIS_HOST
+    value: redis.backbone-dev
+  - name: KAFKA_CONFIG_BOOTSTRAP_SERVER_CONFIG
+    valueFrom:
+      configMapKeyRef:
+        name: egov-config
+        key: kafka-brokers
+  - name: EGOV_IDGEN_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-idgen
+  - name: EGOV_MDMS_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-mdms-service
+  - name: EGOV_PROJECT_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: project
+  - name: EGOV_VENDOR_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: vendor-registry
+  - name: EGOV_FACILITY_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: facility-service
+  - name: EGOV_LOCATION_HOST
+    valueFrom:
+      configMapKeyRef:
+        key: egov-location
+        name: egov-service-host
+  - name: EGOV_BOUNDARY_HOST
+    valueFrom:
+      configMapKeyRef:
+        key: boundary-service
+        name: egov-service-host
+  - name: EGOV_WORKFLOW_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-workflow-v2
+  - name: EGOV_HRMS_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-hrms
+  - name: EGOV_ASSET_HOST
+    valueFrom: 
+      configMapKeyRef: 
+        name: egov-service-host
+        key: asset-registry
+  - name: EGOV_OTP_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-otp
+
+
+
+

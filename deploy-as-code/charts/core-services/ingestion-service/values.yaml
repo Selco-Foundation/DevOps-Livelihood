@@ -1,0 +1,102 @@
+# Common Labels
+labels:
+  app: "ingestion-service"
+  group: "rainmaker"
+
+# Ingress Configs
+ingress:
+  enabled: true
+  zuul: true
+  context: "ingestion-service"
+
+# Container Configs
+image:
+  repository: "selcohub/ingestion-service"
+  tag: develop-9e49c3921b4b5a3b11dab4bb3b932d947971ef0a
+replicas: "1"
+healthChecks:
+  enabled: true
+  livenessProbePath: "/ingestion-service/health"
+  readinessProbePath: "/ingestion-service/health"
+
+# Additional Container Envs
+env: |
+  - name: LOCALIZATION_SERVICE_URL
+    valueFrom:
+      configMapKeyRef:
+        key: egov-localization
+        name: egov-service-host
+  - name: FIELDPLAN_SERVICE_URL
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: field-plan
+  - name: FIELDPLAN_ACTIVITY_SERVICE_URL
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: field-planner-activity
+  - name: AMC_SCHEDULER_SERVICE_URL
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: amc-service
+  - name: VENDOR_SERVICE_URL
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: vendor-registry
+  - name: BOUNDARY_SERVICE_URL
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: boundary-service
+  - name: PROJECT_SERVICE_URL
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: project
+  - name: MDMS_URL
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-mdms-service
+  - name: HRMS_SERVICE_URL
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-hrms
+  - name: FACILITY_SERVICE_URL
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: facility-service
+  - name: IM_SERVICES_URL
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: im-services
+  - name: TIME_OUT
+    value: "60"
+  - name: DB_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-config
+        key: db-host
+  - name: DB_USER
+    valueFrom:
+      secretKeyRef:
+        name: db
+        key: username
+  - name: DB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: db
+        key: password
+  - name: DB_NAME
+    valueFrom:
+      configMapKeyRef:
+        name: egov-config
+        key: db-name
+  - name: ENVIRONMENT
+    value: uat

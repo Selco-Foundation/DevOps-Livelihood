@@ -1,0 +1,95 @@
+# Common Labels
+labels:
+  app: "rms-service"
+  group: "core"
+
+# Init Containers Configs
+initContainers:
+  dbMigration:
+    enabled: true
+    schemaTable: "rms_service_schema"
+    image:
+      repository: "selcohub/rms-service-db"
+      tag: RMS_Integration-ce893dce1f5805597058bbbd1590c2aad2346f74
+    env: |
+      - name: DB_URL
+        valueFrom:
+          configMapKeyRef:
+            key: db-url
+            name: egov-config
+      - name: SCHEMA_TABLE
+        value: rms_service_schema
+      - name: FLYWAY_USER
+        valueFrom:
+          secretKeyRef:
+            key: flyway-username
+            name: db
+      - name: FLYWAY_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: flyway-password
+            name: db
+      - name: FLYWAY_LOCATIONS
+        valueFrom:
+          configMapKeyRef:
+            key: flyway-locations
+            name: egov-config
+
+# Ingress Configs
+ingress:
+  enabled: true
+  zuul: true
+  context: "rms-service"
+
+# Container Configs
+image:
+  repository: "selcohub/rms-service"
+  tag: RMS_Integration-ce893dce1f5805597058bbbd1590c2aad2346f74
+replicas: "1"
+healthChecks:
+  enabled: true
+  livenessProbePath: "/rms-service/health"
+  readinessProbePath: "/rms-service/health"
+appType: "java-spring"
+tracing-enabled: true
+heap: "-Xmx256m -Xms256m"
+minReplicas: 2
+
+persistence:
+  enabled: false
+
+# Additional Container Envs
+env: |
+  - name: EGOV_MDMS_HOST
+    valueFrom:
+      configMapKeyRef:
+        key: egov-mdms-service
+        name: egov-service-host
+  - name: SERVER_PORT
+    value: "8080"
+  - name: SERVER_SERVLET_CONTEXT_PATH
+    value: /rms-service
+  - name: SERVER_CONTEXT_PATH
+    value: /rms-service
+  - name: JAVA_OPTS
+    value: {{ index .Values "heap" | quote }}
+  - name: IM_SERVICE_BASE_URL
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: im-services
+  - name: EGOV_USER_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-user
+  - name: FACILITY_SERVICE_BASE_URL
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: facility-service
+  - name: RMS_API_ACCESS_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: rms-api-token
+        key: token

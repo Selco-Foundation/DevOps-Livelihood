@@ -1,0 +1,103 @@
+# Common Labels
+labels:
+  app: "field-planner"
+  group: "rainmaker"
+
+namespace: core-dev
+
+# Ingress Configs
+ingress:
+  enabled: true
+  zuul: true
+  context: "field-planner"
+
+# Init Containers Configs
+initContainers:
+  dbMigration:
+    enabled: true
+    schemaTable: "field_planner_schema"
+    image:
+      repository: "selcohub/field-planner-db"
+      tag: "develop-61a468f4efec1a34aa45976ce546b33f209b21ff"
+
+# Container Configs
+image:
+  repository: "selcohub/field-planner"
+  tag: "develop-61a468f4efec1a34aa45976ce546b33f209b21ff"
+replicas: "1"
+healthChecks:
+  enabled: true
+  livenessProbePath: "/field-planner/health"
+  readinessProbePath: "/field-planner/health"
+appType: "java-spring"
+tracing-enabled: true
+heap: "-Xmx256m -Xms256m"
+memory_limits: 768Mi
+memory_requests: 512Mi
+
+# Additional Container Envs
+env: |
+  - name: SERVER_PORT
+    value: "8080"
+  - name: SPRING_REDIS_HOST
+    value: redis.backbone-dev
+  - name: KAFKA_CONFIG_BOOTSTRAP_SERVER_CONFIG
+    valueFrom:
+      configMapKeyRef:
+        name: egov-config
+        key: kafka-brokers
+  - name: EGOV_IDGEN_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-idgen
+  - name: EGOV_USER_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-user
+  - name: EGOV_MDMS_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-mdms-service
+  - name: EGOV_PROJECT_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: project
+  - name: EGOV_FACILITY_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: facility-service
+  - name: EGOV_LOCATION_HOST
+    valueFrom:
+      configMapKeyRef:
+        key: egov-location
+        name: egov-service-host
+  - name: EGOV_BOUNDARY_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: boundary-service
+  - name: EGOV_WORKFLOW_HOST
+    valueFrom:
+      configMapKeyRef:
+        key: egov-workflow-v2
+        name: egov-service-host
+  - name: EGOV_ASSET_HOST
+    valueFrom: 
+      configMapKeyRef: 
+        name: egov-service-host
+        key: asset-registry
+  - name: EGOV_HRMS_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-hrms
+  - name: EGOV_FIELDPLAN_ACTIVITY_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: field-planner-activity

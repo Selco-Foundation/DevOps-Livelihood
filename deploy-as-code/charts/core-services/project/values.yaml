@@ -1,0 +1,81 @@
+# Common Labels
+labels:
+  app: "project"
+  group: "rainmaker"
+
+# Init Containers Configs
+initContainers:
+  dbMigration:
+    enabled: true
+    schemaTable: "project_schema"
+    image:
+      repository: "selcohub/project-db"
+      tag: v1.1.6-1f79b92f65-33
+
+# Ingress Configs
+ingress:
+  enabled: true
+  context: "project"
+
+# Container Configs
+image:
+  repository: "selcohub/project"
+  tag: v1.1.6-1f79b92f65-33
+replicas: "1"
+healthChecks:
+  enabled: true
+  livenessProbePath: "/project/health"
+  readinessProbePath: "/project/health"
+appType: "java-spring"
+tracing-enabled: true
+heap: "-Xmx192m -Xms192m"
+memory_limits: "768Mi"
+
+# Additional Container Envs
+env: |
+  - name: SERVER_PORT
+    value: "8080"
+  - name: SERVER_SERVLET_CONTEXT_PATH
+    value: /project
+  - name: SPRING_REDIS_HOST
+    value: redis.backbone-dev
+  - name: EGOV_IDGEN_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-idgen
+  - name: EGOV_USER_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-user
+  - name: EGOV_MDMS_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-mdms-service
+  - name: EGOV_BOUNDARY_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: boundary-service
+  - name: EGOV_FACILITY_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: facility-service
+  - name: EGOV_WORKFLOW_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-workflow-v2
+  - name: EGOV_ASSET_HOST
+    valueFrom: 
+      configMapKeyRef: 
+        name: egov-service-host
+        key: asset-registry
+  - name: EGOV_HRMS_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-hrms

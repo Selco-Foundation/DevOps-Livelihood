@@ -1,0 +1,81 @@
+# Common Labels
+labels:
+  app: "boundary-service"
+  group: "core"
+
+# Init Containers Configs
+initContainers:
+  dbMigration:
+    enabled: true
+    schemaTable: "boundary_service_schema"
+    image:
+      repository: "selcohub/egov-boundary-service-db"
+      tag: develop-fc0950fa22fd077978baf6adddca0bf0eafd7914
+
+# Ingress Configs
+ingress:
+  enabled: true
+  zuul: true
+  context: "boundary-service"
+
+# Container Configs
+image:
+  repository: "selcohub/egov-boundary-service"
+  tag: develop-fc0950fa22fd077978baf6adddca0bf0eafd7914
+replicas: "1"
+healthChecks:
+  enabled: true
+  livenessProbePath: "/boundary-service/health"
+  readinessProbePath: "/boundary-service/health"
+appType: "java-spring"
+tracing-enabled: true
+heap: "-Xmx192m -Xms192m"
+memory_limits: "768Mi"
+
+persistence:
+  enabled: false
+
+# Additional Container Envs
+env: |
+  - name: SERVER_PORT
+    value: "8080"
+  - name: SERVER_SERVLET_CONTEXT_PATH
+    value: /boundary-service
+  - name: SERVER_CONTEXT_PATH
+    value: /boundary-service
+  - name: JAVA_OPTS
+    value: {{ index .Values "heap" | quote }}
+  - name: EGOV_LOCALIZATION_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-localization
+  - name: EGOV_LOCALIZATION_SEARCH_ENDPOINT
+    value: /localization/messages/v1/_search
+  - name: EGOV_IDGEN_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-idgen
+  - name: EGOV_USER_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-user
+  - name: EGOV_MDMS_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-mdms-service
+  - name: EGOV_HRMS_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-hrms
+  - name: WORKFLOW_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-workflow-v2
+
+

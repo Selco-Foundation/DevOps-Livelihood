@@ -1,0 +1,161 @@
+name: DIGIT-Install workflow for Dev
+on:
+  workflow_dispatch:
+  repository_dispatch:
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  check-changed-files:
+    runs-on: ubuntu-latest
+    outputs:
+      deploy-as-code-changed: ${{ steps.check_files.outputs.deploy-as-code-changed }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Check for changes in deploy-as-code
+        id: check_files
+        uses: tj-actions/changed-files@v42
+        with:
+          files: |
+            deploy-as-code/**
+
+  DIGIT-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Generate kubeconfig
+        run: |
+          aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ${{ vars.CLUSTER_NAME_DEV }}
+          cat ~/.kube/config > kubeconfig
+
+      - name: Creating namespace
+        run: kubectl create namespace egov
+        continue-on-error: true
+
+      - name: Install kubectl in runner
+        uses: azure/setup-kubectl@v4
+        with:
+          version: 'latest' # default is latest stable
+        id: install
+
+      - name: Verfiy kubectl get nodes
+        run: |
+          kubectl get nodes
+
+      - name: Install sops
+        run: |
+          sudo apt update
+          wget https://github.com/mozilla/sops/releases/download/v3.7.1/sops-v3.7.1.linux
+          chmod +x sops-v3.7.1.linux
+          sudo mv sops-v3.7.1.linux /usr/local/bin/sops
+
+      - name: sops decryption
+        run: |
+          aws sts get-caller-identity
+          sops --decrypt --kms ${{ secrets.PUBLIC_KMS_KEY_DEV }} $HOME/work/DIGIT-DevOps/DIGIT-DevOps/deploy-as-code/charts/environments/selco-dev-secrets.yaml > env-secrets1.yaml
+          cp env-secrets1.yaml $HOME/work/DIGIT-DevOps/DIGIT-DevOps/deploy-as-code/charts/environments/selco-dev-secrets.yaml
+      # working-directory: deploy-as-code/charts/environments
+
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: 'latest' # Specify the version of Helm
+
+      - name: Install Helmfile
+        uses: helmfile/helmfile-action@v1.9.0
+        with:
+          helmfile-version: 'v0.150.0'
+          helm-plugins: >
+            https://github.com/databus23/helm-diff
+
+      - name: Commit Id for Latest Deployment
+        run: |
+          git clone https://github.com/Selco-Foundation/E4H_Digital_Platform.git
+          cd E4H_Digital_Platform
+          git checkout develop
+          digit_ui_commit=$(git log -1 --pretty=format:%H -- frontend/micro-ui)
+          echo "digit_ui_commit=$digit_ui_commit" >> $GITHUB_ENV
+          filestore_commit=$(git log -1 --pretty=format:%H -- backend/core-services/egov-filestore)
+          echo "filestore_commit=$filestore_commit" >> $GITHUB_ENV
+          im_Services_commit=$(git log -1 --pretty=format:%H -- backend/e4h-services/im-services)
+          echo "im_Services_commit=$im_Services_commit" >> $GITHUB_ENV
+          processor_services_commit=$(git log -1 --pretty=format:%H -- backend/e4h-services/processor-services)
+          echo "processor_services_commit=$processor_services_commit" >> $GITHUB_ENV
+          inbox_commit=$(git log -1 --pretty=format:%H -- backend/e4h-services/inbox)
+          echo "inbox_commit=$inbox_commit" >> $GITHUB_ENV
+          meghalaya_commit=$(git log -1 --pretty=format:%H -- frontend/micro-ui)
+          echo "meghalaya_commit=$meghalaya_commit" >> $GITHUB_ENV
+          nagaland_commit=$(git log -1 --pretty=format:%H -- frontend/micro-ui)
+          echo "nagaland_commit=$nagaland_commit" >> $GITHUB_ENV
+          assam_commit=$(git log -1 --pretty=format:%H -- frontend/micro-ui)
+          echo "assam_commit=$assam_commit" >> $GITHUB_ENV
+          manipur_commit=$(git log -1 --pretty=format:%H -- frontend/micro-ui)
+          echo "manipur_commit=$manipur_commit" >> $GITHUB_ENV
+          mizoram_commit=$(git log -1 --pretty=format:%H -- frontend/micro-ui)
+          echo "mizoram_commit=$mizoram_commit" >> $GITHUB_ENV
+          odisha_commit=$(git log -1 --pretty=format:%H -- frontend/micro-ui)
+          echo "odisha_commit=$odisha_commit" >> $GITHUB_ENV
+          sikkim_commit=$(git log -1 --pretty=format:%H -- frontend/micro-ui)
+          echo "sikkim_commit=$sikkim_commit" >> $GITHUB_ENV
+          gujarat_commit=$(git log -1 --pretty=format:%H -- frontend/micro-ui)
+          echo "gujarat_commit=$gujarat_commit" >> $GITHUB_ENV
+          maharastra_commit=$(git log -1 --pretty=format:%H -- frontend/micro-ui)
+          echo "maharastra_commit=$maharastra_commit" >> $GITHUB_ENV
+          boundary_service_commit=$(git log -1 --pretty=format:%H -- backend/core-services/boundary-service)
+          echo "boundary_service_commit=$boundary_service_commit" >> $GITHUB_ENV
+          vendor_registry_commit=$(git log -1 --pretty=format:%H -- backend/e4h-services/vendor-registry)
+          echo "vendor_registry_commit=$vendor_registry_commit" >> $GITHUB_ENV
+          facility_registry_commit=$(git log -1 --pretty=format:%H -- backend/core-services/health-facility-registry)
+          echo "facility_registry_commit=$facility_registry_commit" >> $GITHUB_ENV
+          asset_registry_commit=$(git log -1 --pretty=format:%H -- backend/e4h-services/asset-registry)
+          echo "asset_registry_commit=$asset_registry_commit" >> $GITHUB_ENV
+
+      - name: digit deployment
+        run: |
+          helmfile -f digit-helmfile.yaml apply --include-needs=true\
+            --set asset-registry.image.tag=develop-${{ env.asset_registry_commit }} \
+            --set asset-registry.initContainers.dbMigration.image.tag=develop-${{ env.asset_registry_commit}} \
+            --set digit-ui.image.tag=develop-${{ env.digit_ui_commit }} \
+            --set boundary-service.image.tag=develop-${{ env.boundary_service_commit }} \
+            --set boundary-service.initContainers.dbMigration.image.tag=develop-${{ env.boundary_service_commit }} \
+            --set facility-service.image.tag=develop-${{ env.facility_registry_commit }} \
+            --set facility-service.initContainers.dbMigration.image.tag=develop-${{ env.facility_registry_commit }} \
+            --set vendor-registry.image.tag=develop-${{ env.vendor_registry_commit }} \
+            --set vendor-registry.initContainers.dbMigration.image.tag=develop-${{ env.vendor_registry_commit }} \
+            --set processor-services.image.tag=develop-${{ env.processor_services_commit }} \
+            --set im-services.image.tag=develop-${{ env.im_Services_commit }} \
+            --set im-services.initContainers.dbMigration.image.tag=develop-${{ env.im_Services_commit }} \
+            --set egov-filestore.image.tag=develop-${{ env.filestore_commit }} \
+            --set egov-filestore.initContainers.dbMigration.image.tag=develop-${{ env.filestore_commit }} \
+            --set inbox.image.tag=develop-${{ env.inbox_commit }} \
+            --set inbox.initContainers.dbMigration.image.tag=develop-${{ env.inbox_commit }} \
+            --set nagaland.image.tag=develop-${{ env.meghalaya_commit }} \
+            --set meghalaya.image.tag=develop-${{ env.nagaland_commit }} \
+            --set assam.image.tag=develop-${{ env.assam_commit }} \
+            --set sikkim.image.tag=develop-${{ env.sikkim_commit }} \
+            --set manipur.image.tag=develop-${{ env.manipur_commit }} \
+            --set mizoram.image.tag=develop-${{ env.mizoram_commit }} \
+            --set odisha.image.tag=develop-${{ env.odisha_commit }} \
+            --set gujarat.image.tag=develop-${{ env.gujarat_commit }} \
+            --set maharastra.image.tag=develop-${{ env.maharastra_commit }} \
+        working-directory: deploy-as-code
+        env:
+          HELMFILE_ENV: "selco-dev"
+
+
+

@@ -1,0 +1,204 @@
+name: DIGIT-Install workflow for UAT
+on:
+  workflow_dispatch:
+  repository_dispatch:
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  check-changed-files:
+    runs-on: ubuntu-latest
+    outputs:
+      deploy-as-code-changed: ${{ steps.check_files.outputs.deploy-as-code-changed }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Check for changes in deploy-as-code
+        id: check_files
+        uses: tj-actions/changed-files@v42
+        with:
+          files: |
+            deploy-as-code/**
+
+  DIGIT-deployment:
+    runs-on: ubuntu-latest
+    #    env:
+    #      AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #      AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #      AWS_REGION:  ${{ secrets.AWS_REGION }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Generate kubeconfig
+        run: |
+          aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ${{ vars.CLUSTER_NAME_UAT }}
+          cat ~/.kube/config > kubeconfig
+
+      - name: Creating namespace
+        run: kubectl create namespace egov
+        continue-on-error: true
+
+      - name: Install kubectl in runner
+        uses: azure/setup-kubectl@v4
+        with:
+          version: 'latest' # default is latest stable
+        id: install
+
+      - name: Verfiy kubectl get nodes
+        run: |
+          kubectl get nodes
+
+      - name: Install sops
+        run: |
+          sudo apt update
+          wget https://github.com/mozilla/sops/releases/download/v3.7.1/sops-v3.7.1.linux
+          chmod +x sops-v3.7.1.linux
+          sudo mv sops-v3.7.1.linux /usr/local/bin/sops
+
+      - name: sops decryption
+        run: |
+          aws sts get-caller-identity
+          sops --decrypt --kms ${{ secrets.PUBLIC_KMS_KEY_UAT }} $HOME/work/DIGIT-DevOps/DIGIT-DevOps/deploy-as-code/charts/environments/selco-uat-secrets.yaml > env-secrets1.yaml
+          cp env-secrets1.yaml $HOME/work/DIGIT-DevOps/DIGIT-DevOps/deploy-as-code/charts/environments/selco-uat-secrets.yaml
+      # working-directory: deploy-as-code/charts/environments
+
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: 'v3.9.0' # Specify the version of Helm
+
+      - name: Install helm plugins
+        run: |
+          helm plugin install https://github.com/databus23/helm-diff --version v3.9.11
+          helm plugin list
+
+      - name: Install Helmfile
+        run: |
+          wget https://github.com/helmfile/helmfile/releases/download/v0.150.0/helmfile_0.150.0_linux_amd64.tar.gz
+          tar -xzf helmfile_0.150.0_linux_amd64.tar.gz
+          sudo mv helmfile /usr/local/bin/helmfile
+          sudo chmod +x /usr/local/bin/helmfile
+          helmfile --version
+
+      - name: Commit Id for Latest Deployment
+        run: |
+          git clone https://github.com/Selco-Foundation/E4H_Digital_Platform.git
+          cd E4H_Digital_Platform
+          git checkout staging
+          hrms_commit=$(git log -1 --pretty=format:%H -- backend/e4h-services/egov-hrms)
+          echo "hrms_commit=$hrms_commit" >> $GITHUB_ENV
+          workflow_v2_commit=$(git log -1 --pretty=format:%H -- backend/core-services/egov-workflow-v2)
+          echo "workflow_v2_commit=$workflow_v2_commit" >> $GITHUB_ENV 
+          digit_ui_commit=$(git log -1 --pretty=format:%H -- frontend/micro-ui)
+          echo "digit_ui_commit=$digit_ui_commit" >> $GITHUB_ENV
+          filestore_commit=$(git log -1 --pretty=format:%H -- backend/core-services/egov-filestore)
+          echo "filestore_commit=$filestore_commit" >> $GITHUB_ENV
+          im_Services_commit=$(git log -1 --pretty=format:%H -- backend/e4h-services/im-services)
+          echo "im_Services_commit=$im_Services_commit" >> $GITHUB_ENV
+          processor_services_commit=$(git log -1 --pretty=format:%H -- backend/e4h-services/processor-services)
+          echo "processor_services_commit=$processor_services_commit" >> $GITHUB_ENV
+          inbox_commit=$(git log -1 --pretty=format:%H -- backend/e4h-services/inbox)
+          echo "inbox_commit=$inbox_commit" >> $GITHUB_ENV
+          meghalaya_commit=$(git log -1 --pretty=format:%H -- frontend/micro-ui)
+          echo "meghalaya_commit=$meghalaya_commit" >> $GITHUB_ENV
+          nagaland_commit=$(git log -1 --pretty=format:%H -- frontend/micro-ui)
+          echo "nagaland_commit=$nagaland_commit" >> $GITHUB_ENV
+          assam_commit=$(git log -1 --pretty=format:%H -- frontend/micro-ui)
+          echo "assam_commit=$assam_commit" >> $GITHUB_ENV
+          manipur_commit=$(git log -1 --pretty=format:%H -- frontend/micro-ui)
+          echo "manipur_commit=$manipur_commit" >> $GITHUB_ENV
+          mizoram_commit=$(git log -1 --pretty=format:%H -- frontend/micro-ui)
+          echo "mizoram_commit=$mizoram_commit" >> $GITHUB_ENV
+          odisha_commit=$(git log -1 --pretty=format:%H -- frontend/micro-ui)
+          echo "odisha_commit=$odisha_commit" >> $GITHUB_ENV
+          sikkim_commit=$(git log -1 --pretty=format:%H -- frontend/micro-ui)
+          echo "sikkim_commit=$sikkim_commit" >> $GITHUB_ENV
+          gujarat_commit=$(git log -1 --pretty=format:%H -- frontend/micro-ui)
+          echo "gujarat_commit=$gujarat_commit" >> $GITHUB_ENV
+          maharashtra_commit=$(git log -1 --pretty=format:%H -- frontend/micro-ui)
+          echo "maharashtra_commit=$maharashtra_commit" >> $GITHUB_ENV
+          boundary_service_commit=$(git log -1 --pretty=format:%H -- backend/core-services/boundary-service)
+          echo "boundary_service_commit=$boundary_service_commit" >> $GITHUB_ENV
+          vendor_registry_commit=$(git log -1 --pretty=format:%H -- backend/e4h-services/vendor-registry)
+          echo "vendor_registry_commit=$vendor_registry_commit" >> $GITHUB_ENV
+          facility_registry_commit=$(git log -1 --pretty=format:%H -- backend/core-services/health-facility-registry)
+          echo "facility_registry_commit=$facility_registry_commit" >> $GITHUB_ENV
+          asset_registry_commit=$(git log -1 --pretty=format:%H -- backend/e4h-services/asset-registry)
+          echo "asset_registry_commit=$asset_registry_commit" >> $GITHUB_ENV
+          im_services_analaytics_commit=$(git log -1 --pretty=format:%H -- backend/e4h-services/im-services-analytics)
+          echo "ima_commit=$im_services_analaytics_commit" >> $GITHUB_ENV
+          project_commit=$(git log -1 --pretty=format:%H -- backend/e4h-services/project)
+          echo "project_commit=$project_commit" >> $GITHUB_ENV
+          workbench_commit=$(git log -1 --pretty=format:%H -- frontend/micro-ui/web/workbench)
+          echo "workbench_commit=$workbench_commit" >> $GITHUB_ENV
+          installation_commit=$(git log -1 --pretty=format:%H -- frontend/installation-ui)
+          echo "installation_commit=$installation_commit" >> $GITHUB_ENV
+          ingestion_service_commit=$(git log -1 --pretty=format:%H -- backend/e4h-services/ingestion-service)
+          echo "ingestion_service_commit=$ingestion_service_commit" >> $GITHUB_ENV
+          field_planner_commit=$(git log -1 --pretty=format:%H -- backend/e4h-services/field-planner)
+          echo "field_planner_commit=$field_planner_commit" >> $GITHUB_ENV
+          field_planner_activity_commit=$(git log -1 --pretty=format:%H -- backend/e4h-services/field-planner-activity)
+          echo "field_planner_activity_commit=$field_planner_activity_commit" >> $GITHUB_ENV
+
+      - name: digit deployment
+        run: |
+          helmfile -f digit-helmfile.yaml apply --include-needs=true\
+            --set field-planner-activity.image.tag=staging-${{ env.field_planner_activity_commit }} \
+            --set field-planner-activity.initContainers.dbMigration.image.tag=staging-${{ env.field_planner_activity_commit }} \
+            --set field-planner.image.tag=staging-${{ env.field_planner_commit }} \
+            --set field-planner.initContainers.dbMigration.image.tag=staging-${{ env.field_planner_commit }} \
+            --set ingestion-service.image.tag=staging-${{ env.ingestion_service_commit }} \
+            --set installation-qc.image.tag=staging-${{ env.installation_commit }} \
+            --set workbench-ui.image.tag=staging-${{ env.workbench_commit }} \
+            --set project.image.tag=staging-${{ env.project_commit }} \
+            --set project.initContainers.dbMigration.image.tag=staging-${{ env.project_commit }} \
+            --set im-services-analytics.image.tag=staging-${{ env.ima_commit }} \
+            --set asset-registry.image.tag=staging-${{ env.asset_registry_commit }} \
+            --set asset-registry.initContainers.dbMigration.image.tag=staging-${{ env.asset_registry_commit}} \
+            --set digit-ui.image.tag=staging-${{ env.digit_ui_commit }} \
+            --set boundary-service.image.tag=staging-${{ env.boundary_service_commit }} \
+            --set boundary-service.initContainers.dbMigration.image.tag=staging-${{ env.boundary_service_commit }} \
+            --set facility-service.image.tag=staging-${{ env.facility_registry_commit }} \
+            --set facility-service.initContainers.dbMigration.image.tag=staging-${{ env.facility_registry_commit }} \
+            --set vendor-registry.image.tag=staging-${{ env.vendor_registry_commit }} \
+            --set vendor-registry.initContainers.dbMigration.image.tag=staging-${{ env.vendor_registry_commit }} \
+            --set processor-services.image.tag=staging-${{ env.processor_services_commit }} \
+            --set im-services.image.tag=staging-${{ env.im_Services_commit }} \
+            --set im-services.initContainers.dbMigration.image.tag=staging-${{ env.im_Services_commit }} \
+            --set egov-filestore.image.tag=staging-${{ env.filestore_commit }} \
+            --set egov-filestore.initContainers.dbMigration.image.tag=staging-${{ env.filestore_commit }} \
+            --set inbox.image.tag=staging-${{ env.inbox_commit }} \
+            --set inbox.initContainers.dbMigration.image.tag=staging-${{ env.inbox_commit }} \
+            --set nagaland.image.tag=staging-${{ env.nagaland_commit }} \
+            --set meghalaya.image.tag=staging-${{ env.meghalaya_commit }} \
+            --set assam.image.tag=staging-${{ env.assam_commit }} \
+            --set sikkim.image.tag=staging-${{ env.sikkim_commit }} \
+            --set manipur.image.tag=staging-${{ env.manipur_commit }} \
+            --set mizoram.image.tag=staging-${{ env.mizoram_commit }} \
+            --set odisha.image.tag=staging-${{ env.odisha_commit }} \
+            --set gujarat.image.tag=staging-${{ env.gujarat_commit }} \
+            --set egov-hrms.image.tag=staging-${{ env.hrms_commit }} \
+            --set egov-hrms.initContainers.dbMigration.image.tag=staging-${{ env.hrms_commit }} \
+            --set egov-workflow-v2.image.tag=staging-${{ env.workflow_v2_commit }} \
+            --set egov-workflow-v2.initContainers.dbMigration.image.tag=staging-${{ env.workflow_v2_commit }} \
+            --set maharashtra.image.tag=staging-${{ env.maharashtra_commit }} \
+        working-directory: deploy-as-code
+        env:
+          HELMFILE_ENV: "selco-uat"
+
+
+

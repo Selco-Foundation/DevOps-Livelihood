@@ -1,0 +1,39 @@
+version: v1.1.0
+modules:
+  - name: backbone-dev
+    services:
+      - kafka-kraft
+      - elasticsearch-data
+      - elasticsearch-master
+      - kibana
+      - cert-manager
+      - ingress-nginx
+      - minio
+      - playground
+      - redis
+  - name: core-dev
+    dependencies:
+      - "backbone-dev"
+    services:
+      nagaland: v1.1.0-9bf0724d03e063f48e1a71e402f272d725dc1107
+      egov-hrms: v1.1.0-9bf0724d03e063f48e1a71e402f272d725dc1107
+      egov-filestore: v1.1.0-9bf0724d03e063f48e1a71e402f272d725dc1107
+      egov-workflow-v2: v1.1.0-9bf0724d03e063f48e1a71e402f272d725dc1107
+      im-services: v1.1.0-9bf0724d03e063f48e1a71e402f272d725dc1107
+      digit-ui: v1.1.0-9bf0724d03e063f48e1a71e402f272d725dc1107
+      inbox: v1.1.0-9bf0724d03e063f48e1a71e402f272d725dc1107
+      egov-mdms-service: core-2.9-lts-mvn-check-c33cfe45ab-12
+      egov-notification-sms: egov-notification-sms:master-03072024-1
+      audit-service: core-2.9-lts-mvn-check-c33cfe45ab-9
+      egov-accesscontrol: core-2.9-lts-mvn-check-34362a8b87-9
+      egov-enc-service: core-2.9-lts-mvn-check-c607f2d4de-20
+      egov-idgen: egov-idgen:main-03072024-1
+      egov-indexer: core-2.9-lts-mvn-check-5f0cc52126-55
+      egov-localization: core-2.9-lts-mvn-check-59c2e5ea5b-9
+      egov-location: core-2.9-lts-mvn-check-c33cfe45ab-9
+      egov-otp: core-2.9-lts-mvn-check-72333e5530-5
+      egov-persister: core-2.9-lts-mvn-check-c33cfe45ab-7
+      egov-user: core-2.9-lts-egov-user-deployement-c33cfe45ab-13
+      gateway: gateway-2.9.3-56a8630218-44
+      im-services-analytics: im-services-analytics-27624fe645-11
+      user-otp: core-2.9-lts-mvn-check-15fe7099b6-7

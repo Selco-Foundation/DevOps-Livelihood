@@ -1,0 +1,49 @@
+version: v2.0.2
+modules:
+  - name: backbone-dev
+    services:
+      - kafka-kraft
+      - elasticsearch-data
+      - elasticsearch-master
+      - kibana
+      - cert-manager
+      - ingress-nginx
+      - minio
+      - playground
+      - redis
+      - pgadmin
+  - name: core-dev
+    dependencies:
+      - "backbone-dev"
+    services:
+      maharashtra: v2.0.1-bfd00187d071de79eb81a5cbaf3ed1eaec412355
+      meghalaya: v2.0.0-fcf3181eac17bf5a3cded283bd9af57c31cf42a6
+      gujarat: v2.0.0-fcf3181eac17bf5a3cded283bd9af57c31cf42a6
+      assam: v2.0.0-fcf3181eac17bf5a3cded283bd9af57c31cf42a6
+      odisha: v2.0.0-fcf3181eac17bf5a3cded283bd9af57c31cf42a6
+      sikkim: v2.0.0-fcf3181eac17bf5a3cded283bd9af57c31cf42a6
+      mizoram: v2.0.0-fcf3181eac17bf5a3cded283bd9af57c31cf42a6
+      manipur: v2.0.0-fcf3181eac17bf5a3cded283bd9af57c31cf42a6
+      nagaland: v2.0.0-fcf3181eac17bf5a3cded283bd9af57c31cf42a6
+      egov-hrms: v1.1.0-9bf0724d03e063f48e1a71e402f272d725dc1107
+      egov-filestore: v2.0.0-fcf3181eac17bf5a3cded283bd9af57c31cf42a6
+      egov-workflow-v2: v2.0.2-852d2b10a219685cb3971ec49b5578d6e6b44005
+      im-services-analytics: main-03d911f07dd3aaf4babdafb6a797c4114e750acf
+      processor-services: main-3aa146620a09ad8ec6a4650de881b8d44bf23306
+      im-services: v2.0.2-852d2b10a219685cb3971ec49b5578d6e6b44005
+      digit-ui: v2.0.0-fcf3181eac17bf5a3cded283bd9af57c31cf42a6
+      inbox: v2.0.2-852d2b10a219685cb3971ec49b5578d6e6b44005
+      egov-mdms-service: v2.9.2-4a60f20
+      egov-notification-sms: master-03072024-1
+      audit-service: v2.9.2-4a60f20
+      egov-accesscontrol: v2.9.2-4a60f20
+      egov-enc-service: v2.9.2-4a60f20
+      egov-idgen: main-03072024-1
+      egov-indexer: v2.9.2-4a60f20
+      egov-localization: v2.9.2-4a60f20
+      egov-location: v2.9.2-4a60f20
+      egov-otp: v2.9.2-4a60f20
+      egov-persister: v2.9.2-4a60f20
+      egov-user: core-2.9-lts-egov-user-deployement-c33cfe45ab-13
+      gateway: v2.9.2-4a60f20
+      user-otp: v2.9.2-4a60f20

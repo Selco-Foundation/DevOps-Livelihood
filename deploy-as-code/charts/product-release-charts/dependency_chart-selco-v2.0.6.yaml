@@ -1,0 +1,49 @@
+version: v2.0.6
+modules:
+  - name: backbone-dev
+    services:
+      - kafka-kraft
+      - elasticsearch-data
+      - elasticsearch-master
+      - kibana
+      - cert-manager
+      - ingress-nginx
+      - minio
+      - playground
+      - redis
+      - pgadmin
+  - name: core-dev
+    dependencies:
+      - "backbone-dev"
+    services:
+      maharashtra: v2.0.5-eba7f8f0364a533e911392ebcd469b79e8253ec3
+      meghalaya: v2.0.5-eba7f8f0364a533e911392ebcd469b79e8253ec3
+      gujarat: v2.0.5-eba7f8f0364a533e911392ebcd469b79e8253ec3
+      assam: v2.0.5-eba7f8f0364a533e911392ebcd469b79e8253ec3
+      odisha: v2.0.5-eba7f8f0364a533e911392ebcd469b79e8253ec3
+      sikkim: v2.0.5-eba7f8f0364a533e911392ebcd469b79e8253ec3
+      mizoram: v2.0.5-eba7f8f0364a533e911392ebcd469b79e8253ec3
+      manipur: v2.0.5-eba7f8f0364a533e911392ebcd469b79e8253ec3
+      nagaland: v2.0.5-eba7f8f0364a533e911392ebcd469b79e8253ec3
+      egov-hrms: v1.1.0-9bf0724d03e063f48e1a71e402f272d725dc1107
+      egov-filestore: v2.0.3-7de51e1b5d83b29754c5e30d33c931d5cc9159aa
+      egov-workflow-v2: v2.0.4-ee355ae51eaadd22f1a30a759492ab80dd7ac95a
+      im-services-analytics: v2.0.4-ee355ae51eaadd22f1a30a759492ab80dd7ac95a
+      processor-services: main-3aa146620a09ad8ec6a4650de881b8d44bf23306
+      im-services: v2.0.6-ed299f4bbb75821a83fbc2bbef1997f16f600549
+      digit-ui: v2.0.5-eba7f8f0364a533e911392ebcd469b79e8253ec3
+      inbox: v2.0.4-ee355ae51eaadd22f1a30a759492ab80dd7ac95a
+      egov-mdms-service: v2.9.2-4a60f20
+      egov-notification-sms: master-03072024-1
+      audit-service: v2.9.2-4a60f20
+      egov-accesscontrol: v2.9.2-4a60f20
+      egov-enc-service: v2.9.2-4a60f20
+      egov-idgen: main-03072024-1
+      egov-indexer: v2.9.2-4a60f20
+      egov-localization: v2.9.2-4a60f20
+      egov-location: v2.9.2-4a60f20
+      egov-otp: v2.9.2-4a60f20
+      egov-persister: v2.9.2-4a60f20
+      egov-user: core-2.9-lts-egov-user-deployement-c33cfe45ab-13
+      gateway: v2.9.2-4a60f20
+      user-otp: v2.9.2-4a60f20

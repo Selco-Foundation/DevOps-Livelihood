@@ -1,0 +1,52 @@
+version: v2.2.8
+modules:
+  - name: backbone-dev
+    services:
+      - kafka-kraft
+      - elasticsearch-data
+      - elasticsearch-master
+      - kibana
+      - cert-manager
+      - ingress-nginx
+      - minio
+      - playground
+      - redis
+      - pgadmin
+  - name: core-dev
+    dependencies:
+      - "backbone-dev"
+    services:
+      boundary-service: v2.2.1-9dd1451c12150aca6d1bcf06565c2d6a7bb32a04
+      facility-service: v2.2.4-2e19efb003a6df7ccda3a3955e529448c525d257
+      maharashtra: v2.1.0-c0f56d4c169b43a17d2285403d41b3fb10c6dde7
+      meghalaya: v2.1.0-c0f56d4c169b43a17d2285403d41b3fb10c6dde7
+      gujarat: v2.1.0-c0f56d4c169b43a17d2285403d41b3fb10c6dde7
+      assam: v2.1.0-c0f56d4c169b43a17d2285403d41b3fb10c6dde7
+      odisha: v2.1.0-c0f56d4c169b43a17d2285403d41b3fb10c6dde7
+      sikkim: v2.1.0-c0f56d4c169b43a17d2285403d41b3fb10c6dde7
+      mizoram: v2.1.0-c0f56d4c169b43a17d2285403d41b3fb10c6dde7
+      manipur: v2.1.0-c0f56d4c169b43a17d2285403d41b3fb10c6dde7
+      nagaland: v2.1.0-c0f56d4c169b43a17d2285403d41b3fb10c6dde7
+      egov-hrms: v2.2.8-680464664a3299fefbeb2ac50ce924385338f3d2
+      egov-filestore: v2.0.3-7de51e1b5d83b29754c5e30d33c931d5cc9159aa
+      egov-workflow-v2: v2.0.4-ee355ae51eaadd22f1a30a759492ab80dd7ac95a
+      im-services-analytics: v2.2.5-22a9d9bcc4bac5ff715b6129420000baac56cdf6
+      processor-services: main-3aa146620a09ad8ec6a4650de881b8d44bf23306
+      im-services: v2.2.6-9cb86a1f1f15cf533851be7ef22a2651dcd7d4ca
+      digit-ui: v2.2.8-680464664a3299fefbeb2ac50ce924385338f3d2
+      inbox: v2.2.1-9dd1451c12150aca6d1bcf06565c2d6a7bb32a04
+      egov-mdms-service: v2.9.2-4a60f20
+      egov-notification-sms: master-03072024-1
+      egov-notification-mail: v2.9.2-4a60f20
+      audit-service: v2.9.2-4a60f20
+      egov-accesscontrol: v2.9.2-4a60f20
+      egov-enc-service: v2.9.2-4a60f20
+      egov-idgen: v2.2.1-9dd1451c12150aca6d1bcf06565c2d6a7bb32a04
+      egov-indexer: v2.9.2-4a60f20
+      egov-localization: v2.9.2-4a60f20
+      egov-location: v2.9.2-4a60f20
+      egov-otp: v2.9.2-4a60f20
+      egov-persister: v2.9.2-4a60f20
+      egov-user: core-2.9-lts-egov-user-deployement-c33cfe45ab-13
+      gateway: gateway-form-data-whilelisting-fix-71aff8f
+      user-otp: v2.9.2-4a60f20

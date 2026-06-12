@@ -1,0 +1,228 @@
+templates:
+  default: &default
+    chart: ./{{`{{ .Release.Name }}`}}
+    version: 0.1.0
+    namespace: core-dev
+    # This prevents helmfile exiting when it encounters a missing file
+    # Valid values are "Error", "Warn", "Info", "Debug". The default is "Error"
+    # Use "Debug" to make missing files errors invisible at the default log level(--log-level=INFO)
+    missingFileHandler: Warn
+    values:
+      - ../environments/{{ requiredEnv "HELMFILE_ENV" }}-secrets.yaml
+      - ../environments/{{ requiredEnv "HELMFILE_ENV" }}.yaml
+
+releases:
+#  - name: egov-accesscontrol # Replace with your desired namespace
+#    installed: true # Replace with the version of your chart, if needed
+#    <<: *default
+#
+#  - name: audit-service # Replace with your desired namespace
+#    installed: true # Replace with the version of your chart, if needed
+#    <<: *default
+#
+#  - name: egov-enc-service # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+
+#  - name: egov-filestore # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+
+#  - name: egov-idgen # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: egov-localization # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: egov-location # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: egov-mdms-service # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+
+#  - name: egov-hrms # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+
+
+#  - name: egov-indexer # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+
+#  - name: egov-notification-sms # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+
+#  - name: egov-notification-mail # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+
+#  - name: egov-user # Replace with your desired namespace
+#    installed: true
+#    needs:
+#    - egov-enc-service
+#    <<: *default
+
+#  - name: egov-otp # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: egov-persister # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+
+#  - name: egov-workflow-v2 # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+
+#  - name: user-otp # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+
+#  - name: configmaps # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+
+
+  - name: digit-ui # Replace with your desired namespace
+    installed: true
+    <<: *default
+
+#  - name: meghalaya # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: nagaland # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: assam # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: mizoram # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: manipur # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: sikkim # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: odisha # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: gujarat # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: maharashtra # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: workbench-ui # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+
+#  - name: mdms-v2 # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+
+
+
+#  - name: gateway # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+
+#  - name: im-services # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+
+  - name: im-services-analytics # Replace with your desired namespace
+    installed: true
+    <<: *default
+
+#  - name: inbox # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+
+#  - name: boundary-service # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: processor-services # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: vendor-registry # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: asset-registry # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+
+
+#  - name: ingestion-service # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: boundary-service # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+
+#  - name: processor-services # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: facility-service  # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: vendor-registry # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: asset-registry # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+
+  - name: project # Replace with your desired namespace
+    installed: true
+    <<: *default
+#
+  - name: installation-qc # Replace with your desired namespace
+    installed: true
+    <<: *default
+#
+#  - name: ingestion-service # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: field-planner
+#    installed: true
+#    <<: *default
+#
+#  - name: field-planner-activity
+#    installed: true
+#    <<: *default
+#
+#  - name: pdf-service
+#    installed: true
+#    <<: *default
+#
+#  - name: amc-service
+#    installed: true
+#    <<: *default
+#
+  - name: rms-service
+    installed: true
+    <<: *default

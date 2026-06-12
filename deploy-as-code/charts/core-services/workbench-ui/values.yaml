@@ -1,0 +1,33 @@
+# Common Labels
+labels:
+  app: "workbench-ui"
+  group: "web"
+
+# Ingress Configs
+ingress:
+  enabled: true
+  context: "workbench-ui"
+
+# Init Containers Configs
+initContainers: {}
+
+# Container Configs
+image:
+  repository: "selcohub/workbench-ui"
+  tag: master-12e9ce07-1270
+replicas: "1"
+httpPort: 80
+healthChecks:
+  enabled: true
+  livenessProbePath: "/workbench-ui/"
+  readinessProbePath: "/workbench-ui/"
+    
+extraVolumes: |
+  - name: js-injection
+    configMap:
+      name: workbench-ui
+
+extraVolumeMounts: |
+  - mountPath: /etc/nginx/conf.d/sub_filter.conf
+    name: js-injection
+    subPath: sub_filter.conf

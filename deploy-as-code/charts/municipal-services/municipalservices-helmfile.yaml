@@ -1,0 +1,17 @@
+templates:
+  default: &default
+    chart: ./{{`{{ .Release.Name }}`}}
+    version: 0.1.0
+    namespace: core-dev
+    # This prevents helmfile exiting when it encounters a missing file
+    # Valid values are "Error", "Warn", "Info", "Debug". The default is "Error"
+    # Use "Debug" to make missing files errors invisible at the default log level(--log-level=INFO)
+    missingFileHandler: Warn
+    values:
+      - ../environments/selco-uat-secrets.yaml
+      - ../environments/selco-uat.yaml
+
+releases:
+  - name: im-services # Replace with your desired namespace
+    installed: true # Replace with the version of your chart, if needed
+    <<: *default

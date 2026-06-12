@@ -1,0 +1,24 @@
+# Replace with the name which you want to give to your EKS cluster
+# Cluster name can have only lowercase alphanumeric characters and hyphens
+# For example: "digit-demo"
+cluster_name: "selco-uat"
+
+# Replace with ssh key name you want
+ssh_key_name: "selco-uat-ssh-key"
+
+# Replace with public key which you want to add in your EC2 machines # ssh key which you want to add in your EC2 machines
+public_ssh_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+B0N6ilmhqrwGWv2CkRzWFMAopDSAuJZ0Grki3+ICOMBoCjbXfXalLu1WJxUSqaOb1g3goNfm2pT2j3iNQrcspZrk5X6jxfmYPb15kJEFoQNX1i6wb8sV3I0VLLLM9aJuaVtiDP4SnS4/CeCpVJVmz9UWyMeYdJrtl+o9dyWl9mwmXjGR9KoR1/l+486++g+voLfmryE4vpKOJZsLj7jvnXV49CCceHrTKol9Gurm7eB0v1B2xn9SoHI/K+q+UkCatYDh9dZWWaJ+qXK6WaoFFaYCOIz3tUR09A4MwXxy8mKSoeTal+H8qpdzuQ0vUbrxqUM1n00O8zoB8NtKCIu1"
+
+# Name you want to give to your Database
+# DB name must contain only alphanumeric characters
+db_name: "selcouatdb"
+
+# Replace with DB username you want
+# DB user name must contain only alphanumeric characters
+db_username: "selcouat"
+
+# Replace with Domain name you want for your web applications
+domain_name: "saura-emitra-uat.selcofoundation.org"
+
+# Replace with the name you want to give to your S3 bucket which is used to store the terraform state
+terraform_state_bucket_name: "selco-uat-githubactions-bucket"

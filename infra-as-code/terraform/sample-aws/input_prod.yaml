@@ -1,0 +1,24 @@
+# Replace with the name which you want to give to your EKS cluster
+# Cluster name can have only lowercase alphanumeric characters and hyphens
+# For example: "digit-demo"
+cluster_name: "selco-prod"
+
+# Replace with ssh key name you want
+ssh_key_name: "selco-prod-ssh-key"
+
+# Replace with public key which you want to add in your EC2 machines # ssh key which you want to add in your EC2 machines
+public_ssh_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrluFaPQAaBhtK2WGi2KrHaenSljN1SkKNlXiHefUbFZFiR+GqMwL8TN7n7+APFxLh666+ioALA/xHj8bE/0UMs9xXabd2JOO224RZ9WF0nJF1XeTu8vSa0EEhDAl0kQYr2wtGd2c3u59lIVxIx7u779sWsO1npkKF9dO5UIC0T6r47tIHsPnQSn+D64luA03IaokPEKHi1h8QUQvsDFIpJrQvlEgy5wxY7sV4Ws+n0XJR3RbtOdZifj3T93sxE3zHJSBQ9Hcf+qGizRPjTZ2y3EqskU4P9Atgd0U3KGqviEQOxidwIKdTH9UpD0TzPyPZtdi8Z34bRHHDH47j2OAf"
+
+# Name you want to give to your Database
+# DB name must contain only alphanumeric characters
+db_name: "selcoproddb"
+
+# Replace with DB username you want
+# DB user name must contain only alphanumeric characters
+db_username: "selcoprod"
+
+# Replace with Domain name you want for your web applications
+domain_name: "selco-prod.ddns.net"
+
+# Replace with the name you want to give to your S3 bucket which is used to store the terraform state
+terraform_state_bucket_name: "selco-prod-githubaction-bucket"

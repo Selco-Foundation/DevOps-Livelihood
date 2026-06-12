@@ -1,0 +1,72 @@
+# Common Labels
+labels:
+  app: "processor-services"
+  group: "rainmaker"
+
+namespace: core-dev
+
+# Ingress Configs
+ingress:
+  enabled: true
+  zuul: true
+  context: "processor-services"
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 500m
+
+minReplicas: 2
+
+# Container Configs
+image:
+  repository: "selcohub/processor-services"
+  tag: "develop-61a468f4efec1a34aa45976ce546b33f209b21ff"
+replicas: "1"
+healthChecks:
+  enabled: true
+  livenessProbePath: "/processor-services/health"
+  readinessProbePath: "/processor-services/health"
+appType: "java-spring"
+tracing-enabled: true
+memory_limits: "2560Mi"
+memory_requests: "2Gi"
+lifecycle:
+  postStart:
+    exec:
+      command:
+        - sh
+        - -c
+        - |
+          set -e
+          apt update && apt install -y software-properties-common wget cpulimit
+          wget https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz
+          tar -xf ffmpeg-release-amd64-static.tar.xz
+          cd ffmpeg-*-amd64-static
+          mv ffmpeg ffprobe /usr/bin/
+          ln -s /usr/bin/ffprobe /usr/local/bin/ffprobe   ##Symbolic link at different directory
+          ln -s /usr/bin/ffmpeg /usr/local/bin/ffmpeg
+
+
+# Additional Container Envs
+env: |
+  - name: KAFKA_CONFIG_BOOTSTRAP_SERVER_CONFIG
+    valueFrom:
+      configMapKeyRef:
+        name: egov-config
+        key: kafka-brokers
+  - name: SERVER_PORT
+    value: "8080"
+  - name: EGOV_FILESTORE_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-filestore
+  - name: SPRING_KAFKA_CONSUMER_PROPERTIES_HEARTBEATINTERVAL
+    value: "10000"
+  - name: SPRING_KAFKA_CONSUMER_PROPERTIES_MAX_POLL_INTERVAL_MS
+    value: "1800000"
+  - name: SPRING_KAFKA_CONSUMER_PROPERTIES_SESSION_TIMEOUT_MS
+    value: "90000"
+  - name: SPRING_KAFKA_CONSUMER_PROPERTIES_MAXPOLLRECORDS
+    value: "1"
+  - name: SPRING_KAFKA_CONSUMER_GROUPID
+    value: egov-processor-services
+

@@ -1,0 +1,44 @@
+version: v2.0
+modules:
+    - name: backbone
+      services:
+        - kafka-kraft-controller
+        - elasticsearch-data
+        - elasticsearch-master
+        - kibana
+    - name: authn-authz
+      services:
+        - redis
+        - ingress-nginx
+        - cert-manager
+    - name: core
+      dependencies:
+        - "backbone"
+        - "authn-authz"    
+      services:
+        - egovio/audit-service:core-2.9-lts-mvn-check-c33cfe45ab-9
+        - egovio/egov-enc-service:core-2.9-lts-mvn-check-c607f2d4de-20
+        - egovio/egov-filestore:core-2.9-lts-mvn-check-17b905d01d-13
+        - selcohub/egov-idgen:main-03072024-1
+        - egovio/egov-indexer:core-2.9-lts-mvn-check-5f0cc52126-55
+        - egovio/egov-localization:core-2.9-lts-mvn-check-59c2e5ea5b-9
+        - egovio/egov-location:core-2.9-lts-mvn-check-c33cfe45ab-9
+        - egovio/egov-mdms-service:core-2.9-lts-mvn-check-c33cfe45ab-12
+        - egovio/egov-notification-mail:core-2.9-lts-mvn-check-c33cfe45ab-4
+        - selcohub/egov-notification-sms:master-03072024-1
+        - egovio/egov-otp:core-2.9-lts-mvn-check-72333e5530-5
+        - egovio/egov-persister:core-2.9-lts-mvn-check-c33cfe45ab-7
+        - egovio/egov-url-shortening:core-2.9-lts-mvn-check-ecf5d0a880-11
+        - egovio/egov-user:core-2.9-lts-egov-user-deployement-c33cfe45ab-13
+        - egovio/user-otp:core-2.9-lts-mvn-check-15fe7099b6-7
+        - selcohub/egov-workflow-v2:main-24012025-1
+        - upyogio/playground:1.0
+        - egovio/gateway:gateway-filestore-fix-ebbd0c4cd8-24
+        - selcohub/im-services:main-24012025-1
+        - egovio/im-services-analytics:im-services-analytics-27624fe645-11
+        - egovio/egov-hrms:core-2.9-lts-mvn-check-4553648f56-8
+        - egovio/egov-accesscontrol:core-2.9-lts-mvn-check-34362a8b87-9
+    - name: "frontend"             
+      dependencies:
+        - "business"
+      services:

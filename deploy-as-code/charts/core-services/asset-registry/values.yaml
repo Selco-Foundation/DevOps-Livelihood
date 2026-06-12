@@ -1,0 +1,88 @@
+# Common Labels
+labels:
+  app: "asset-registry"
+  group: "rainmaker"
+
+# Ingress Configs
+ingress:
+  enabled: true
+  zuul: true
+  context: "asset-registry"
+
+# Init Containers Configs
+initContainers:
+  dbMigration:
+    enabled: true
+    schemaTable: "asset_registry_schema"
+    image:
+      repository: "selcohub/asset-registry-db"
+      tag: core-2.9-lts-mvn-check-c33cfe45ab-9
+
+
+# Container Configs
+image:
+  repository: "selcohub/asset-registry"
+  tag: develop-9e49c3921b4b5a3b11dab4bb3b932d947971ef0a
+replicas: "1"
+healthChecks:
+  enabled: true
+  livenessProbePath: "/asset-registry/health"
+  readinessProbePath: "/asset-registry/health"
+appType: "java-spring"
+tracing-enabled: true
+heap: "-Xmx256m -Xms256m"
+memory_limits: "768Mi"
+
+# Additional Container Envs
+env: |
+  - name: SERVER_PORT
+    value: "8080"
+  - name: SERVER_CONTEXTPATH
+    value: /asset-registry
+  - name: EGOV_ACTIVITY_FACILITY_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: field-planner-activity
+  - name: OTEL_EXPORTER_OTLP_ENDPOINT
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: jaeger
+  - name: EGOV_IDGEN_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-idgen
+  - name: EGOV_USER_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-user
+  - name: EGOV_MDMS_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-mdms-service
+  - name: EGOV_HRMS_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-hrms
+  - name: WORKFLOW_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-workflow-v2
+  - name: EGOV_LOCALIZATION_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-localization
+  - name: EGOV_FACILITY_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: facility-service
+  
+

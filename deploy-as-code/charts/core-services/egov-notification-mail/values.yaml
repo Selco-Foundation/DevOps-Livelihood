@@ -1,0 +1,66 @@
+# Common Labels
+labels:
+  app: "egov-notification-mail"
+  group: "core"
+
+# Init Containers Configs
+initContainers: {}
+
+# Container Configs
+image:
+  repository: "egovio/egov-notification-mail"
+  tag: v2.9.2-4a60f20  #jaeger enabled
+replicas: "1"
+appType: "java-spring"
+tracing-enabled: true
+#username: "egov-testing@egovernments.org"
+heap: "-Xmx360m -Xms360m"
+memory_requests: "512Mi"
+memory_limits: "768Mi"
+
+# Additional Container Envs
+env: |
+  - name: KAFKA_TOPICS_NOTIFICATION_MAIL_NAME
+    value: egov.core.notification.email
+  - name: KAFKA_TOPICS_NOTIFICATION_MAIL_ID
+    value: egov.core.notification.email
+  - name: KAFKA_TOPICS_NOTIFICATION_MAIL_GROUP
+    value: egov.core.notification.email
+  - name: MAIL_SENDER_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: egov-notification-mail
+        key: mailsenderusername
+  - name: MAIL_SENDER_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: egov-notification-mail
+        key: mailsenderpassword
+  - name: MAIL_PORT
+    value: '465'
+  - name: JAVA_OPTS
+    value: '-Xmx192m -Xms192m'
+  - name: EGOV_LOCALIZATION_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-localization
+  - name: EGOV_USER_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-user
+  - name: EMAIL_SUBJECT
+    value: Selco-Foundation E4H Notification
+  - name: EGOV_USER_STATE_TENANT_ID
+    valueFrom:
+      configMapKeyRef:
+        name: egov-config
+        key: egov-state-level-tenant-id
+  - name: EGOV_FILESTORE_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-filestore
+
+
