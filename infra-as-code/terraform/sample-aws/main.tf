@@ -1,5 +1,10 @@
 terraform {
   backend "s3" {
+    bucket = "selco-dev-livelihood-githubaction-bucket"
+    key    = "terraform/terraform.tfstate"
+    region = "ap-south-1"
+    dynamodb_table = "selco-dev-livelihood-githubaction-bucket"
+    encrypt = true
   }
 }
 
@@ -177,26 +182,3 @@ resource "aws_eks_addon" "aws_ebs_csi_driver" {
   addon_version     = "${var.aws_ebs_csi_driver}"
   resolve_conflicts = "OVERWRITE"
 }
-
-# module "es-master" {
-#
-#   source = "../modules/storage/aws"
-#   storage_count = 3
-#   environment = "${var.cluster_name}"
-#   disk_prefix = "es-master"
-#   availability_zones = "${var.availability_zones}"
-#   storage_sku = "gp2"
-#   disk_size_gb = "2"
-#
-# }
-# module "es-data-v1" {
-#
-#   source = "../modules/storage/aws"
-#   storage_count = 3
-#   environment = "${var.cluster_name}"
-#   disk_prefix = "es-data-v1"
-#   availability_zones = "${var.availability_zones}"
-#   storage_sku = "gp2"
-#   disk_size_gb = "25"
-
-# }

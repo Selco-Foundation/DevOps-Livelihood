@@ -1,3 +1,3 @@
 variable "bucket_name" {
-  default = "selco-prod-githubaction-bucket"
+  default = "selco-dev-livelihood-githubaction-bucket"
 }
