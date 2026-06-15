@@ -88,9 +88,9 @@ releases:
 #    <<: *default
 
 
-  - name: digit-ui # Replace with your desired namespace
-    installed: true
-    <<: *default
+#  - name: digit-ui # Replace with your desired namespace
+#    installed: true
+#    <<: *default
 
 
 #  - name: workbench-ui # Replace with your desired namespace
@@ -111,9 +111,9 @@ releases:
 #    installed: true
 #    <<: *default
 
-  - name: im-services-analytics # Replace with your desired namespace
-    installed: true
-    <<: *default
+#  - name: im-services-analytics # Replace with your desired namespace
+#    installed: true
+#    <<: *default
 
 #  - name: inbox # Replace with your desired namespace
 #    installed: true
@@ -160,13 +160,13 @@ releases:
 #    installed: true
 #    <<: *default
 
-  - name: project # Replace with your desired namespace
-    installed: true
-    <<: *default
-#
-  - name: installation-qc # Replace with your desired namespace
-    installed: true
-    <<: *default
+#  - name: project # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+##
+#  - name: installation-qc # Replace with your desired namespace
+#    installed: true
+#    <<: *default
 #
 #  - name: ingestion-service # Replace with your desired namespace
 #    installed: true
@@ -188,6 +188,6 @@ releases:
 #    installed: true
 #    <<: *default
 #
-  - name: rms-service
-    installed: true
-    <<: *default
+#  - name: rms-service
+#    installed: true
+#    <<: *default

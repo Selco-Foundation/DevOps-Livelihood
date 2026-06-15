@@ -1,7 +1,7 @@
 configmaps:
   egov-config:
     name: egov-config
-    namespace: core-dev
+    namespace: core
     data:
       db-host: selco-uat-cluster-db.c1yks4g2c2zp.ap-south-1.rds.amazonaws.com
       db-name: selcouatdb
@@ -13,10 +13,10 @@ configmaps:
       egov-internal-microservice-user-uuid: 606192d1-4c90-42d9-878f-2294bc7ab9a9
       egov-services-fqdn-name: "https://<domain_name>/"
       egov-state-level-tenant-id: pg
-      es-host: "elasticsearch-data.backbone-dev"
-      es-indexer-host: "https://elasticsearch-data.backbone-dev:9200/"
+      es-host: "elasticsearch-data.backbone"
+      es-indexer-host: "https://elasticsearch-data.backbone:9200/"
       flyway-locations: "filesystem:/flyway/sql,filesystem:/flyway/seed,filesystem:/flyway/qa,classpath:/db/migration/main"
-      kafka-brokers: "kafka-kraft-controller-headless.backbone-dev:9092"
+      kafka-brokers: "kafka-kraft-controller-headless.backbone:9092"
       kafka-infra-brokers: kafka-v2-infra.kafka-cluster:9092
       logging-level-jdbc: "DEBUG"
       mobile-validation-workaround: "true"
@@ -33,62 +33,62 @@ configmaps:
       filestore-download-enpoint: "https://saura-emitra.selcofoundation.org/filestore/v1/files/file"
   egov-service-host:
     name: egov-service-host
-    namespace: core-dev
+    namespace: core
     data:
-      asset-registry: http://asset-registry.core-dev:8080/
-      vendor-registry: http://vendor-registry.core-dev:8080/
-      project: http://project.core-dev:8080/
-      field-plan: http://field-planner.core-dev:8080/
-      field-planner-activity: http://field-planner-activity.core-dev:8080/
-      jaeger: http://jaeger-tracing-collector.backbone-dev:4318/
-      billing-service: http://billing-service.core-dev:8080/
+      asset-registry: http://asset-registry.core:8080/
+      vendor-registry: http://vendor-registry.core:8080/
+      project: http://project.core:8080/
+      field-plan: http://field-planner.core:8080/
+      field-planner-activity: http://field-planner-activity.core:8080/
+      jaeger: http://jaeger-tracing-collector.backbone:4318/
+      billing-service: http://billing-service.core:8080/
       egov-url-shortening: http://eus:8080/
-      egov-searcher: http://egov-searcher.core-dev:8080/
-      birth-death-services: http://birth-death-services.core-dev8080/
-      bpa-calculator: http://bpa-calculator.core-dev:8080/
-      bpa-services: http://bpa-services.core-dev:8080/
-      dashboard-analytics: http://dashboard-analytics.core-dev:8080/
-      dashboard-ingest: http://dashboard-ingest.core-dev:8080/
-      egov-accesscontrol: http://egov-accesscontrol.core-dev:8080/
+      egov-searcher: http://egov-searcher.core:8080/
+      birth-death-services: http://birth-death-services.core8080/
+      bpa-calculator: http://bpa-calculator.core:8080/
+      bpa-services: http://bpa-services.core:8080/
+      dashboard-analytics: http://dashboard-analytics.core:8080/
+      dashboard-ingest: http://dashboard-ingest.core:8080/
+      egov-accesscontrol: http://egov-accesscontrol.core:8080/
       egov-apportion-service: http://egov-apportion-service:8080/
-      egov-data-uploader: http://egov-data-uploader.core-dev:8080/
-      egov-enc-service: http://egov-enc-service.core-dev:8080/
-      egov-filestore: http://egov-filestore.core-dev:8080/
-      egov-hrms: http://egov-hrms.core-dev:8080/
-      egov-idgen: http://egov-idgen.core-dev:8080/
-      egov-indexer: http://egov-indexer.core-dev:8080/
-      egov-localization: http://egov-localization.core-dev:8080/
-      egov-location: http://egov-location.core-dev:8080/
+      egov-data-uploader: http://egov-data-uploader.core:8080/
+      egov-enc-service: http://egov-enc-service.core:8080/
+      egov-filestore: http://egov-filestore.core:8080/
+      egov-hrms: http://egov-hrms.core:8080/
+      egov-idgen: http://egov-idgen.core:8080/
+      egov-indexer: http://egov-indexer.core:8080/
+      egov-localization: http://egov-localization.core:8080/
+      egov-location: http://egov-location.core:8080/
       egov-mdms-create: http://egov-mdms-create:8080/
-      egov-mdms-service: http://egov-mdms-service.core-dev:8080/
+      egov-mdms-service: http://egov-mdms-service.core:8080/
       egov-mdms-service-test: http://egov-mdms-service-test:8080/
-      egov-otp: http://egov-otp.core-dev:8080/
-      egov-user: http://egov-user.core-dev:8080/
-      egov-user-egov: http://egov-user.core-dev8080/
-      egov-user-event: http://egov-user-event.core-dev8080/
-      egov-workflow: http://egov-workflow.core-dev:8080/
-      egov-workflow-v2: http://egov-workflow-v2.core-dev:8080/
-      es-client: http://elasticsearch-data-v1.backbone-dev:9200
-      im-services: http://im-services.core-dev:8080/
-      inbox: http://inbox.core-dev8080/
-      individual: http://individual.core-dev:8080/
+      egov-otp: http://egov-otp.core:8080/
+      egov-user: http://egov-user.core:8080/
+      egov-user-egov: http://egov-user.core:8080/
+      egov-user-event: http://egov-user-event.core:8080/
+      egov-workflow: http://egov-workflow.core:8080/
+      egov-workflow-v2: http://egov-workflow-v2.core:8080/
+      es-client: http://elasticsearch-data-v1.backbone:9200
+      im-services: http://im-services.core:8080/
+      inbox: http://inbox.core:8080/
+      individual: http://individual.core:8080/
       location: http://location:8080/
-      mdms-service-v2: http://mdms-v2.core-dev8080/
+      mdms-service-v2: http://mdms-v2.core:8080/
       minio-url: https://minio-uat.digit.org/
-      noc-services: http://noc-services.core-dev:8080/
-      pdf-service: http://pdf-service.core-dev:8080/
+      noc-services: http://noc-services.core:8080/
+      pdf-service: http://pdf-service.core:8080/
       rainmaker-pgr: http://rainmaker-pgr:8080/
-      turn-io-adapter: http://turn-io-adapter.core-dev8080/
-      user-otp: http://user-otp.core-dev8080/
+      turn-io-adapter: http://turn-io-adapter.core:8080/
+      user-otp: http://user-otp.core:8080/
       zuul: http://zuul:8080/
-      boundary-service: http://boundary-service.core-dev:8080/
-      facility-service: http://facility-service.core-dev:8080/
-      rms-service: http://rms-service.core-dev:8080/
-      amc-service: http://amc-service.core-dev:8080
+      boundary-service: http://boundary-service.core:8080/
+      facility-service: http://facility-service.core:8080/
+      rms-service: http://rms-service.core:8080/
+      amc-service: http://amc-service.core:8080
 
 root-ingress:
   name: root-ingress
-  namespace: core-dev
+  namespace: core
   cert-issuer: "letsencrypt-staging"
   appRoot: digit-ui
   serviceName: digit-ui
@@ -96,40 +96,40 @@ root-ingress:
 secrets:
   db:
     name: db
-    namespace: core-dev
+    namespace: core
   git-sync:
     name: git-creds
-    namespace: core-dev
+    namespace: core
   egov-filestore:
     name: egov-filestore
-    namespace: core-dev
+    namespace: core
   egov-location:
     name: egov-location
-    namespace: core-dev
+    namespace: core
   egov-enc-service:
     name: egov-enc-service
-    namespace: core-dev
+    namespace: core
   egov-notification-sms:
     name: egov-notification-sms
-    namespace: core-dev
+    namespace: core
   egov-notification-mail:
     name: egov-notification-mail
-    namespace: core-dev
+    namespace: core
   oauth2-proxy:
     name: oauth2-proxy
-    namespace: core-dev
+    namespace: core
   elasticsearch:
     name: elasticsearch-credentials
-    namespace: core-dev
+    namespace: core
   egov-pg-service:
     name: egov-pg-service
-    namespace: core-dev
+    namespace: core
   rms-api-token:
     name: rms-api-token
-    namespace: core-dev
+    namespace: core
   pgadmin:
     name: pgadmin
-    namespace: backbone-dev
+    namespace: backbone
   loki-aws:
     name: loki-aws
     namespace: monitoring
