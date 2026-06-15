@@ -287,4 +287,4 @@ vpa:
 
 hparam:
   enabled: true
-minReplicas: 2
+minReplicas: 1
