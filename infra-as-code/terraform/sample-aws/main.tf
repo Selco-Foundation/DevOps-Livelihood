@@ -1,12 +1,13 @@
 terraform {
   backend "s3" {
-    bucket = <terraform_state_bucket_name>
-    key    = "terraform-setup/terraform.tfstate"
-    region = "ap-south-1"
-    # The below line is optional depending on whether you are using DynamoDB for state locking and consistency
-    dynamodb_table = <terraform_state_bucket_name>
-    # The below line is optional if your S3 bucket is encrypted
-    encrypt = true
+    # Backend configuration should be provided via -backend-config flag or backend config file
+    # Example: terraform init -backend-config=tfvars/dev.tfvars
+    # The following values will be read from tfvars:
+    # - bucket
+    # - key
+    # - region
+    # - dynamodb_table
+    # - encrypt
   }
   required_providers {
     kubernetes = {
@@ -198,6 +199,7 @@ module "network" {
 # PostGres DB
 module "db" {
   source                        = "../modules/db/aws"
+  create_rds                    = var.create_rds  ## Boolean to control RDS deployment
   subnet_ids                    = "${module.network.private_subnets}"
   vpc_security_group_ids        = ["${module.network.rds_db_sg_id}"]
   availability_zone             = "${element(var.availability_zones, 0)}"
@@ -321,6 +323,7 @@ module "ebs_csi_driver_irsa" {
 }
 
 resource "aws_security_group_rule" "rds_db_ingress_workers" {
+  count                        = var.create_rds ? 1 : 0  ## Only create if RDS is enabled
   description              = "Allow node groups to communicate with RDS database"
   from_port                = 5432
   to_port                  = 5432
