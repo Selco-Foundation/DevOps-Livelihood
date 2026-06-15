@@ -6,7 +6,7 @@ repositories:
 
 templates: 
   default: &default
-    namespace: backbone-dev
+    namespace: backbone
     missingFileHandler: Warn
 
 values:

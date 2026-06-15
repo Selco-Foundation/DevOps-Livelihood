@@ -2,7 +2,7 @@ templates:
   default: &default
     chart: ./{{`{{ .Release.Name }}`}}
     version: 0.1.0
-    namespace: core-dev
+    namespace: core
     # This prevents helmfile exiting when it encounters a missing file
     # Valid values are "Error", "Warn", "Info", "Debug". The default is "Error"
     # Use "Debug" to make missing files errors invisible at the default log level(--log-level=INFO)
@@ -92,42 +92,7 @@ releases:
     installed: true
     <<: *default
 
-#  - name: meghalaya # Replace with your desired namespace
-#    installed: true
-#    <<: *default
-#
-#  - name: nagaland # Replace with your desired namespace
-#    installed: true
-#    <<: *default
-#
-#  - name: assam # Replace with your desired namespace
-#    installed: true
-#    <<: *default
-#
-#  - name: mizoram # Replace with your desired namespace
-#    installed: true
-#    <<: *default
-#
-#  - name: manipur # Replace with your desired namespace
-#    installed: true
-#    <<: *default
-#
-#  - name: sikkim # Replace with your desired namespace
-#    installed: true
-#    <<: *default
-#
-#  - name: odisha # Replace with your desired namespace
-#    installed: true
-#    <<: *default
-#
-#  - name: gujarat # Replace with your desired namespace
-#    installed: true
-#    <<: *default
-#
-#  - name: maharashtra # Replace with your desired namespace
-#    installed: true
-#    <<: *default
-#
+
 #  - name: workbench-ui # Replace with your desired namespace
 #    installed: true
 #    <<: *default
