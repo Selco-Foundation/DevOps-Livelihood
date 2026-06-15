@@ -1,3 +1,3 @@
 variable "bucket_name" {
-  default = "selco-dev-livelihood-githubaction-bucket"
+  default = <terraform_state_bucket_name>
 }

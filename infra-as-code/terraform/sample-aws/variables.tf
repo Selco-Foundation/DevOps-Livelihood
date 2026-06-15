@@ -5,16 +5,18 @@
 
 variable "cluster_name" {
   description = "Name of the Kubernetes cluster"
+  default = <cluster_name> #REPLACE
 }
 
 variable "vpc_cidr_block" {
   description = "CIDR block"
+  default = "192.168.0.0/16"
 }
 
 
 variable "network_availability_zones" {
   description = "Configure availability zones configuration for VPC. Leave as default for India. Recommendation is to have subnets in at least two availability zones"
-  default = ["ap-south-1b", "ap-south-1a"] #REPLACE IF NEEDED
+  default = ["ap-south-1a", "ap-south-1b"] #REPLACE IF NEEDED
 }
 
 variable "availability_zones" {
@@ -24,81 +26,76 @@ variable "availability_zones" {
 
 variable "kubernetes_version" {
   description = "kubernetes version"
+  default = "1.33"
 }
 
-variable "ami_id" {
-  description = "launch configuration ami id"
+variable "db_version" {
+  description = "DB version"
+  default = "15"
 }
 
-variable "coredns-version" {
+variable "db_instance_class" {
+  description = "DB instance class"
+  default = "db.t4g.medium"
 }
 
-variable "kube-proxy-version" {
+variable "architecture" {
+  description = "Architecture for worker nodes (x86_64 or arm64)"
+  type        = string
+  default     = "x86_64"
+  validation {
+    condition     = contains(["x86_64", "arm64"], var.architecture)
+    error_message = "Architecture must be either x86_64 or arm64."
+  }
 }
 
-variable "aws_ebs_csi_driver" {}
-
-variable "instance_type" {
-  description = "eGov recommended below instance type as a default"
+# Map of architecture → instance types
+variable "instance_types_map" {
+  description = "Map of instance types per architecture"
+  type = map(list(string))
+  default = {
+    x86_64 = ["m5a.xlarge"]
+    arm64  = ["t4g.xlarge"]
+  }
 }
 
-variable "override_instance_types" {
-  description = "Arry of instance types for SPOT instances"
-  default = ["r5a.large", "r5d.large", "m4.xlarge"]
-
+# Optional override variable (if users want to specify directly)
+variable "instance_types" {
+  description = "List of instance types to use (optional — overrides architecture defaults)"
+  type        = list(string)
+  default     = []
 }
 
-variable "number_of_worker_nodes" {
-  description = "eGov recommended below worker node counts as default"
+variable "min_worker_nodes" {
+  description = "eGov recommended below worker node counts as default for min nodes"
+  default = "1" #REPLACE IF NEEDED
 }
 
-variable "max_number_of_worker_nodes" {
-  description = "Max limit"
+variable "desired_worker_nodes" {
+  description = "eGov recommended below worker node counts as default for desired nodes"
+  default = "3" #REPLACE IF NEEDED
 }
 
-variable "min_number_of_worker_nodes" {
-  description = "Min limit"
+variable "max_worker_nodes" {
+  description = "eGov recommended below worker node counts as default for max nodes"
+  default = "5" #REPLACE IF NEEDED
 }
-
-variable "kubeconfig_name" {
-  description = "Config user name"
-}
-
-variable "node_name" {
-  description = "Worker Node Name"
-}
-
-variable "ssh_key_name" {
-  description = "ssh key name, not required if your using spot instance types"
-  default = "selco-prod-ssh-key" #REPLACE
-}
-
 
 variable "db_name" {
   description = "RDS DB name. Make sure there are no hyphens or other special characters in the DB name. Else, DB creation will fail"
+  default = "studiooneclickdb" #REPLACE
 }
 
 variable "db_username" {
   description = "RDS database user name"
+  default = "studiooneclick" #REPLACE
 }
 
-variable "engine_version" {
-  description = "Db-engine-version"
-}
-
-variable "db_instance_class" {
-  description = "DB_Instance Class"
+variable "filestore_namespace" {
+  description = "Provide the namespace to create filestore secret"
+  default = "egov" #REPLACE
 }
 
 #DO NOT fill in here. This will be asked at runtime
 variable "db_password" {}
 
-variable "public_key" {
-  default = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrluFaPQAaBhtK2WGi2KrHaenSljN1SkKNlXiHefUbFZFiR+GqMwL8TN7n7+APFxLh666+ioALA/xHj8bE/0UMs9xXabd2JOO224RZ9WF0nJF1XeTu8vSa0EEhDAl0kQYr2wtGd2c3u59lIVxIx7u779sWsO1npkKF9dO5UIC0T6r47tIHsPnQSn+D64luA03IaokPEKHi1h8QUQvsDFIpJrQvlEgy5wxY7sV4Ws+n0XJR3RbtOdZifj3T93sxE3zHJSBQ9Hcf+qGizRPjTZ2y3EqskU4P9Atgd0U3KGqviEQOxidwIKdTH9UpD0TzPyPZtdi8Z34bRHHDH47j2OAf"
-  description = "ssh key"
-}
-
-variable "create_rds" {
-  type = bool
-}
-## change ssh key_name eg. digit-quickstart_your-name

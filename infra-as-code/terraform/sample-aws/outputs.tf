@@ -16,45 +16,33 @@ output "cluster_endpoint" {
   value       = module.eks.cluster_endpoint
 }
 
-# output "es_master_volume_ids" {
-#   value = "${module.es-master.volume_ids}"
-# }
-#
-# output "es_data_volume_ids" {
-#   value = "${module.es-data-v1.volume_ids}"
-# }
-
-# output "db_instance_endpoint" {
-#   value = module.db.db_instance_endpoint
-# }
-#
-#
-# output "db_instance_name" {
-#   description = "The database name"
-#   value       = module.db.db_instance_name
-# }
-#
-# output "db_instance_username" {
-#   description = "The master username for the database"
-#   value       = module.db.db_instance_username
-#   sensitive   = true
-# }
-#
-# output "db_instance_port" {
-#   description = "The database port"
-#   value       = module.db.db_instance_port
-# }
-
-output "zone" {
-  value = var.availability_zones
+output "db_instance_endpoint" {
+  value = module.db.db_instance_endpoint
 }
 
-output "worker_security_group_id" {
-  description = "The security group id of worker nodes"
-  value       = module.eks.worker_security_group_id
+
+output "db_instance_name" {
+  description = "The database name"
+  value       = module.db.db_instance_name
 }
 
-output "eks_cluster_iam_role_name" {
-  value = module.eks.cluster_iam_role_name
+output "db_instance_username" {
+  description = "The master username for the database"
+  value       = module.db.db_instance_username
+  sensitive   = true
 }
 
+output "db_instance_port" {
+  description = "The database port"
+  value       = module.db.db_instance_port
+}
+
+output "s3_assets_bucket" {
+  description = "Name of the assets bucket"
+  value       = aws_s3_bucket.assets_bucket.id
+}
+
+output "s3_filestore_bucket" {
+  description = "Name of the filestore bucket"
+  value       = aws_s3_bucket.filestore_bucket.id
+}
