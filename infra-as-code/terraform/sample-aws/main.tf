@@ -264,7 +264,7 @@ module "eks" {
 module "eks_managed_node_group" {
   source = "terraform-aws-modules/eks/aws//modules/eks-managed-node-group"
   version         = "~> 21.0"
-  name            = "${var.cluster_name}-spot"
+  name            = "${var.cluster_name}-vm"
   ami_type        = local.ami_type_map[var.architecture]
   cluster_name    = var.cluster_name
   kubernetes_version = var.kubernetes_version

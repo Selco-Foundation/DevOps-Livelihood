@@ -56,7 +56,7 @@ db_instance_class = "db.t3.medium"
 # EKS CLUSTER CONFIGURATION
 # ============================================
 # Cluster name (used for tagging and identification)
-cluster_name = "selco-dev-livelihood"
+cluster_name = "livelihood-dev"
 
 # Kubernetes version to deploy
 kubernetes_version = "1.35"
@@ -67,7 +67,7 @@ architecture = "x86_64"
 # Instance types for worker nodes (leave empty to use architecture defaults)
 # For x86_64: ["m5a.xlarge"] (default)
 # For arm64: ["t4g.xlarge"] (default)
-instance_types = ["r5a.large"]
+instance_types = ["r6a.large"]
 
 # Or specify custom instance types:
 # instance_types = ["r5ad.large", "m5a.xlarge"]
