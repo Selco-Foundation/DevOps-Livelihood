@@ -1,3 +1,3 @@
 variable "bucket_name" {
-  default = "selco-dev-livelihood-statefile"
+  default = "selco-prod-livelihood-statefile"
 }

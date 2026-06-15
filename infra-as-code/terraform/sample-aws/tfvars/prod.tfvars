@@ -2,10 +2,10 @@
 # BACKEND CONFIGURATION
 # ============================================
 # S3 bucket for storing Terraform state files
-bucket = "selco-dev-livelihood-statefile"
+bucket = "selco-prod-livelihood-statefile"
 key    = "terraform/terraform.tfstate"
 region = "ap-south-2"
-dynamodb_table = "selco-dev-livelihood-statefile"
+dynamodb_table = "selco-prod-livelihood-statefile"
 encrypt = true
 
 
@@ -20,14 +20,14 @@ aws_region = "ap-south-2"
 # EKS DEPLOYMENT CONTROL
 # ============================================
 # Set to true to create EKS cluster and all related resources, false to skip
-create_eks = true
+create_eks = false
 
 
 # ============================================
 # NETWORK CONFIGURATION
 # ============================================
 # VPC CIDR block for the entire network
-vpc_cidr_block = "172.20.0.0/16"
+vpc_cidr_block = "172.16.0.0/16"
 
 # Network availability zones for VPC subnets (for high availability)
 # Must match the aws_region selected above
@@ -42,19 +42,19 @@ availability_zones = ["ap-south-2a"]
 # DATABASE (RDS) CONFIGURATION
 # ============================================
 # Set to true to create RDS instance, false to skip RDS deployment
-create_rds = false
+create_rds = true
 
 # PostgreSQL database name (no hyphens or special characters)
-db_name = "selcodevdb"
+db_name = "livelihooddb"
 
 # Database admin username
-db_username = "selco_dev_admin"
+db_username = "livelihood_prod_admin"
 
 # PostgreSQL version
 db_version = "15"
 
 # RDS instance type/class
-db_instance_class = "db.t3.medium"
+db_instance_class = "db.m5.large"
 
 # Note: db_password should NOT be set here - it will be prompted at runtime
 
@@ -63,7 +63,7 @@ db_instance_class = "db.t3.medium"
 # EKS CLUSTER CONFIGURATION
 # ============================================
 # Cluster name (used for tagging and identification)
-cluster_name = "livelihood-dev"
+cluster_name = "livelihood-prod"
 
 # Kubernetes version to deploy
 kubernetes_version = "1.35"
@@ -74,7 +74,7 @@ architecture = "x86_64"
 # Instance types for worker nodes (leave empty to use architecture defaults)
 # For x86_64: ["m5a.xlarge"] (default)
 # For arm64: ["t4g.xlarge"] (default)
-instance_types = ["r6a.large"]
+instance_types = ["r6a.xlarge"]
 
 # Or specify custom instance types:
 # instance_types = ["r5ad.large", "m5a.xlarge"]

@@ -9,6 +9,12 @@ variable "aws_region" {
   default     = "ap-south-1" #REPLACE
 }
 
+variable "create_eks" {
+  description = "Boolean to control EKS cluster deployment. Set to true to create EKS and related resources, false to skip"
+  type        = bool
+  default     = true
+}
+
 variable "cluster_name" {
   description = "Name of the Kubernetes cluster"
 }
