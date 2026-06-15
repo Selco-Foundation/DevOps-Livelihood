@@ -11,7 +11,6 @@ variable "aws_region" {
 
 variable "cluster_name" {
   description = "Name of the Kubernetes cluster"
-  default = <cluster_name> #REPLACE
 }
 
 variable "vpc_cidr_block" {
@@ -35,11 +34,6 @@ variable "availability_zones" {
 variable "kubernetes_version" {
   description = "kubernetes version"
   default = "1.33"
-}
-
-variable "db_version" {
-  description = "DB version"
-  default = "15"
 }
 
 variable "db_instance_class" {

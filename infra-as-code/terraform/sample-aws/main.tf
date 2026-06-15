@@ -1,7 +1,6 @@
 terraform {
   backend "s3" {
     # Backend configuration should be provided via -backend-config flag or backend config file
-    # Example: terraform init -backend-config=tfvars/dev.tfvars
     # The following values will be read from tfvars:
     # - bucket
     # - key
