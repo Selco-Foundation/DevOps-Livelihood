@@ -89,6 +89,12 @@ variable "max_worker_nodes" {
   default = "5" #REPLACE IF NEEDED
 }
 
+variable "max_pods_per_node" {
+  description = "Maximum number of pods that can run on each worker node. Default is based on instance type. Setting to 120 requires prefix delegation to be enabled."
+  type        = number
+  default     = 110
+}
+
 variable "create_rds" {
   description = "Boolean to control RDS deployment. Set to true to create RDS, false to skip"
   type        = bool

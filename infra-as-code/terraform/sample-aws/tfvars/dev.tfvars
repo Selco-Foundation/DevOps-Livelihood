@@ -85,6 +85,12 @@ desired_worker_nodes = 4
 # Maximum number of worker nodes (for autoscaling)
 max_worker_nodes = "4"
 
+# Maximum pods per node
+# Default is based on instance type (typically 29-110 depending on ENIs)
+# With prefix delegation enabled, you can set this higher (up to 110-250)
+# Setting to 120 allows more pod density per node
+max_pods_per_node = 120
+
 
 # ============================================
 # EKS ADDONS VERSIONS

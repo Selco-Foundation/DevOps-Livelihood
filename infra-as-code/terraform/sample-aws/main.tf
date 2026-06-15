@@ -247,6 +247,8 @@ module "eks" {
         env = {
           # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
           ENABLE_PREFIX_DELEGATION           = "true"
+          WARM_PREFIX_TARGET                 = "1"
+          # POD_SECURITY_GROUP_ENFORCING_MODE = "standard"
         }
       })
     }
@@ -272,6 +274,10 @@ module "eks_managed_node_group" {
   cluster_service_cidr = module.eks.cluster_service_cidr
   use_custom_launch_template = true
   launch_template_name = "${var.cluster_name}-lt"
+  
+  # Bootstrap extra args to set max pods per node
+  bootstrap_extra_args = "--use-max-pods ${var.max_pods_per_node}"
+  
   block_device_mappings = {
     xvda = {
       device_name = "/dev/xvda"
