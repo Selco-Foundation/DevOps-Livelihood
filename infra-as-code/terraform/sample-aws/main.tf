@@ -42,12 +42,14 @@ resource "aws_iam_access_key" "filestore_key" {
 }
 
 resource "kubernetes_namespace" "namespace" {
+  count = var.create_eks ? 1 : 0
   metadata {
     name = var.filestore_namespace
   }
 }
 
 resource "kubernetes_secret" "egov-filestore" {
+  count       = var.create_eks ? 1 : 0
   depends_on  = [kubernetes_namespace.namespace]
   metadata {
     name      = "egov-filestore"
@@ -217,6 +219,7 @@ module "db" {
 data "aws_caller_identity" "current" {}
 
 module "eks" {
+  count = var.create_eks ? 1 : 0
   source          = "terraform-aws-modules/eks/aws"
   version         = "~> 21.0"
   name    = var.cluster_name
@@ -262,6 +265,7 @@ module "eks" {
 }
 
 module "eks_managed_node_group" {
+  count = var.create_eks ? 1 : 0
   source = "terraform-aws-modules/eks/aws//modules/eks-managed-node-group"
   version         = "~> 21.0"
   name            = "${var.cluster_name}-vm"
@@ -269,8 +273,8 @@ module "eks_managed_node_group" {
   cluster_name    = var.cluster_name
   kubernetes_version = var.kubernetes_version
   subnet_ids      = [module.network.private_subnets[local.az_index_in_network]]
-  vpc_security_group_ids  = [module.eks.node_security_group_id]
-  cluster_service_cidr = module.eks.cluster_service_cidr
+  vpc_security_group_ids  = [module.eks[0].node_security_group_id]
+  cluster_service_cidr = module.eks[0].cluster_service_cidr
   use_custom_launch_template = true
   launch_template_name = "${var.cluster_name}-lt"
   
@@ -310,6 +314,7 @@ module "eks_managed_node_group" {
 }
 
 module "ebs_csi_driver_irsa" {
+  count = var.create_eks ? 1 : 0
   depends_on = [module.eks]
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.20"
@@ -317,7 +322,7 @@ module "ebs_csi_driver_irsa" {
   attach_ebs_csi_policy = true
   oidc_providers = {
     main = {
-      provider_arn               = module.eks.oidc_provider_arn
+      provider_arn               = module.eks[0].oidc_provider_arn
       namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
     }
   }
@@ -328,33 +333,37 @@ module "ebs_csi_driver_irsa" {
 }
 
 resource "aws_security_group_rule" "rds_db_ingress_workers" {
-  count                        = var.create_rds ? 1 : 0  ## Only create if RDS is enabled
+  count                        = var.create_rds && var.create_eks ? 1 : 0  ## Only create if both RDS and EKS are enabled
   description              = "Allow node groups to communicate with RDS database"
   from_port                = 5432
   to_port                  = 5432
   protocol                 = "tcp"
   security_group_id        = module.network.rds_db_sg_id
-  source_security_group_id = module.eks.node_security_group_id
+  source_security_group_id = module.eks[0].node_security_group_id
   type                     = "ingress"
 }
 
 # Fetching EKS Cluster Data after its creation
 data "aws_eks_cluster" "cluster" {
+  count = var.create_eks ? 1 : 0
   depends_on = [module.eks_managed_node_group]
   name = var.cluster_name
 }
 
 data "aws_eks_cluster_auth" "cluster" {
+  count = var.create_eks ? 1 : 0
   depends_on = [module.eks_managed_node_group]
   name = var.cluster_name
 }
 
 data "aws_iam_openid_connect_provider" "oidc_arn" {
+  count = var.create_eks ? 1 : 0
   depends_on = [module.eks_managed_node_group]
-  url = data.aws_eks_cluster.cluster.identity.0.oidc.0.issuer
+  url = data.aws_eks_cluster.cluster[0].identity.0.oidc.0.issuer
 }
 
 resource "aws_eks_addon" "kube_proxy" {
+  count = var.create_eks ? 1 : 0
   depends_on = [module.eks_managed_node_group]
   cluster_name      = var.cluster_name
   addon_name        = "kube-proxy"
@@ -362,6 +371,7 @@ resource "aws_eks_addon" "kube_proxy" {
 }
 
 resource "aws_eks_addon" "core_dns" {
+  count = var.create_eks ? 1 : 0
   depends_on = [module.eks_managed_node_group]
   cluster_name      = var.cluster_name
   addon_name        = "coredns"
@@ -369,18 +379,19 @@ resource "aws_eks_addon" "core_dns" {
 }
 
 resource "aws_eks_addon" "aws_ebs_csi_driver" {
+  count = var.create_eks ? 1 : 0
   depends_on = [module.eks_managed_node_group]
   cluster_name      = var.cluster_name
   addon_name        = "aws-ebs-csi-driver"
-  service_account_role_arn = module.ebs_csi_driver_irsa.iam_role_arn
+  service_account_role_arn = module.ebs_csi_driver_irsa[0].iam_role_arn
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
 }
 
 
 provider "kubernetes" {
-  host                   = module.eks.cluster_endpoint
-  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+  host                   = var.create_eks ? module.eks[0].cluster_endpoint : ""
+  cluster_ca_certificate = var.create_eks ? base64decode(module.eks[0].cluster_certificate_authority_data) : null
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
     args        = ["eks", "get-token", "--cluster-name", var.cluster_name]
@@ -389,6 +400,7 @@ provider "kubernetes" {
 }
 
 resource "kubernetes_storage_class" "ebs_csi_encrypted_gp3_storage_class" {
+  count = var.create_eks ? 1 : 0
   metadata {
     name = "gp3"
     annotations = {
