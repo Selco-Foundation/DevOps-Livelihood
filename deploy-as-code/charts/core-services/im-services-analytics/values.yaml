@@ -3,7 +3,7 @@ labels:
   app: "im-services-analytics"
   group: "core"
 
-namespace: core-dev
+namespace: core
 
 # Ingress Configs
 ingress:

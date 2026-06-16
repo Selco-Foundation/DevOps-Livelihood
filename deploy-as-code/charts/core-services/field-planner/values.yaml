@@ -3,7 +3,7 @@ labels:
   app: "field-planner"
   group: "rainmaker"
 
-namespace: core-dev
+namespace: core
 
 # Ingress Configs
 ingress:
