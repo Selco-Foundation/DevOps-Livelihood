@@ -16,7 +16,7 @@ values:
 releases:
 - name: cert-manager
   chart: ./cert-manager
-  namespace: backbone-dev
+  namespace: backbone
   installed: true
   version: v1.16.2
   disableValidation: true

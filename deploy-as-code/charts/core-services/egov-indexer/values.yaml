@@ -30,7 +30,7 @@ initContainers:
       - -c
       - |
         echo "Waiting for Kafka to be ready..."
-        until nc -z kafka-kraft.backbone-dev.svc.cluster.local 9092; do
+        until nc -z kafka-kraft.backbone.svc.cluster.local 9092; do
           echo "Kafka is not available yet..."
           sleep 5
         done
