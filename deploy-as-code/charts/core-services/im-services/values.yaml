@@ -3,7 +3,7 @@ labels:
   app: "im-services"
   group: "rainmaker"
 
-namespace: core-dev
+namespace: core
 
 # Ingress Configs
 ingress:

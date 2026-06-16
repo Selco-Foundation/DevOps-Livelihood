@@ -23,7 +23,7 @@ initContainers:
       - -c
       - |
         echo "Waiting for Kafka to be ready..."
-        until nc -z kafka-kraft.backbone-dev.svc.cluster.local 9092; do
+        until nc -z kafka-kraft.backbone.svc.cluster.local 9092; do
           echo "Kafka is not available yet..."
           sleep 5
         done
@@ -38,8 +38,8 @@ healthChecks:
   enabled: false
   livenessProbePath: "/pdf-service/health"
   readinessProbePath: "/pdf-service/health"
-data-config-urls: "file:///work-dir/configs.git/pdf-service/data-config/bom_ac_off_single.json,file:///work-dir/configs.git/pdf-service/data-config/bom_ac_off_three.json,file:///work-dir/configs.git/pdf-service/data-config/bom_dc_system.json,file:///work-dir/configs.git/pdf-service/data-config/bom_hybrid_single.json,file:///work-dir/configs.git/pdf-service/data-config/bom_hybrid_three.json,file:///work-dir/configs.git/pdf-service/data-config/amc-report.json"
-format-config-urls: "file:///work-dir/configs.git/pdf-service/format-config/bom_ac_off_single.json,file:///work-dir/configs.git/pdf-service/format-config/bom_ac_off_three.json,file:///work-dir/configs.git/pdf-service/format-config/bom_dc_system.json,file:///work-dir/configs.git/pdf-service/format-config/bom_hybrid_single.json,file:///work-dir/configs.git/pdf-service/format-config/bom_hybrid_three.json,file:///work-dir/configs.git/pdf-service/format-config/amc-report.json"
+data-config-urls: "file:///work-dir/Configs-Livelihood/pdf-service/data-config/bom_ac_off_single.json,file:///work-dir/Configs-Livelihood/pdf-service/data-config/bom_ac_off_three.json,file:///work-dir/Configs-Livelihood/pdf-service/data-config/bom_dc_system.json,file:///work-dir/Configs-Livelihood/pdf-service/data-config/bom_hybrid_single.json,file:///work-dir/Configs-Livelihood/pdf-service/data-config/bom_hybrid_three.json,file:///work-dir/Configs-Livelihood/pdf-service/data-config/amc-report.json"
+format-config-urls: "file:///work-dir/Configs-Livelihood/pdf-service/format-config/bom_ac_off_single.json,file:///work-dir/Configs-Livelihood/pdf-service/format-config/bom_ac_off_three.json,file:///work-dir/Configs-Livelihood/pdf-service/format-config/bom_dc_system.json,file:///work-dir/Configs-Livelihood/pdf-service/format-config/bom_hybrid_single.json,file:///work-dir/Configs-Livelihood/pdf-service/format-config/bom_hybrid_three.json,file:///work-dir/Configs-Livelihood/pdf-service/format-config/amc-report.json"
 
 # Additional Container Envs
 env: |
@@ -51,7 +51,7 @@ env: |
         name: egov-service-host
         key: egov-localization
   - name: EGOV_FILESTORE_SERVICE_HOST
-    value: http://egov-filestore.core-dev:8080
+    value: http://egov-filestore.core:8080
   - name: EGOV_LOCALISATION_SEARCH
     value: localization/messages/v2/_search
   - name: KAFKA_CREATE_JOB_TOPIC

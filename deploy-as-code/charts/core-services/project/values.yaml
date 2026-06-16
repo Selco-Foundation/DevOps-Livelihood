@@ -38,7 +38,7 @@ env: |
   - name: SERVER_SERVLET_CONTEXT_PATH
     value: /project
   - name: SPRING_REDIS_HOST
-    value: redis.backbone-dev
+    value: redis.backbone
   - name: EGOV_IDGEN_HOST
     valueFrom:
       configMapKeyRef:

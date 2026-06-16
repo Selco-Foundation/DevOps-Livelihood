@@ -24,11 +24,11 @@ releases:
 #  - name: egov-enc-service # Replace with your desired namespace
 #    installed: true
 #    <<: *default
-
+#
 #  - name: egov-filestore # Replace with your desired namespace
 #    installed: true
 #    <<: *default
-
+#
 #  - name: egov-idgen # Replace with your desired namespace
 #    installed: true
 #    <<: *default
@@ -40,7 +40,7 @@ releases:
 #  - name: egov-location # Replace with your desired namespace
 #    installed: true
 #    <<: *default
-#
+
 #  - name: egov-mdms-service # Replace with your desired namespace
 #    installed: true
 #    <<: *default
@@ -48,26 +48,26 @@ releases:
 #  - name: egov-hrms # Replace with your desired namespace
 #    installed: true
 #    <<: *default
-
-
+#
+#
 #  - name: egov-indexer # Replace with your desired namespace
 #    installed: true
 #    <<: *default
-
+#
 #  - name: egov-notification-sms # Replace with your desired namespace
 #    installed: true
 #    <<: *default
-
+#
 #  - name: egov-notification-mail # Replace with your desired namespace
 #    installed: true
 #    <<: *default
-
+#
 #  - name: egov-user # Replace with your desired namespace
 #    installed: true
 #    needs:
 #    - egov-enc-service
 #    <<: *default
-
+#
 #  - name: egov-otp # Replace with your desired namespace
 #    installed: true
 #    <<: *default
@@ -75,11 +75,11 @@ releases:
 #  - name: egov-persister # Replace with your desired namespace
 #    installed: true
 #    <<: *default
-
+#
 #  - name: egov-workflow-v2 # Replace with your desired namespace
 #    installed: true
 #    <<: *default
-
+#
 #  - name: user-otp # Replace with your desired namespace
 #    installed: true
 #    <<: *default
@@ -92,39 +92,29 @@ releases:
 #  - name: digit-ui # Replace with your desired namespace
 #    installed: true
 #    <<: *default
-
-
+#
+#
 #  - name: workbench-ui # Replace with your desired namespace
 #    installed: true
 #    <<: *default
-
-#  - name: mdms-v2 # Replace with your desired namespace
-#    installed: true
-#    <<: *default
-
-
-
+#
 #  - name: gateway # Replace with your desired namespace
 #    installed: true
 #    <<: *default
-
-#  - name: im-services # Replace with your desired namespace
-#    installed: true
-#    <<: *default
-
+#
+  - name: im-services # Replace with your desired namespace
+    installed: true
+    <<: *default
+#
 #  - name: im-services-analytics # Replace with your desired namespace
 #    installed: true
 #    <<: *default
-
+#
 #  - name: inbox # Replace with your desired namespace
 #    installed: true
 #    <<: *default
-
-#  - name: boundary-service # Replace with your desired namespace
-#    installed: true
-#    <<: *default
 #
-#  - name: processor-services # Replace with your desired namespace
+#  - name: boundary-service # Replace with your desired namespace
 #    installed: true
 #    <<: *default
 #
@@ -132,19 +122,6 @@ releases:
 #    installed: true
 #    <<: *default
 #
-#  - name: asset-registry # Replace with your desired namespace
-#    installed: true
-#    <<: *default
-
-
-#  - name: ingestion-service # Replace with your desired namespace
-#    installed: true
-#    <<: *default
-#
-#  - name: boundary-service # Replace with your desired namespace
-#    installed: true
-#    <<: *default
-
 #  - name: processor-services # Replace with your desired namespace
 #    installed: true
 #    <<: *default
@@ -153,42 +130,24 @@ releases:
 #    installed: true
 #    <<: *default
 #
-#  - name: vendor-registry # Replace with your desired namespace
-#    installed: true
-#    <<: *default
 #
 #  - name: asset-registry # Replace with your desired namespace
 #    installed: true
 #    <<: *default
-
-#  - name: project # Replace with your desired namespace
-#    installed: true
-#    <<: *default
-##
+#
+##  - name: project # Replace with your desired namespace
+##    installed: true
+##    <<: *default
+#
 #  - name: installation-qc # Replace with your desired namespace
 #    installed: true
 #    <<: *default
-#
+
 #  - name: ingestion-service # Replace with your desired namespace
-#    installed: true
-#    <<: *default
-#
-#  - name: field-planner
-#    installed: true
-#    <<: *default
-#
-#  - name: field-planner-activity
 #    installed: true
 #    <<: *default
 #
 #  - name: pdf-service
 #    installed: true
 #    <<: *default
-#
-#  - name: amc-service
-#    installed: true
-#    <<: *default
-#
-#  - name: rms-service
-#    installed: true
-#    <<: *default
+

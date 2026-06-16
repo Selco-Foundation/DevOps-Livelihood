@@ -16,7 +16,7 @@ values:
 releases:
 - name: cert-manager
   chart: ./cert-manager
-  namespace: backbone-dev
+  namespace: backbone
   installed: true
   version: v1.16.2
   disableValidation: true
@@ -94,20 +94,20 @@ releases:
   values:
     - ./playground/values.yaml
 
-- name: jupyterhub
-  installed: true
-  chart: ./jupyterhub
-  version: 4.0.0
-  <<: *default
-  values:
-    - ./jupyterhub/values.yaml
-    - ingress:
-        hosts:
-          - {{ .Values.global.domain }}
-        tls:
-          - secretName: {{ .Values.global.domain }}-tls-certs
-            hosts:
-              - "{{ .Values.global.domain }}"
+#- name: jupyterhub
+#  installed: true
+#  chart: ./jupyterhub
+#  version: 4.0.0
+#  <<: *default
+#  values:
+#    - ./jupyterhub/values.yaml
+#    - ingress:
+#        hosts:
+#          - {{ .Values.global.domain }}
+#        tls:
+#          - secretName: {{ .Values.global.domain }}-tls-certs
+#            hosts:
+#              - "{{ .Values.global.domain }}"
 
 - name: pgadmin4
   installed: true
