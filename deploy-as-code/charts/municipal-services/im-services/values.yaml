@@ -3,7 +3,7 @@ labels:
   app: "im-services"
   group: "municipal"
 
-namespace: core-dev
+namespace: core
 
 # Ingress Configs
 ingress:
