@@ -1,5 +1,5 @@
 global:
-  domain:  livelihood-dev.selcofoundation.org
+  domain:  setu4livelihood-dev.selcofoundation.org
 root-ingress:
   cert-issuer: "letsencrypt-prod"
 configmaps:
@@ -12,9 +12,9 @@ configmaps:
       es-host: "elasticsearch-data.backbone"
       es-indexer-host: "https://elasticsearch-data.backbone:9200/"
       kafka-brokers: "kafka-kraft-controller-headless.backbone:9092"
-      egov-services-fqdn-name: https://livelihood-dev.selcofoundation.org/
+      egov-services-fqdn-name: https://setu4livelihood-dev.selcofoundation.org/
       s3-assets-bucket: livelihood-dev-assets-bucket
-      filestore-download-enpoint: "https://livelihood-dev.selcofoundation.org/filestore/v1/files/file"
+      filestore-download-enpoint: "https://setu4livelihood-dev.selcofoundation.org/filestore/v1/files/file"
 egov-user:
   otp-validation: "true"
   citizen-otp-enabled: "true"
