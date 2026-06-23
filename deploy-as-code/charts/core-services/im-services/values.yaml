@@ -86,10 +86,7 @@ initContainers:
             key: flyway-password
             name: db
       - name: FLYWAY_LOCATIONS
-        valueFrom:
-          configMapKeyRef:
-            key: flyway-locations
-            name: egov-config
+        value: "filesystem:/flyway/sql,filesystem:/flyway/seed,filesystem:/flyway/qa"
       - name: EGOV_MDMS_HOST
         valueFrom:
           configMapKeyRef:

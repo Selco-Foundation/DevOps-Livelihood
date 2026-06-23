@@ -15,6 +15,7 @@ configmaps:
       egov-services-fqdn-name: https://setu4livelihood-dev.selcofoundation.org/
       s3-assets-bucket: livelihood-dev-assets-bucket
       filestore-download-enpoint: "https://setu4livelihood-dev.selcofoundation.org/filestore/v1/files/file"
+      egov-state-level-tenant-id: livelihood
 egov-user:
   otp-validation: "true"
   citizen-otp-enabled: "true"
@@ -27,7 +28,7 @@ egov-user:
   citizen-registration-withlogin: "true"
   citizen-otp-fixed: "123456"
   citizen-otp-fixed-enabled: "true"
-  egov-state-level-tenant-id: "in"
+  egov-state-level-tenant-id: "livelihood"
   decryption-abac-enabled: "true"
 
 
