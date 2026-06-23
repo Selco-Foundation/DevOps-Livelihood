@@ -1,0 +1,32 @@
+# Common Labels
+labels:
+  app: "livelihood-ui"
+  group: "web"
+
+# Ingress Configs
+ingress:
+  enabled: true
+  context: "livelihood-ui"
+
+# Init Containers Configs
+initContainers: {}
+
+# Container Configs
+image:
+  repository: "selcohub/livelihood-ui"
+replicas: "1"
+httpPort: 80
+healthChecks:
+  enabled: true
+  livenessProbePath: "/livelihood-ui/"
+  readinessProbePath: "/livelihood-ui/"
+
+extraVolumes: |
+  - name: js-injection
+    configMap:
+      name: livelihood-ui
+
+extraVolumeMounts: |
+  - mountPath: /etc/nginx/conf.d/sub_filter.conf
+    name: js-injection
+    subPath: sub_filter.conf

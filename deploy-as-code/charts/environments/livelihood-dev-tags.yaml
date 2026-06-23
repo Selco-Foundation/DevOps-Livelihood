@@ -126,6 +126,10 @@ im-services:
       image:
         tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
 
+livelihood-ui:
+  image:
+    tag: develop-a8b226ea9caef6d6d2bc8f6dba6e6393c709992b
+
 digit-ui:
   image:
     tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
