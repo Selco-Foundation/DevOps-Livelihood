@@ -75,7 +75,7 @@ releases:
 #  - name: egov-persister # Replace with your desired namespace
 #    installed: true
 #    <<: *default
-#
+##
 #  - name: egov-workflow-v2 # Replace with your desired namespace
 #    installed: true
 #    <<: *default
@@ -83,12 +83,12 @@ releases:
 #  - name: user-otp # Replace with your desired namespace
 #    installed: true
 #    <<: *default
-
+#
 #  - name: configmaps # Replace with your desired namespace
 #    installed: true
 #    <<: *default
 
-
+#
 #  - name: digit-ui # Replace with your desired namespace
 #    installed: true
 #    <<: *default
@@ -102,10 +102,10 @@ releases:
 #    installed: true
 #    <<: *default
 #
-  - name: im-services # Replace with your desired namespace
-    installed: true
-    <<: *default
-#
+#  - name: im-services # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+##
 #  - name: im-services-analytics # Replace with your desired namespace
 #    installed: true
 #    <<: *default
@@ -113,41 +113,41 @@ releases:
 #  - name: inbox # Replace with your desired namespace
 #    installed: true
 #    <<: *default
-#
-#  - name: boundary-service # Replace with your desired namespace
-#    installed: true
-#    <<: *default
-#
-#  - name: vendor-registry # Replace with your desired namespace
-#    installed: true
-#    <<: *default
-#
-#  - name: processor-services # Replace with your desired namespace
-#    installed: true
-#    <<: *default
-#
-#  - name: facility-service  # Replace with your desired namespace
-#    installed: true
-#    <<: *default
-#
-#
-#  - name: asset-registry # Replace with your desired namespace
-#    installed: true
-#    <<: *default
-#
-##  - name: project # Replace with your desired namespace
-##    installed: true
-##    <<: *default
-#
-#  - name: installation-qc # Replace with your desired namespace
-#    installed: true
-#    <<: *default
 
-#  - name: ingestion-service # Replace with your desired namespace
-#    installed: true
-#    <<: *default
-#
-#  - name: pdf-service
-#    installed: true
-#    <<: *default
+  - name: boundary-service # Replace with your desired namespace
+    installed: true
+    <<: *default
+
+  - name: vendor-registry # Replace with your desired namespace
+    installed: true
+    <<: *default
+
+  - name: processor-services # Replace with your desired namespace
+    installed: true
+    <<: *default
+
+  - name: facility-service  # Replace with your desired namespace
+    installed: true
+    <<: *default
+
+
+  - name: asset-registry # Replace with your desired namespace
+    installed: true
+    <<: *default
+
+  - name: project # Replace with your desired namespace
+    installed: true
+    <<: *default
+
+  - name: installation-qc # Replace with your desired namespace
+    installed: true
+    <<: *default
+
+  - name: ingestion-service # Replace with your desired namespace
+    installed: true
+    <<: *default
+
+  - name: pdf-service
+    installed: true
+    <<: *default
 
