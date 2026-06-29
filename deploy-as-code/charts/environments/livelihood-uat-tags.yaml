@@ -128,7 +128,7 @@ im-services:
 
 livelihood-ui:
   image:
-    tag: develop-a8b226ea9caef6d6d2bc8f6dba6e6393c709992b
+    tag: fix-livelihood-ui-d5f2f5ce6325dbd53bc4b8ad635a93f6d8a78a03
 
 digit-ui:
   image:
