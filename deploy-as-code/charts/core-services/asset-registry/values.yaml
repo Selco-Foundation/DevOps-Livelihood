@@ -35,6 +35,11 @@ memory_limits: "768Mi"
 
 # Additional Container Envs
 env: |
+  - name: EGOV_BOUNDARY_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: boundary-service
   - name: SERVER_PORT
     value: "8080"
   - name: SERVER_CONTEXTPATH
