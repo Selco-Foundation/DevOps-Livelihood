@@ -14,54 +14,54 @@ values:
 
 
 releases:
+  # - name: kube-prometheus-stack
+  #   installed: true
+  #   namespace: monitoring
+  #   chart: prometheus-community/kube-prometheus-stack
+  #   version: 56.6.2
+  #   disableValidation: true
+  #   values:
+  #   - ./values/prometheus.yaml
 
-#- name: kube-prometheus-stack
-#  installed: true
-#  namespace: {{ .Values.namespace | default "default-namespace" }}
-#  chart: prometheus-community/kube-prometheus-stack
-#  version: 56.6.2
-#  disableValidation: true
-#  values:
-#  - ./values/prometheus.yaml
+  # - name: jaeger-tracing
+  #   installed: true
+  #   namespace: backbone
+  #   chart: jaegertracing/jaeger
+  #   version: 1.0.0
+  #   values:
+  #   - ./values/jaeger.yaml
+  #   - storage:
+  #       elasticsearch:
+  #         password: {{ .Values.secrets.elasticsearch.password }}
+  #   set:
+  #     - name: query.ingress.hosts[0]
+  #       value: "{{ .Values.global.domain }}"
 
-- name: jaeger-tracing
-  installed: true
-  namespace: backbone
-  chart: jaegertracing/jaeger
-  version: 1.0.0
-  values:
-  - ./values/jaeger.yaml
-  - storage:
-      elasticsearch:
-        password: {{ .Values.secrets.elasticsearch.password }}
-  set:
-    - name: query.ingress.hosts[0]
-      value: "{{ .Values.global.domain }}"
+  # - name: grafana
+  #   installed: true
+  #   namespace: monitoring
+  #   chart: grafana/grafana
+  #   version: 7.3.0
+  #   values:
+  #   - ./values/grafana.yaml
+  #   set:
+  #     - name: ingress.hosts[0]
+  #       value: "{{ .Values.global.domain }}"
+  #     - name: ingress.tls[0].hosts[0]
+  #       value: {{ .Values.global.domain | quote }}
 
-#- name: grafana
-#  installed: true
-#  namespace: {{ .Values.namespace | default "default-namespace" }}
-#  chart: grafana/grafana
-#  version: 7.3.0
-#  values:
-#  - ./values/grafana.yaml
-#  set:
-#    - name: ingress.hosts[0]
-#      value: "{{ .Values.global.domain }}"
-#    - name: ingress.tls[0].hosts[0]
-#      value: {{ .Values.global.domain | quote }}
+  # - name: promtail
+  #   installed: true
+  #   namespace: monitoring
+  #   chart: ./promtail
+  #   version: 3.5.1
+  #   values:
+  #     - ./promtail/values.yaml
 
-#  - name: promtail
-#    installed: true
-#    namespace: monitoring
-#    chart: ./promtail
-#    version: 3.5.1
-#    values:
-#      - ./promtail/values.yaml
+  # - name: loki
+  #   namespace: monitoring
+  #   chart: grafana/loki
+  #   version: 6.24.1
+  #   values:
+  #     - ./loki/values.yaml
 
-#  - name: loki
-#    namespace: monitoring
-#    chart: grafana/loki
-#    version: 6.24.1
-#    values:
-#      - ./loki/values.yaml

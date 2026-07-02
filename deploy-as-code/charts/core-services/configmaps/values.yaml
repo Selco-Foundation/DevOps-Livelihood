@@ -90,8 +90,8 @@ root-ingress:
   name: root-ingress
   namespace: core
   cert-issuer: "letsencrypt-staging"
-  appRoot: digit-ui
-  serviceName: digit-ui
+  appRoot: livelihood-ui
+  serviceName: livelihood-ui
   servicePort: 80
 secrets:
   db:
@@ -130,6 +130,6 @@ secrets:
   pgadmin:
     name: pgadmin
     namespace: backbone
-#  loki-aws:
-#    name: loki-aws
-#    namespace: monitoring
+  loki-aws:
+    name: loki-aws
+    namespace: monitoring

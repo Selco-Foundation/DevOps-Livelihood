@@ -113,7 +113,7 @@ aws_ebs_csi_driver = "v1.56.0-eksbuild.1"
 # S3 FILESTORE CONFIGURATION
 # ============================================
 # Kubernetes namespace for filestore secret
-filestore_namespace = "core"
+filestore_namespace = "egov"
 
 
 # ============================================

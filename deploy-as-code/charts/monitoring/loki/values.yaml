@@ -12,8 +12,8 @@ loki:
           period: 24h
   storage_config:
     aws:
-      region: ap-south-1
-      bucketnames: 'loki-prod-selco'
+      region: ap-south-2
+      bucketnames: 'livelihood-uat-loki-bucket'
       s3forcepathstyle: false
   pattern_ingester:
     enabled: true
@@ -33,14 +33,14 @@ loki:
   storage:
     type: s3
     bucketNames:
-      chunks: 'loki-prod-selco'
-      ruler: 'loki-prod-selco'
+      chunks: 'livelihood-uat-loki-bucket'
+      ruler: 'livelihood-uat-loki-bucket'
 #      admin: <Your AWS bucket for admin, for example, `aws-loki-dev-admin`>
     s3:
       # AWS endpoint URL
-      endpoint: s3.ap-south-1.amazonaws.com
+      endpoint: s3.ap-south-2.amazonaws.com
       # AWS region where the S3 bucket is located
-      region: ap-south-1
+      region: ap-south-2
       # Forces the path style for S3 (true/false)
       s3ForcePathStyle: false
       # Allows insecure (HTTP) connections (true/false)
