@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: sla-compute-job
+spec:
+  schedule: "0 * * * *"  # every hour
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: sla-job
+            image: selcohub/cronjob-sla:latest
+            args:
+              - in
+          restartPolicy: OnFailure
