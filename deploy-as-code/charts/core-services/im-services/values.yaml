@@ -127,7 +127,7 @@ lifecycle:
 
 # Additional Container Envs
 env: |
-  - name: ASSET_SERVICE_URL
+  - name: EGOV_ASSET_HOST
     valueFrom:
       configMapKeyRef:
         key: asset-registry
