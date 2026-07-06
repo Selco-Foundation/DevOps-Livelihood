@@ -4,13 +4,14 @@ metadata:
   name: sla-compute-job
 spec:
   schedule: "0 * * * *"  # every hour
+  timeZone: Asia/Kolkata
   jobTemplate:
     spec:
       template:
         spec:
           containers:
           - name: sla-job
-            image: selcohub/cronjob-sla:latest
+            image: selcohub/cronjob-sla-livelihood:latest
             args:
               - in
           restartPolicy: OnFailure
