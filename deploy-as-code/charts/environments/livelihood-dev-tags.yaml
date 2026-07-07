@@ -1,6 +1,6 @@
 amc-service:
   image:
-    tag: staging-b81ec28394e038c5a49de3625ca6ff555e4e9701
+    tag: v3.6.26-8bf11f800d198d8e3f10e39d49598ef2577f682f
   initContainers:
     dbMigration:
       image:
