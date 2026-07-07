@@ -1,11 +1,10 @@
 amc-service:
   image:
-    tag: v3.6.26-8bf11f800d198d8e3f10e39d49598ef2577f682f
+    tag: staging-b81ec28394e038c5a49de3625ca6ff555e4e9701
   initContainers:
     dbMigration:
       image:
         tag: v3.6.26-8bf11f800d198d8e3f10e39d49598ef2577f682f
-
 asset-registry:
   image:
     tag: v3.5.23-737bc697023d565f85e66d3a47d79cfe89409f71
@@ -13,7 +12,6 @@ asset-registry:
     dbMigration:
       image:
         tag: v3.5.23-737bc697023d565f85e66d3a47d79cfe89409f71
-
 field-planner-activity:
   image:
     tag: v3.3.7-73d0cc3be378c4495e6f7d7162b2c5d8c1951487
@@ -21,7 +19,6 @@ field-planner-activity:
     dbMigration:
       image:
         tag: v3.3.7-73d0cc3be378c4495e6f7d7162b2c5d8c1951487
-
 field-planner:
   image:
     tag: v3.3.9-2eae964f8fa251e7adba756c2b6eb1f34ea47851
@@ -29,11 +26,9 @@ field-planner:
     dbMigration:
       image:
         tag: v3.3.9-2eae964f8fa251e7adba756c2b6eb1f34ea47851
-
 ingestion-service:
   image:
     tag: v3.6.24-1e609f3077d20ec6cc98ef672923329c68de19a4
-
 project:
   image:
     tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
@@ -41,7 +36,6 @@ project:
     dbMigration:
       image:
         tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
-
 vendor-registry:
   image:
     tag: v3.6.26-8bf11f800d198d8e3f10e39d49598ef2577f682f
@@ -49,19 +43,15 @@ vendor-registry:
     dbMigration:
       image:
         tag: v3.6.26-8bf11f800d198d8e3f10e39d49598ef2577f682f
-
 installation-qc:
   image:
     tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
-
 pdf-service:
   image:
     tag: pdf-2.9-lts-a17e8ebea8-48
-
 workbench-ui:
   image:
     tag: v3.3.7-73d0cc3be378c4495e6f7d7162b2c5d8c1951487
-
 rms-service:
   image:
     tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
@@ -69,7 +59,6 @@ rms-service:
     dbMigration:
       image:
         tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
-
 boundary-service:
   image:
     tag: v3.5.24-52511d8d8a66451b28a2f082a5d8ce7fc24830bd
@@ -77,7 +66,6 @@ boundary-service:
     dbMigration:
       image:
         tag: v3.5.24-52511d8d8a66451b28a2f082a5d8ce7fc24830bd
-
 facility-service:
   image:
     tag: v3.6.26-8bf11f800d198d8e3f10e39d49598ef2577f682f
@@ -85,7 +73,6 @@ facility-service:
     dbMigration:
       image:
         tag: v3.6.26-8bf11f800d198d8e3f10e39d49598ef2577f682f
-
 egov-hrms:
   image:
     tag: v3.6.24-1e609f3077d20ec6cc98ef672923329c68de19a4
@@ -93,7 +80,6 @@ egov-hrms:
     dbMigration:
       image:
         tag: v3.6.24-1e609f3077d20ec6cc98ef672923329c68de19a4
-
 egov-filestore:
   image:
     tag: v2.0.3-7de51e1b5d83b29754c5e30d33c931d5cc9159aa
@@ -101,7 +87,6 @@ egov-filestore:
     dbMigration:
       image:
         tag: v2.0.3-7de51e1b5d83b29754c5e30d33c931d5cc9159aa
-
 egov-workflow-v2:
   image:
     tag: v3.6.25-ac9e4ceb1c2b31207eeddcf883314e50aed15fe9
@@ -109,15 +94,12 @@ egov-workflow-v2:
     dbMigration:
       image:
         tag: v3.6.25-ac9e4ceb1c2b31207eeddcf883314e50aed15fe9
-
 im-services-analytics:
   image:
     tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
-
 processor-services:
   image:
     tag: main-3aa146620a09ad8ec6a4650de881b8d44bf23306
-
 im-services:
   image:
     tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
@@ -125,19 +107,15 @@ im-services:
     dbMigration:
       image:
         tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
-
 livelihood-ui:
   image:
     tag: develop-a8b226ea9caef6d6d2bc8f6dba6e6393c709992b
-
 digit-ui:
   image:
     tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
-
 inbox:
   image:
     tag: v3.3.7-73d0cc3be378c4495e6f7d7162b2c5d8c1951487
-
 egov-mdms-service:
   image:
     tag: v2.9.2-4a60f20
@@ -145,15 +123,12 @@ egov-mdms-service:
     dbMigration:
       image:
         tag: v2.9.2-4a60f20
-
 egov-notification-sms:
   image:
     tag: master-03072024-1
-
 egov-notification-mail:
   image:
     tag: v2.9.2-4a60f20
-
 audit-service:
   image:
     tag: v2.9.2-4a60f20
@@ -161,11 +136,9 @@ audit-service:
     dbMigration:
       image:
         tag: v2.9.2-4a60f20
-
 egov-accesscontrol:
   image:
     tag: v2.9.2-4a60f20
-
 egov-enc-service:
   image:
     tag: v2.9.2-4a60f20
@@ -173,7 +146,6 @@ egov-enc-service:
     dbMigration:
       image:
         tag: v2.9.2-4a60f20
-
 egov-idgen:
   image:
     tag: v2.2.1-9dd1451c12150aca6d1bcf06565c2d6a7bb32a04
@@ -181,7 +153,6 @@ egov-idgen:
     dbMigration:
       image:
         tag: v2.2.1-9dd1451c12150aca6d1bcf06565c2d6a7bb32a04
-
 egov-indexer:
   image:
     tag: v2.9.2-4a60f20
@@ -189,7 +160,6 @@ egov-indexer:
     dbMigration:
       image:
         tag: v2.9.2-4a60f20
-
 egov-localization:
   image:
     tag: v2.9.2-4a60f20
@@ -197,7 +167,6 @@ egov-localization:
     dbMigration:
       image:
         tag: v2.9.2-4a60f20
-
 egov-location:
   image:
     tag: v2.9.2-4a60f20
@@ -205,7 +174,6 @@ egov-location:
     dbMigration:
       image:
         tag: v2.9.2-4a60f20
-
 egov-otp:
   image:
     tag: v2.9.2-4a60f20
@@ -213,11 +181,9 @@ egov-otp:
     dbMigration:
       image:
         tag: v2.9.2-4a60f20
-
 egov-persister:
   image:
     tag: v2.9.2-4a60f20
-
 egov-user:
   image:
     tag: core-2.9-lts-egov-user-deployement-c33cfe45ab-13
@@ -225,11 +191,9 @@ egov-user:
     dbMigration:
       image:
         tag: core-2.9-lts-egov-user-deployement-c33cfe45ab-13
-
 gateway:
   image:
     tag: gateway-form-data-whilelisting-fix-71aff8f
-
 user-otp:
   image:
     tag: v2.9.2-4a60f20
