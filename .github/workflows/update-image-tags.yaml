@@ -15,40 +15,43 @@ on:
         required: true
         type: choice
         options:
-          - egov-accesscontrol
-          - audit-service
-          - egov-enc-service
-          - egov-filestore
-          - egov-idgen
-          - egov-localization
-          - egov-location
-          - egov-mdms-service
+          - amc-service
+          - asset-registry
+          - field-planner-activity
+          - field-planner
+          - ingestion-service
+          - project
+          - vendor-registry
+          - installation-qc
+          - pdf-service
+          - workbench-ui
+          - rms-service
+          - boundary-service
+          - facility-service
           - egov-hrms
-          - egov-indexer
-          - egov-notification-sms
-          - egov-notification-mail
-          - egov-user
-          - egov-otp
-          - egov-persister
+          - egov-filestore
           - egov-workflow-v2
-          - user-otp
-          - configmaps
+          - im-services-analytics
+          - processor-services
+          - im-services
           - livelihood-ui
           - digit-ui
-          - workbench-ui
-          - gateway
-          - im-services
-          - im-services-analytics
           - inbox
-          - boundary-service
-          - vendor-registry
-          - processor-services
-          - facility-service
-          - asset-registry
-          - project
-          - installation-qc
-          - ingestion-service
-          - pdf-service
+          - egov-mdms-service
+          - egov-notification-sms
+          - egov-notification-mail
+          - audit-service
+          - egov-accesscontrol
+          - egov-enc-service
+          - egov-idgen
+          - egov-indexer
+          - egov-localization
+          - egov-location
+          - egov-otp
+          - egov-persister
+          - egov-user
+          - gateway
+          - user-otp
       service_tag:
         description: "New Docker image tag (e.g. v1.0.0)"
         required: true
