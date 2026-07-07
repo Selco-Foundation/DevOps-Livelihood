@@ -1,0 +1,131 @@
+name: Update Service Image Tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to deploy into"
+        required: true
+        type: choice
+        options:
+          - livelihood-dev
+          - livelihood-uat
+      service_name:
+        description: "Name of the service"
+        required: true
+        type: choice
+        options:
+          - egov-accesscontrol
+          - audit-service
+          - egov-enc-service
+          - egov-filestore
+          - egov-idgen
+          - egov-localization
+          - egov-location
+          - egov-mdms-service
+          - egov-hrms
+          - egov-indexer
+          - egov-notification-sms
+          - egov-notification-mail
+          - egov-user
+          - egov-otp
+          - egov-persister
+          - egov-workflow-v2
+          - user-otp
+          - configmaps
+          - livelihood-ui
+          - digit-ui
+          - workbench-ui
+          - gateway
+          - im-services
+          - im-services-analytics
+          - inbox
+          - boundary-service
+          - vendor-registry
+          - processor-services
+          - facility-service
+          - asset-registry
+          - project
+          - installation-qc
+          - ingestion-service
+          - pdf-service
+      service_tag:
+        description: "New Docker image tag (e.g. v1.0.0)"
+        required: true
+        type: string
+  repository_dispatch:
+    types: [update-image-tag]
+
+run-name: Update ${{ github.event.inputs.service_name || github.event.client_payload.service_name }} to ${{ github.event.inputs.service_tag || github.event.client_payload.service_tag }}
+
+# Allow only one job at a time to prevent race conditions.
+concurrency:
+  group: gitops-image-updates
+  cancel-in-progress: false
+
+jobs:
+  update-tag:
+    runs-on: ubuntu-latest
+    env:
+      SERVICE_NAME: ${{ github.event.inputs.service_name || github.event.client_payload.service_name }}
+      SERVICE_TAG: ${{ github.event.inputs.service_tag || github.event.client_payload.service_tag }}
+      ENVIRONMENT: ${{ github.event.inputs.environment || github.event.client_payload.environment }}
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Validate Inputs
+        run: |
+          if [ -z "${{ env.SERVICE_NAME }}" ] || [ -z "${{ env.SERVICE_TAG }}" ] || [ -z "${{ env.ENVIRONMENT }}" ]; then
+            echo "Error: Missing required inputs. Service Name, Tag, and Environment must be provided."
+            exit 1
+          fi
+
+          # Sanitize tag input to prevent basic path traversal or command injections in yq
+          if [[ ! "${{ env.SERVICE_TAG }}" =~ ^[a-zA-Z0-9_.-]+$ ]]; then
+            echo "Error: Invalid characters in service_tag."
+            exit 1
+          fi
+
+      - name: Check if service exists in file and Update Image Tag.
+        run: |
+          IMAGE_TAGS_FILEPATH="./deploy-as-code/charts/environments/${{ env.ENVIRONMENT }}-tags.yaml"
+
+          if [ "$(yq eval ".${{ env.SERVICE_NAME }}" "$IMAGE_TAGS_FILEPATH")" = "null" ]; then
+            echo "Error: '${{ env.SERVICE_NAME }}' does not exist in $IMAGE_TAGS_FILEPATH."
+            exit 1
+          fi
+
+          yq eval -i .${{ env.SERVICE_NAME }}.image.tag=\"${{ env.SERVICE_TAG }}\" "$IMAGE_TAGS_FILEPATH"
+
+      - name: Validate Image Exists in Registry
+        run: |
+          IMAGE_PATH="egovio/${{ env.SERVICE_NAME }}:${{ env.SERVICE_TAG }}"
+
+          echo "Checking if $IMAGE_PATH exists..."
+          if ! docker buildx imagetools inspect "$IMAGE_PATH" > /dev/null 2>&1; then
+            echo "Error: Docker image $IMAGE_PATH does not exist in the registry!"
+            exit 1
+          fi
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add "./deploy-as-code/charts/environments/${{ env.ENVIRONMENT }}-tags.yaml"
+
+          # Check if tag is unchanged
+          if git diff-index --quiet HEAD; then
+            echo "No changes found. Tag might already be set to $SERVICE_TAG"
+            exit 0
+          fi
+
+          git commit -m "Update image tag for ${{ env.SERVICE_NAME }} to ${{ env.SERVICE_TAG }} in ${{ env.ENVIRONMENT }}"
+
+          git pull --rebase
+          git push
