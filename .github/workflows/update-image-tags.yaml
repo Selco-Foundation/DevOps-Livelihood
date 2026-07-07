@@ -107,7 +107,7 @@ jobs:
 
       - name: Validate Image Exists in Registry
         run: |
-          IMAGE_PATH="egovio/${{ env.SERVICE_NAME }}:${{ env.SERVICE_TAG }}"
+          IMAGE_PATH="selcohub/${{ env.SERVICE_NAME }}:${{ env.SERVICE_TAG }}"
 
           echo "Checking if $IMAGE_PATH exists..."
           if ! docker buildx imagetools inspect "$IMAGE_PATH" > /dev/null 2>&1; then
