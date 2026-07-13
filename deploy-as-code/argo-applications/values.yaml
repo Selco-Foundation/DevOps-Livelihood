@@ -1,0 +1,23 @@
+project: default
+
+# Argocd Application resource namespace
+namespace: argocd
+
+repo:
+  url: https://github.com/Selco-Foundation/DevOps-Livelihood.git
+  revision: argocd-setup
+
+common_vals: &default
+  namespace: core
+  valueFiles:
+    - /deploy-as-code/charts/environments/livelihood-dev.yaml
+    - /deploy-as-code/charts/environments/livelihood-dev-tags.yaml
+
+apps:
+  - name: digit-ui
+    path: deploy-as-code/charts/core-services/digit-ui
+    <<: *default
+
+  - name: livelihood-ui
+    path: deploy-as-code/charts/core-services/livelihood-ui
+    <<: *default
