@@ -36,13 +36,20 @@ spec:
         namespace: {{ .Values.project.destination.namespace | quote }}
 
       syncPolicy:
+        {{- if .Values.applicationset.syncPolicy }}
+        {{- toYaml .Values.applicationset.syncPolicy | nindent 8 }}
+        {{- else }}
         automated:
           prune: true
           selfHeal: true
-
+        {{- end }}
         syncOptions:
+          {{- if .Values.applicationset.syncOptions }}
+          {{- toYaml .Values.applicationset.syncOptions | nindent 10 }}
+          {{- else }}
           - CreateNamespace=true
           - Validate=true
           - ServerSideApply=true
           - PrunePropagationPolicy=foreground
           - PruneLast=true
+          {{- end }}
