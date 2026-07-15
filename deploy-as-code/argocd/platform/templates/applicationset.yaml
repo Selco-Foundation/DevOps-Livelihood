@@ -1,0 +1,55 @@
+{{- $root := .Values -}}
+{{- range .Values.environments }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: {{ .name }}
+  namespace: {{ $root.namespace | default "argocd" }}
+
+spec:
+  generators:
+    - git:
+        repoURL: {{ .applicationset.repoURL | quote }}
+        revision: {{ .applicationset.revision | quote }}
+
+        directories:
+          - path: {{ .applicationset.chartRoot | quote }}
+
+  template:
+    metadata:
+      name: '{{ "{{path.basename}}" }}'
+
+    spec:
+      project: {{ .name }}
+
+      source:
+        repoURL: {{ .applicationset.repoURL | quote }}
+        targetRevision: {{ .applicationset.revision | quote }}
+        path: '{{ "{{path}}" }}'
+
+        helm:
+          releaseName: '{{ "{{path.basename}}" }}'
+
+          valueFiles:
+  {{- range .applicationset.valueFiles }}
+- {{ . | quote }}
+  {{- end }}
+
+destination:
+  server: {{ (index .project.destinations 0).server | quote }}
+  namespace: {{ (index .project.destinations 0).namespace | quote }}
+
+syncPolicy:
+  automated:
+    prune: true
+    selfHeal: true
+
+  syncOptions:
+    - CreateNamespace=true
+    - Validate=true
+    - ServerSideApply=true
+    - PrunePropagationPolicy=foreground
+    - PruneLast=true
+
+  {{- end }}

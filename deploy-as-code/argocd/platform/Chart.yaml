@@ -1,0 +1,22 @@
+apiVersion: v2
+name: gitops-platform
+description: Helm chart for managing ArgoCD platform resources (AppProjects, ApplicationSets, RBAC, Repositories)
+
+type: application
+
+version: 0.1.0
+appVersion: "1.0.0"
+
+keywords:
+  - argocd
+  - gitops
+  - applicationset
+  - appproject
+
+home: https://github.com/Selco-Foundation/DevOps-Livelihood
+
+maintainers:
+  - name: Selco Platform Team
+
+sources:
+  - https://github.com/Selco-Foundation/DevOps-Livelihood
