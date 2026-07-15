@@ -31,18 +31,18 @@ spec:
           valueFiles:
             {{- toYaml .Values.applicationset.valueFiles | nindent 12 }}
 
-destination:
-  server: {{ .Values.project.destination.server | quote }}
-  namespace: {{ .Values.project.destination.namespace | quote }}
+      destination:
+        server: {{ .Values.project.destination.server | quote }}
+        namespace: {{ .Values.project.destination.namespace | quote }}
 
-syncPolicy:
-  automated:
-    prune: true
-    selfHeal: true
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
 
-  syncOptions:
-    - CreateNamespace=true
-    - Validate=true
-    - ServerSideApply=true
-    - PrunePropagationPolicy=foreground
-    - PruneLast=true
+        syncOptions:
+          - CreateNamespace=true
+          - Validate=true
+          - ServerSideApply=true
+          - PrunePropagationPolicy=foreground
+          - PruneLast=true

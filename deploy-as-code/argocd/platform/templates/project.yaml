@@ -8,23 +8,23 @@ spec:
   sourceRepos:
     {{- toYaml .Values.project.sourceRepos | nindent 4 }}
 
-destinations:
-- server: {{ .Values.project.destination.server | quote }}
-  namespace: {{ .Values.project.destination.namespace | quote }}
+  destinations:
+  - server: {{ .Values.project.destination.server | quote }}
+    namespace: {{ .Values.project.destination.namespace | quote }}
 
   {{- if .Values.project.clusterResourceWhitelist }}
-clusterResourceWhitelist:
-  {{ toYaml .Values.project.clusterResourceWhitelist | nindent 4 }}
+  clusterResourceWhitelist:
+  {{- toYaml .Values.project.clusterResourceWhitelist | nindent 4 }}
   {{- else }}
-clusterResourceWhitelist: []
+  clusterResourceWhitelist: []
   {{- end }}
 
   {{- if .Values.project.namespaceResourceWhitelist }}
-namespaceResourceWhitelist:
-  {{ toYaml .Values.project.namespaceResourceWhitelist | nindent 4 }}
+  namespaceResourceWhitelist:
+  {{- toYaml .Values.project.namespaceResourceWhitelist | nindent 4 }}
   {{- end }}
 
   {{- if .Values.project.namespaceResourceBlacklist }}
-namespaceResourceBlacklist:
-  {{ toYaml .Values.project.namespaceResourceBlacklist | nindent 4 }}
+  namespaceResourceBlacklist:
+  {{- toYaml .Values.project.namespaceResourceBlacklist | nindent 4 }}
   {{- end }}
