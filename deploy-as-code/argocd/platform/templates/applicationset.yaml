@@ -1,44 +1,39 @@
-{{- $root := .Values -}}
-{{- range .Values.environments }}
----
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: {{ .name }}
-  namespace: {{ $root.namespace | default "argocd" }}
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace | default "argocd" }}
 
 spec:
   generators:
     - git:
-        repoURL: {{ .applicationset.repoURL | quote }}
-        revision: {{ .applicationset.revision | quote }}
+        repoURL: {{ .Values.applicationset.repoURL | quote }}
+        revision: {{ .Values.applicationset.revision | quote }}
 
         directories:
-          - path: {{ .applicationset.chartRoot | quote }}
+          - path: {{ .Values.applicationset.chartRoot | quote }}
 
   template:
     metadata:
       name: '{{ "{{path.basename}}" }}'
 
     spec:
-      project: {{ .name }}
+      project: {{ .Values.name }}
 
       source:
-        repoURL: {{ .applicationset.repoURL | quote }}
-        targetRevision: {{ .applicationset.revision | quote }}
+        repoURL: {{ .Values.applicationset.repoURL | quote }}
+        targetRevision: {{ .Values.applicationset.revision | quote }}
         path: '{{ "{{path}}" }}'
 
         helm:
           releaseName: '{{ "{{path.basename}}" }}'
 
           valueFiles:
-  {{- range .applicationset.valueFiles }}
-- {{ . | quote }}
-  {{- end }}
+            {{- toYaml .Values.applicationset.valueFiles | nindent 12 }}
 
 destination:
-  server: {{ (index .project.destinations 0).server | quote }}
-  namespace: {{ (index .project.destinations 0).namespace | quote }}
+  server: {{ .Values.project.destination.server | quote }}
+  namespace: {{ .Values.project.destination.namespace | quote }}
 
 syncPolicy:
   automated:
@@ -51,5 +46,3 @@ syncPolicy:
     - ServerSideApply=true
     - PrunePropagationPolicy=foreground
     - PruneLast=true
-
-  {{- end }}

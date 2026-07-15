@@ -1,40 +1,30 @@
-{{- $root := .Values -}}
-{{- range .Values.environments }}
----
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: {{ .name }}
-  namespace: {{ $root.namespace | default "argocd" }}
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace | default "argocd" }}
 spec:
-  description: {{ .project.description | quote }}
-
+  description: {{ .Values.project.description | quote }}
   sourceRepos:
- {{- range .project.sourceRepos }}
-- {{ . | quote }}
-  {{- end }}
+    {{- toYaml .Values.project.sourceRepos | nindent 4 }}
 
 destinations:
-  {{- range .project.destinations }}
-- server: {{ .server | quote }}
-  namespace: {{ .namespace | quote }}
-  {{- end }}
+- server: {{ .Values.project.destination.server | quote }}
+  namespace: {{ .Values.project.destination.namespace | quote }}
 
-  {{- if .project.clusterResourceWhitelist }}
+  {{- if .Values.project.clusterResourceWhitelist }}
 clusterResourceWhitelist:
-  {{ toYaml .project.clusterResourceWhitelist | nindent 4 }}
+  {{ toYaml .Values.project.clusterResourceWhitelist | nindent 4 }}
   {{- else }}
 clusterResourceWhitelist: []
   {{- end }}
 
-  {{- if .project.namespaceResourceWhitelist }}
+  {{- if .Values.project.namespaceResourceWhitelist }}
 namespaceResourceWhitelist:
-  {{ toYaml .project.namespaceResourceWhitelist | nindent 4 }}
+  {{ toYaml .Values.project.namespaceResourceWhitelist | nindent 4 }}
   {{- end }}
 
-  {{- if .project.namespaceResourceBlacklist }}
+  {{- if .Values.project.namespaceResourceBlacklist }}
 namespaceResourceBlacklist:
-  {{ toYaml .project.namespaceResourceBlacklist | nindent 4 }}
-  {{- end }}
-
+  {{ toYaml .Values.project.namespaceResourceBlacklist | nindent 4 }}
   {{- end }}
