@@ -166,3 +166,169 @@ terraform destroy -var-file=tfvars/<env>.tfvars
 
 The remote-state S3 bucket has `prevent_destroy = true` and is managed separately (in
 `remote-state/`) — destroying `sample-aws` does not remove your state bucket/lock table.
+
+
+
+# DIGIT-DevOps – Application Deployment Guide
+
+This repo holds the **application layer** (Helm charts, Helmfile releases, environment
+values/secrets) used to deploy the DIGIT/Upyog microservices onto an existing
+Kubernetes cluster. Cluster/VPC/RDS provisioning lives under `infra-as-code/` and is
+**out of scope for this document** — this guide assumes a working Kubernetes cluster
+(with `kubectl` access), a reachable Postgres instance and an ingress controller are
+already in place.
+
+## 1. Repository layout (`deploy-as-code/`)
+
+```
+deploy-as-code/
+├── digit-helmfile.yaml               # root helmfile, includes the sub-helmfiles below
+├── charts/
+│   ├── backbone-services/            # kafka, postgresql, redis, elasticsearch, ingress-nginx, cert-manager, minio, pgadmin ...
+│   │   └── backboneservices-helmfile.yaml
+│   ├── core-services/                 # all DIGIT/Upyog microservices (egov-user, egov-mdms-service, workflow, UI, state modules, ...)
+│   │   └── coreservices-helmfile.yaml
+│   ├── monitoring/                    # loki, promtail
+│   │   └── monitoring-helmfile.yaml
+│   ├── auxiliary-services/            # oauth2-proxy, pgadmin, kafka-connect, s3-proxy ...
+│   ├── common / common-chart-template/ # shared helpers + boilerplate chart used to scaffold new services
+│   ├── environments/                  # per-environment values + secrets (sops encrypted)
+│   │   ├── <env>.yaml                 # non-secret config
+│   │   └── <env>-secrets.yaml         # secret config, encrypted with sops
+│   ├── product-release-charts/        # version manifests: service -> image tag, per release
+│   └── .sops.yaml                     # sops encryption rules (KMS key per environment)
+```
+
+Each service under `core-services/` (and the other categories) is a standalone Helm
+chart with its own `Chart.yaml` and `values.yaml`. Helmfile is the orchestrator that
+applies a selected set of these charts against an environment's values/secrets files.
+
+## 2. Prerequisites
+
+Tools (install on your workstation or CI runner):
+
+- `kubectl`, configured with a context/kubeconfig pointing at the target cluster
+- `helm` v3
+- `helmfile` (+ the `helm-diff` plugin: `helm plugin install https://github.com/databus23/helm-diff`)
+- [`sops`](https://github.com/mozilla/sops) — used to encrypt/decrypt the `*-secrets.yaml` files
+- `yq` — used to parse image tags out of the `product-release-charts` manifests
+- AWS CLI, if secrets are encrypted with AWS KMS (see `.sops.yaml`) and/or the cluster is EKS
+
+Cluster/environment prerequisites (assumed already provisioned by `infra-as-code`):
+
+- A running Kubernetes cluster with `ingress-nginx` and `cert-manager` (or your own
+  ingress/TLS solution) able to be installed/already installed
+- A reachable Postgres database (host, name, credentials) for the services that need it
+- Object storage (S3 bucket or MinIO) for `egov-filestore`
+- Namespaces the helmfile releases target — by default the charts reference
+  `core-dev`, `backbone-dev` (naming carried over from the dev environment; these are
+  namespace names, not an indication of environment, and can be renamed if desired)
+- Access to the SMS/Email gateway credentials used by `egov-notification-sms` /
+  `egov-notification-mail`
+- A reachable git repo containing the DIGIT MDMS/persister/indexer config YAMLs
+  (referenced via `initContainers.gitSync` in several charts — fork/point this at your
+  own config repo)
+- KMS key (or GPG key) that matches the encryption rule in `charts/.sops.yaml`, and
+  AWS credentials/OIDC role allowed to use it
+
+## 3. Configure the environment
+
+All environment-specific configuration lives in `deploy-as-code/charts/environments/`.
+For a new environment, copy an existing pair of files (e.g. `selco-uat.yaml` /
+`selco-uat-secrets.yaml`) and update:
+
+### `<env>.yaml` (non-secret values)
+- `global.domain` — public domain the environment will be served on
+- `root-ingress.cert-issuer` — cert-manager ClusterIssuer name
+- `configmaps.egov-config.data.*` — `db-host`, `db-name`, `db-url`, `db-otel-url`,
+  `es-host`, `es-indexer-host`, `kafka-brokers`, `egov-services-fqdn-name`,
+  `egov-state-level-tenant-id`, S3 bucket names, etc.
+- Any per-service overrides (heap size, java-args, feature flags, `custom-js-injection`
+  for UI charts, tenant-specific config)
+
+### `<env>-secrets.yaml` (secret values, sops-encrypted)
+- Database credentials (`db.username`, `db.password`, `db.flywayUsername`, `db.flywayPassword`)
+- `egov-filestore` access/secret keys (S3/MinIO)
+- `egov-enc-service` master password/salt/IV
+- `egov-notification-sms` / `egov-notification-mail` gateway credentials
+- `user` (default admin) credentials
+- Payment gateway keys (`egov-pg-service`), map/geocoding keys (`egov-location`), etc.
+
+**Encrypting secrets:** `charts/.sops.yaml` defines the KMS key used for files matching
+`charts/environments/env-secrets.yaml`. Since the actual files are named
+`<env>-secrets.yaml`, pass the KMS ARN explicitly when encrypting/decrypting a new file:
+
+```bash
+sops --encrypt --kms <kms-key-arn> --in-place deploy-as-code/charts/environments/<env>-secrets.yaml
+sops --decrypt --kms <kms-key-arn> deploy-as-code/charts/environments/<env>-secrets.yaml
+```
+
+Never commit an unencrypted secrets file.
+
+## 4. Select which services to deploy
+
+Each helmfile (`coreservices-helmfile.yaml`, `backboneservices-helmfile.yaml`,
+`monitoring-helmfile.yaml`) declares one `releases` entry per chart, most of them
+commented out. To deploy a service:
+
+1. Uncomment its entry in the relevant `*-helmfile.yaml`.
+2. Make sure the corresponding sub-helmfile is included (uncommented) in
+   `deploy-as-code/digit-helmfile.yaml`.
+3. Add `needs:` entries if the service depends on another release being installed
+   first (e.g. `egov-user` needs `egov-enc-service`).
+
+## 5. Pin image versions
+
+`charts/product-release-charts/dependency_chart-<product>-v<version>.yaml` is a
+version manifest: for a given release it lists every service and the exact image tag
+to deploy. Use the latest file as a reference, or create a new one when cutting a new
+release, then pass the tags to helmfile via `--set <service>.image.tag=<tag>` (and
+`--set <service>.initContainers.dbMigration.image.tag=<tag>` for services that run a
+Flyway/DB-migration init container). See `.github/workflows/Prod.yaml` for the full,
+current list of `--set` flags — every service on the helmfile that has an entry in the
+version manifest needs its own `image.tag` (and, where applicable, `dbMigration`
+image tag) flag.
+
+## 6. Deploy
+
+```bash
+cd deploy-as-code
+
+# decrypt secrets in place (sops-encrypted files must be plaintext for helmfile to read them)
+sops --decrypt --kms <kms-key-arn> charts/environments/<env>-secrets.yaml > /tmp/env-secrets.yaml
+cp /tmp/env-secrets.yaml charts/environments/<env>-secrets.yaml
+
+export HELMFILE_ENV=<env>       # e.g. selco-prod
+helmfile -f digit-helmfile.yaml apply --include-needs=true \
+  --set <service>.image.tag=<tag> \
+  ...
+```
+
+Afterwards, restore the encrypted version (`git checkout -- charts/environments/<env>-secrets.yaml`)
+so the plaintext copy never gets committed.
+
+## 7. Post-deploy
+
+- Fetch the ingress LoadBalancer hostname and point your DNS `domain` at it:
+  ```bash
+  kubectl get svc ingress-nginx-controller -n backbone-dev -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+  ```
+- Verify pods are healthy: `kubectl get pods -n core-dev -n backbone-dev`
+- Hit each chart's health endpoint (defined per-chart under `healthChecks` in
+  `values.yaml`, e.g. `/user/health`) through the ingress domain.
+
+## 8. Onboarding a new microservice
+
+1. Scaffold a chart from `charts/common-chart-template/` under the right category
+   (`core-services/`, `municipal-services/`, etc.).
+2. Set in its `values.yaml`: `image.repository` / `image.tag`, `ingress.context`,
+   `replicas`, `memory_requests`/`memory_limits`, `heap`/`java-args`,
+   `healthChecks.livenessProbePath`/`readinessProbePath`, and any
+   `initContainers.dbMigration` or `initContainers.gitSync` (repo/branch) it needs.
+3. Add a `releases` entry for it in `coreservices-helmfile.yaml` (with `needs:` if it
+   depends on another service).
+4. Add its hostname to `configmaps.egov-service-host` in
+   `core-services/configmaps/values.yaml` (and the environment's `<env>.yaml` if
+   overridden) so other services can discover it.
+5. Add its image tag to the next `product-release-charts` version manifest and to the
+   `--set` flags in the relevant GitHub Actions workflow(s).
