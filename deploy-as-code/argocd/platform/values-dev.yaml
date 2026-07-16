@@ -23,6 +23,7 @@ applicationset:
   valueFiles:
     - ../../environments/livelihood-dev.yaml
     - ../../environments/livelihood-dev-tags.yaml
+    - ../../environments/livelihood-dev-secrets.yaml
 
   # syncPolicy:
   #   automated:
