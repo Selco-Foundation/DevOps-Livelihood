@@ -1,18 +1,16 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: sla-compute-job
+  name: weekly-summary
   namespace: core
 spec:
-  schedule: "0 * * * *"  # every hour
+  schedule: 0 9 * * 1
   timeZone: Asia/Kolkata
   jobTemplate:
     spec:
       template:
         spec:
           containers:
-          - name: sla-job
-            image: selcohub/cronjob-sla-livelihood:latest
-            args:
-              - in
+          - name: weekly-summary
+            image: selcohub/livelihood-weekly-summary:staging-20-july-2026
           restartPolicy: OnFailure
