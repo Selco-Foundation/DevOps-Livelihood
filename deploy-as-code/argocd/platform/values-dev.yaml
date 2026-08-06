@@ -19,7 +19,7 @@ project:
 applicationset:
   repoURL: https://github.com/Selco-Foundation/DevOps-Livelihood.git
   revision: develop
-  chartRoot: deploy-as-code/charts/core-services/digit-ui
+  chartRoot: deploy-as-code/charts/core-services/*
   valueFiles:
     - ../../environments/livelihood-dev.yaml
     - ../../environments/livelihood-dev-tags.yaml
