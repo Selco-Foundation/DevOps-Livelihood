@@ -36,7 +36,7 @@ crds:
 ## Create default rules for monitoring the cluster
 ##
 defaultRules:
-  create: true
+  create: false
   rules:
     alertmanager: true
     etcd: true
@@ -182,7 +182,90 @@ defaultRules:
 
 ## Provide custom recording or alerting rules to be deployed into the cluster.
 ##
-additionalPrometheusRulesMap: {}
+
+additionalPrometheusRulesMap:
+  uat-group-alerts:
+    groups:
+      - name: uat-group
+        rules:
+          - alert: MinimumNumberOfReplicasBreached
+            expr: kube_horizontalpodautoscaler_status_current_replicas{namespace="core"} > 5
+            for: 5m
+            labels:
+              env: uat
+            annotations:
+              summary: "The number of replicas for *{{ $labels.horizontalpodautoscaler }}* has increased above the minimum threshold of 2 replicas. Monitor memory consumption"
+
+          - alert: OutOfMemory
+            expr: increase(container_oom_events_total{namespace=~"core|backbone"}[5m]) > 0
+            for: 5m
+            labels:
+              env: uat
+            annotations:
+              summary: "The Container faces Out of Memory issue which causes disruption to application. Study the Memory allocation, Identify the root cause and fix it"
+
+          - alert: ReadinessCheckFailed
+            expr: kube_pod_container_status_ready{namespace=~"core|backbone", pod!~".*daily-new.*|.*daily-summary.*|.*weekly-summary.*|.*sla-compute-job.*|.*escalation.*|.*rms.*|.*amc.*|.*audit.*|.*jaeger.*"} < 1
+            for: 5m
+            labels:
+              env: uat
+            annotations:
+              summary: "Readiness check failed. Container in the pod is not ready to serve traffic"
+
+          - alert: CronJobExecutionStatus
+            expr: increase(kube_job_status_failed{namespace="core"}[24h]) > 0
+            for: 5m
+            labels:
+              env: uat
+            annotations:
+              summary: "CronJob Execution Failed."
+
+          - alert: StorageStatusInPVC
+            expr: (kubelet_volume_stats_available_bytes / kubelet_volume_stats_capacity_bytes) < 0.25
+            for: 5m
+            labels:
+              Severity: High
+              env: uat
+            annotations:
+              summary: "The PVC storage is almost 75% full. Take action to prevent loss of data"
+
+          - alert: NodeMemoryAvailability
+            expr: (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) < 0.10
+            for: 5m
+            labels:
+              Severity: High
+              env: uat
+            annotations:
+              summary: "Memory availability in this node has reduced to below 20%. Please enable resources"
+
+          - alert: PodCrashLoopBackoff
+            expr: increase(kube_pod_container_status_restarts_total{namespace="core"}[5m]) > 3
+            for: 5m
+            labels:
+              Severity: High
+              env: uat
+            annotations:
+              summary: "This pod got restarted for more than 3 times in the last 5 minutes. Debug and resolve the issue."
+
+          - alert: ResourceDeploymentPending
+            expr: kube_pod_status_phase{namespace="core", phase="Pending"} > 0
+            for: 5m
+            labels:
+              Severity: Medium
+              env: uat
+            annotations:
+              summary: "Pod is in Pending State. Check why scheduling of pod didn't happen. Is it due to resource constraints. Inform DevOps Persons"
+
+          - alert: NodeCPUAvailability
+            expr: (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) < 25
+            for: 5m
+            labels:
+              Severity: High
+              env: uat
+            annotations:
+              summary: "CPU availability on one of the nodes has fallen below 25%. Take action."
+
+# additionalPrometheusRulesMap: {}
 #  rule-name:
 #    groups:
 #    - name: my_group
@@ -316,17 +399,40 @@ alertmanager:
       - target_matchers:
           - 'alertname = InfoInhibitor'
     route:
-      group_by: ['namespace']
+      group_by: ['namespace', 'alertname']
       group_wait: 30s
       group_interval: 5m
       repeat_interval: 12h
       receiver: 'null'
       routes:
-      - receiver: 'null'
-        matchers:
-          - alertname = "Watchdog"
+        - receiver: 'null'
+          matchers:
+            - alertname = "Watchdog"
+        - receiver: 'slack-critical'
+          match:
+            severity: critical
+        - receiver: 'slack-warning'
+          match:
+            severity: warning
     receivers:
-    - name: 'null'
+      - name: 'null'
+
+      - name: 'slack-critical'
+        slack_configs:
+          - channel: '#alerts-critical'
+            api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+            send_resolved: true
+            title: '[CRITICAL] {{ .CommonAnnotations.summary }}'
+            text: '{{ .CommonAnnotations.description }}'
+
+      - name: 'slack-warning'
+        slack_configs:
+          - channel: '#alerts-warning'
+            api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+            send_resolved: true
+            title: '[WARNING] {{ .CommonAnnotations.summary }}'
+            text: '{{ .CommonAnnotations.description }}'
+
     templates:
     - '/etc/alertmanager/config/*.tmpl'
 
@@ -3337,7 +3443,7 @@ prometheus:
     ## prometheus resource to be created with selectors based on values in the helm deployment,
     ## which will also match the PrometheusRule resources created
     ##
-    ruleSelectorNilUsesHelmValues: true
+    ruleSelectorNilUsesHelmValues: false
 
     ## PrometheusRules to be selected for target discovery.
     ## If {}, select all PrometheusRules
