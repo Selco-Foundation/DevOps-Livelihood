@@ -6,15 +6,15 @@ project:
   sourceRepos:
     - https://github.com/Selco-Foundation/DevOps-Livelihood.git
   destination:
-    server: https://kubernetes.svc.default
+    server: https://kubernetes.default.svc
     namespace: core
   clusterResourceWhitelist: []
   namespaceResourceWhitelist:
     - group: "*"
       kind: "*"
-  namespaceResourceBlacklist:
-    - group: networking.k8s.io
-      kind: Ingress
+  namespaceResourceBlacklist: []
+    # - group: networking.k8s.io
+    #   kind: Ingress
 
 applicationset:
   repoURL: https://github.com/Selco-Foundation/DevOps-Livelihood.git
@@ -24,3 +24,14 @@ applicationset:
     - ../../environments/livelihood-dev.yaml
     - ../../environments/livelihood-dev-tags.yaml
     - ../../environments/livelihood-dev-secrets.yaml
+
+  # syncPolicy:
+  #   automated:
+  #     prune: false
+  #     selfHeal: false
+
+  # syncOptions:
+  #   - CreateNamespace=true
+  #   - Validate=true
+  #   - ServerSideApply=true
+  #   - PruneLast=true
