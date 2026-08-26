@@ -53,7 +53,10 @@ healthChecks:
 appType: "java-spring"
 tracing-enabled: true
 heap: "-Xmx256m -Xms256m"
-minReplicas: 2
+minReplicas: 1
+
+hparam:
+  enabled: false
 
 persistence:
   enabled: false
