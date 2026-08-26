@@ -134,6 +134,13 @@ releases:
     installed: true
     <<: *default
 
+  - name: field-planner
+    installed: true
+    <<: *default
+
+  - name: field-planner-activity
+    installed: true
+    <<: *default
 
   - name: asset-registry # Replace with your desired namespace
     installed: true
@@ -152,6 +159,10 @@ releases:
     <<: *default
 
   - name: pdf-service
+    installed: true
+    <<: *default
+
+  - name: rms-service
     installed: true
     <<: *default
 

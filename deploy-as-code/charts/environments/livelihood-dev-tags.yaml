@@ -16,19 +16,19 @@ asset-registry:
 
 field-planner-activity:
   image:
-    tag: v3.3.7-73d0cc3be378c4495e6f7d7162b2c5d8c1951487
+    tag: v3.15.39-751350e850072634ceb2c049a06588de388891a4
   initContainers:
     dbMigration:
       image:
-        tag: v3.3.7-73d0cc3be378c4495e6f7d7162b2c5d8c1951487
+        tag: v3.15.39-751350e850072634ceb2c049a06588de388891a4
 
 field-planner:
   image:
-    tag: v3.3.9-2eae964f8fa251e7adba756c2b6eb1f34ea47851
+    tag: v3.15.39-751350e850072634ceb2c049a06588de388891a4
   initContainers:
     dbMigration:
       image:
-        tag: v3.3.9-2eae964f8fa251e7adba756c2b6eb1f34ea47851
+        tag: v3.15.39-751350e850072634ceb2c049a06588de388891a4
 
 ingestion-service:
   image:
@@ -64,11 +64,11 @@ workbench-ui:
 
 rms-service:
   image:
-    tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
+    tag: v3.15.42-5a0319f9a5dfd891427e1b7e79f4ffae09d7fedc
   initContainers:
     dbMigration:
       image:
-        tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
+        tag: v3.15.42-5a0319f9a5dfd891427e1b7e79f4ffae09d7fedc
 
 boundary-service:
   image:
