@@ -2,5 +2,5 @@ creation_rules:
   # upon creation of a file that matches the pattern *dev.yaml,
   # KMS set A is used
   # eGOV Internal ------------------------------------------------------------------------------------------------------------- #
-  - path_regex: environments/livelihood-uat-secrets\.yaml$
-    kms: 'arn:aws:kms:ap-south-2:654654556600:key/9a38a613-acfe-4c6f-b132-7392eecb37d8'
+  - path_regex: environments/livelihood-prod-secrets\.yaml$
+    kms: ''
