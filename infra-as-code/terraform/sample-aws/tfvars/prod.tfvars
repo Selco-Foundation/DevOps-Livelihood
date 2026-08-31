@@ -20,7 +20,7 @@ aws_region = "ap-south-2"
 # EKS DEPLOYMENT CONTROL
 # ============================================
 # Set to true to create EKS cluster and all related resources, false to skip
-create_eks = false
+create_eks = true
 
 
 # ============================================
