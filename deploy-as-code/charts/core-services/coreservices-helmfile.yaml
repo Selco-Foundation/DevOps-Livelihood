@@ -85,9 +85,9 @@ releases:
 #    installed: true
 #    <<: *default
 #
-#  - name: configmaps # Replace with your desired namespace
-#    installed: true
-#    <<: *default
+  - name: configmaps # Replace with your desired namespace
+    installed: true
+    <<: *default
 
 #  - name: livelihood-ui # Replace with your desired namespace
 #    installed: true
@@ -118,40 +118,40 @@ releases:
 #    installed: true
 #    <<: *default
 
-  - name: boundary-service # Replace with your desired namespace
-    installed: true
-    <<: *default
-
-  - name: vendor-registry # Replace with your desired namespace
-    installed: true
-    <<: *default
-
-  - name: processor-services # Replace with your desired namespace
-    installed: true
-    <<: *default
-
-  - name: facility-service  # Replace with your desired namespace
-    installed: true
-    <<: *default
-
-
-  - name: asset-registry # Replace with your desired namespace
-    installed: true
-    <<: *default
-
-  - name: project # Replace with your desired namespace
-    installed: true
-    <<: *default
-
-  - name: installation-qc # Replace with your desired namespace
-    installed: true
-    <<: *default
-
-  - name: ingestion-service # Replace with your desired namespace
-    installed: true
-    <<: *default
-
-  - name: pdf-service
-    installed: true
-    <<: *default
+#  - name: boundary-service # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: vendor-registry # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: processor-services # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: facility-service  # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#
+#  - name: asset-registry # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: project # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: installation-qc # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: ingestion-service # Replace with your desired namespace
+#    installed: true
+#    <<: *default
+#
+#  - name: pdf-service
+#    installed: true
+#    <<: *default
 

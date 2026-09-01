@@ -1,7 +1,7 @@
 {{- define "ingress-nginx.params" -}}
 - /nginx-ingress-controller
 {{- if .Values.domain }}
-- --default-ssl-certificate=egov/{{ .Values.domain }}-tls-certs
+- --default-ssl-certificate=core/{{ .Values.domain }}-tls-certs
 {{- end }}
 {{- if .Values.controller.enableAnnotationValidations }}
 - --enable-annotation-validation=true

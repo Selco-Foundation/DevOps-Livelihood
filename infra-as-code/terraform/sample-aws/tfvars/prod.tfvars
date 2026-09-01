@@ -87,10 +87,10 @@ instance_types = ["r6a.xlarge"]
 min_worker_nodes = "0"
 
 # Desired number of worker nodes
-desired_worker_nodes = 4
+desired_worker_nodes = 3
 
 # Maximum number of worker nodes (for autoscaling)
-max_worker_nodes = "4"
+max_worker_nodes = "3"
 
 # Maximum pods per node
 # Default is based on instance type (typically 29-110 depending on ENIs)
@@ -113,7 +113,7 @@ aws_ebs_csi_driver = "v1.56.0-eksbuild.1"
 # S3 FILESTORE CONFIGURATION
 # ============================================
 # Kubernetes namespace for filestore secret
-filestore_namespace = "core"
+filestore_namespace = "egov"
 
 
 # ============================================
