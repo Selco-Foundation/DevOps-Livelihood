@@ -40,6 +40,13 @@ lifecycle:
           ln -s /usr/bin/ffprobe /usr/local/bin/ffprobe   ##Symbolic link at different directory
           ln -s /usr/bin/ffmpeg /usr/local/bin/ffmpeg
 
+nodeSelector:
+  accelerator: none
+tolerations:
+  - effect: NoSchedule
+    key: cpu
+    operator: Equal
+    value: "true"
 
 # Additional Container Envs
 env: |

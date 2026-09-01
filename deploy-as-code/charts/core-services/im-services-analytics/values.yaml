@@ -27,6 +27,14 @@ memory_limits: "2560Mi"
 memory_requests: "2Gi"
 minReplicas: 2
 
+nodeSelector:
+  accelerator: none
+tolerations:
+  - effect: NoSchedule
+    key: cpu
+    operator: Equal
+    value: "true"
+
 # Additional Container Envs
 env: |
   - name: EGOV_LOCALIZATION_HOST
