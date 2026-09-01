@@ -28,7 +28,7 @@ healthChecks:
   livenessProbePath: "/user/health"
   readinessProbePath: "/user/health"
 appType: "java-spring"
-tracing-enabled: true
+tracing-enabled: false
 egov-state-level-tenant-id: "pb"
 decryption-abac-enabled: "false"
 account-unlock-cool-down-period-minutes: "30"
@@ -53,7 +53,7 @@ env: |
   - name: SERVER_PORT
     value: "8080"
   - name: SPRING_REDIS_HOST
-    value: redis.backbone-dev
+    value: redis.backbone
   - name: SPRING_REDIS_PORT
     value: "6379"
   - name: EGOV_OTP_HOST
@@ -168,5 +168,5 @@ env: |
     value: "false" 
   {{- if index .Values "tracing-enabled" }}
   - name: TRACER_OPENTRACING_ENABLED
-    value: "true" 
+    value: "false" 
   {{- end }}

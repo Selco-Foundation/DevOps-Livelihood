@@ -3,7 +3,7 @@ labels:
   app: "im-services"
   group: "rainmaker"
 
-namespace: core-dev
+namespace: core
 
 # Ingress Configs
 ingress:
@@ -86,10 +86,10 @@ initContainers:
             key: flyway-password
             name: db
       - name: FLYWAY_LOCATIONS
-        valueFrom:
-          configMapKeyRef:
-            key: flyway-locations
-            name: egov-config
+        valueFrom: 
+          configMapKeyRef: 
+              key: flyway-locations
+              name: egov-config
       - name: EGOV_MDMS_HOST
         valueFrom:
           configMapKeyRef:
@@ -120,16 +120,17 @@ lifecycle:
         - -c
         - |
           set -e
-          apt update && apt install -y software-properties-common wget cpulimit
-          wget https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz
-          tar -xf ffmpeg-release-amd64-static.tar.xz
-          cd ffmpeg-*-amd64-static
-          mv ffmpeg ffprobe /usr/bin/
+          apk add --no-cache ffmpeg cpulimit
           ln -s /usr/bin/ffprobe /usr/local/bin/ffprobe   ##Symbolic link at different directory
           ln -s /usr/bin/ffmpeg /usr/local/bin/ffmpeg
 
 # Additional Container Envs
 env: |
+  - name: EGOV_ASSET_HOST
+    valueFrom:
+      configMapKeyRef:
+        key: asset-registry
+        name: egov-service-host
   - name: EGOV_VENDOR_HOST
     valueFrom:
       configMapKeyRef:

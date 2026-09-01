@@ -1,0 +1,59 @@
+name: DIGIT-Install workflow
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terraform-infra-creation:
+    if: github.ref == 'refs/heads/Prod'
+    runs-on: ubuntu-latest
+    env:
+      # For cleaner pipeline logs
+      TF_IN_AUTOMATION: "true"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::654654556600:role/GitHubActionsRole
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Terraform Init - remote state
+        run: terraform init
+        working-directory: infra-as-code/terraform/sample-aws/remote-state
+
+      - name: Terraform Validate - remote state
+        run: terraform validate -no-color
+        working-directory: infra-as-code/terraform/sample-aws/remote-state
+
+      - name: Terraform Plan - remote state
+        run: terraform plan -no-color -input=false
+        working-directory: infra-as-code/terraform/sample-aws/remote-state
+
+      # - name: Terraform Apply - remote state
+      #   run: terraform apply -no-color -input=false -auto-approve
+      #   working-directory: infra-as-code/terraform/sample-aws/remote-state
+      #   # The S3 bucket / DynamoDB table backing the statefile may already exist from a previous run.
+      #   continue-on-error: true
+
+      # - name: Terraform Init - infra creation
+      #   run: terraform init -backend-config=tfvars/prod-backend.tfvars
+      #   working-directory: infra-as-code/terraform/sample-aws
+
+      # - name: Terraform Validate - infra creation
+      #   run: terraform validate -no-color
+      #   working-directory: infra-as-code/terraform/sample-aws
+
+      # - name: Terraform Plan - infra creation
+      #   run: terraform plan -no-color -input=false -var-file=tfvars/prod.tfvars -var db_password=${{ secrets.DB_PASSWORD_PROD }}
+      #   working-directory: infra-as-code/terraform/sample-aws
+
+      # - name: Terraform Apply - infra creation
+      #   run: terraform apply -no-color -input=false -auto-approve -var-file=tfvars/prod.tfvars -var db_password=${{ secrets.DB_PASSWORD_PROD }}
+      #   working-directory: infra-as-code/terraform/sample-aws

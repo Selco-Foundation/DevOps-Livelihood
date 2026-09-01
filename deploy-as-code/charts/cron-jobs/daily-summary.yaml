@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: daily-summary
+  namespace: core
+spec:
+  schedule: 0 18 * * 1-6
+  timeZone: Asia/Kolkata
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: daily-summary
+            image: selcohub/livelihood-daily-summary:staging-20-jul-2026
+          restartPolicy: OnFailure

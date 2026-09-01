@@ -21,6 +21,12 @@ healthChecks:
 
 # Additional Container Envs
 env: |
+  - name: ASSET_SERVICE_URL
+    valueFrom:
+      configMapKeyRef:
+        key: asset-registry
+        name: egov-service-host
+
   - name: LOCALIZATION_SERVICE_URL
     valueFrom:
       configMapKeyRef:

@@ -44,6 +44,8 @@ persistence:
 
 # Additional Container Envs
 env: |
+  - name: FIXED_BUCKET_REGION
+    value: ap-south-2
   - name: SERVER_PORT
     value: "8080"
   - name: SECURITY_BASIC_ENABLED

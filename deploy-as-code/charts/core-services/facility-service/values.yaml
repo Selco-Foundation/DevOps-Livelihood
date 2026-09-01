@@ -59,7 +59,7 @@ env: |
         key: username
         name: elasticsearch-credentials
   - name: EGOV_INDEXER_ES_HOST_NAME
-    value: https://elasticsearch-data.backbone-dev
+    value: https://elasticsearch-data.backbone
   - name: EGOV_ENC_HOST
     valueFrom:
       configMapKeyRef:
@@ -115,7 +115,7 @@ env: |
   - name: OTEL_SERVICE_NAME
     value: facility-service
   - name: OTEL_EXPORTER_ENDPOINT 
-    value: "http://jaeger-tracing-collector.backbone-dev:4318" 
+    value: "http://jaeger-tracing-collector.backbone:4318" 
   - name: OTEL INSTRUMENTATION_HTTP_SERVER_IGNORE_URLS
     value: "/facility-service/health,/facility-service/prometheus"
 
