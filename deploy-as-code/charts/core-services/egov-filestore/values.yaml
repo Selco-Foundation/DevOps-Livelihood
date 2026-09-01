@@ -38,6 +38,13 @@ memory_requests: "1560Mi"
 memory_limits: "2560Mi"
 minReplicas: 2
 
+nodeSelector:
+  accelerator: none
+tolerations:
+  - effect: NoSchedule
+    key: cpu
+    operator: Equal
+    value: "true"
 
 persistence:
   enabled: false
