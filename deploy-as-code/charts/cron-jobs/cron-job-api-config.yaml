@@ -1,18 +1,18 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: sla-compute-job
+  name: daily-new
   namespace: core
 spec:
-  schedule: "28 * * * *"
+  schedule: "0 */2 * * *"
   timeZone: Asia/Kolkata
   jobTemplate:
     spec:
       template:
         spec:
           containers:
-          - name: sla-job
-            image: selcohub/cronjob-sla-livelihood:staging-10-july-2026-v2
+          - name: daily-new-job
+            image: selcohub/cronjob-livelihood:staging-10-july-2026-v2
             args:
               - livelihood
           restartPolicy: OnFailure
