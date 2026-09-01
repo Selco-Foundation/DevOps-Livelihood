@@ -4,7 +4,7 @@ metadata:
   name: sla-compute-job
   namespace: core
 spec:
-  schedule: "0 * * * *"  # every hour
+  schedule: "28 * * * *"
   timeZone: Asia/Kolkata
   jobTemplate:
     spec:
@@ -12,7 +12,7 @@ spec:
         spec:
           containers:
           - name: sla-job
-            image: selcohub/cronjob-sla-livelihood:latest-6-july-2026
+            image: selcohub/cronjob-sla-livelihood:staging-10-july-2026-v2
             args:
-              - in
+              - livelihood
           restartPolicy: OnFailure
