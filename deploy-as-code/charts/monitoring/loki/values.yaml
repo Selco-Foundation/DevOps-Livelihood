@@ -13,7 +13,7 @@ loki:
   storage_config:
     aws:
       region: ap-south-2
-      bucketnames: 'livelihood-uat-loki-bucket'
+      bucketnames: 'livelihood-prod-loki-bucket'
       s3forcepathstyle: false
   pattern_ingester:
     enabled: true
@@ -33,8 +33,8 @@ loki:
   storage:
     type: s3
     bucketNames:
-      chunks: 'livelihood-uat-loki-bucket'
-      ruler: 'livelihood-uat-loki-bucket'
+      chunks: 'livelihood-prod-loki-bucket'
+      ruler: 'livelihood-prod-loki-bucket'
 #      admin: <Your AWS bucket for admin, for example, `aws-loki-dev-admin`>
     s3:
       # AWS endpoint URL

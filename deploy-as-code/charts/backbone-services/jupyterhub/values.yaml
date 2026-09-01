@@ -35,7 +35,7 @@ hub:
   config:
     Authenticator:
       admin_users:
-        - Selco-Uat
+        - Selco-Prod
     NativeAuthenticator:
       minimum_password_length: 8
       check_common_password: false
