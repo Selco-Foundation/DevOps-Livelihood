@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   terraform-infra-creation:
-    if: github.ref == 'refs/heads/prod-init'
+    if: github.ref == 'refs/heads/Prod'
     runs-on: ubuntu-latest
     env:
       # For cleaner pipeline logs
