@@ -21,20 +21,33 @@ initContainers:
     enabled: true
     repo: "git@github.com:egovernments/configs"
     branch: "master"
-  wait-for-kafka:
-    image:
-      repository: busybox
-      tag: latest
-    command:
-      - /bin/sh
-      - -c
-      - |
-        echo "Waiting for Kafka to be ready..."
-        until nc -z kafka-kraft.backbone.svc.cluster.local 9092; do
-          echo "Kafka is not available yet..."
-          sleep 5
-        done
-        echo "Kafka is up!"
+  extraInitContainers: |
+    - name: wait-for-kafka
+      image: docker.io/selcohub/kafka:3.6.0-debian-11-r0   # reuse the image already in registry, no new pull
+      env:
+        - name: KAFKA_BOOTSTRAP
+          valueFrom:
+            configMapKeyRef:
+              name: egov-config
+              key: kafka-brokers
+      command:
+        - /bin/bash
+        - -ec
+        - |
+          echo "Waiting for Kafka to serve metadata at $KAFKA_BOOTSTRAP ..."
+          timeout_seconds=180
+          elapsed=0
+          until kafka-topics.sh --bootstrap-server "$KAFKA_BOOTSTRAP" --list >/dev/null 2>&1; do
+            elapsed=$((elapsed + 5))
+            if [ "$elapsed" -ge "$timeout_seconds" ]; then
+              echo "Kafka did not become ready within ${timeout_seconds}s, giving up."
+              exit 1
+            fi
+            echo "Kafka not ready yet ($elapsed s)..."
+            sleep 5
+          done
+          echo "Kafka topic metadata is reachable."
+
 # Container Configs
 image:
   repository: "egovio/egov-indexer"
