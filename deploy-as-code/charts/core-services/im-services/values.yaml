@@ -222,7 +222,7 @@ env: |
         key: egov-url-shortening
         name: egov-service-host
   - name: EGOV_URL_SHORTNER_ENDPOINT
-    value: /egov-url-shortening/shortener
+    value: /eus/shortener
   - name: EGOV_IDGEN_HOST
     valueFrom:
       configMapKeyRef:
