@@ -218,6 +218,14 @@ egov-persister:
   image:
     tag: v2.9.2-4a60f20
 
+egov-url-shortening:
+  image:
+    tag: v2.9.2-4a60f20
+  initContainers:
+    dbMigration:
+      image:
+        tag: v2.9.2-4a60f20
+
 egov-user:
   image:
     tag: core-2.9-lts-egov-user-deployement-c33cfe45ab-13
