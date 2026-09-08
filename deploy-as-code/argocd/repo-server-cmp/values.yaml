@@ -1,0 +1,91 @@
+# Overlay for the upstream argo-helm `argo-cd` chart. This installs a
+# standalone ArgoCD instance dedicated to DIGIT-DevOps (separate from the
+# Livelihood hub instance — different repo-server, different CMP sidecar
+# deployment, different IAM role/OIDC trust, even if it runs on the same
+# EKS cluster/account). Merge it on top of whatever values file already
+# installs Argo CD, e.g.:
+#
+#   helm upgrade --install argocd argo/argo-cd -n argocd \
+#     -f <your-existing-argocd-values.yaml> \
+#     -f deploy-as-code/argocd/repo-server-cmp/values.yaml
+#
+# It adds a "sops-helm" Config Management Plugin sidecar to argocd-repo-server
+# so Applications can set `source.plugin.name: sops-helm` to have SOPS-encrypted
+# Helm value files (selco-{dev,uat,prod}-secrets.yaml) decrypted at
+# manifest-render time, regardless of which environment they belong to.
+
+configs:
+  cmp:
+    create: true
+    plugins:
+      sops-helm:
+        init:
+          command: [sh, -c]
+          args: ["helm dependency build"]
+
+        generate:
+          command: [bash, -c]
+          args:
+            - |
+              set -euo pipefail
+
+              release_name="${PARAM_RELEASE_NAME:-$ARGOCD_APP_NAME}"
+
+              values_args=()
+              i=0
+              while :; do
+                var="PARAM_VALUES_FILES_${i}"
+                file="${!var:-}"
+                [ -z "$file" ] && break
+                case "$(basename "$file")" in
+                  *secrets*) values_args+=(-f <(sops -d "$file")) ;;
+                  *)         values_args+=(-f "$file") ;;
+                esac
+                i=$((i + 1))
+              done
+
+              helm template "$release_name" . "${values_args[@]}"
+
+repoServer:
+  # TODO: create this IAM role — needs its own OIDC trust for whichever EKS
+  # cluster this DIGIT-DevOps ArgoCD's repo-server actually runs in (same
+  # account, 654654556600, per the KMS keys below, but registering an ArgoCD
+  # instance doesn't reuse another instance's cluster/OIDC registration —
+  # confirm cluster + register `argocd-repo-server` SA trust separately from
+  # the Livelihood role, even if it happens to be the same physical cluster).
+  # Scope to kms:Decrypt on all three env keys (see
+  # ../../charts/.sops.yaml) since one repo-server renders all three envs.
+  serviceAccount:
+    create: true
+    name: argocd-repo-server
+    annotations:
+      eks.amazonaws.com/role-arn: "arn:aws:iam::654654556600:role/prod-eks-kms-access"
+
+  volumes:
+    - name: sops-helm-plugin-config
+      configMap:
+        name: argocd-cmp-cm
+
+  extraContainers:
+    - name: sops-helm
+      # Reuses the already-built Livelihood image (bash+helm+sops, nothing
+      # project-specific) — rebuild from ./Dockerfile only if this needs to
+      # diverge later.
+      image: selcohub/argocd-cmp-sops-helm:0.1.0
+      command: [/var/run/argocd/argocd-cmp-server]
+      env:
+        - name: ARGOCD_EXEC_TIMEOUT
+          value: "180s"
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+      volumeMounts:
+        - name: var-files
+          mountPath: /var/run/argocd
+        - name: plugins
+          mountPath: /home/argocd/cmp-server/plugins
+        - name: sops-helm-plugin-config
+          mountPath: /home/argocd/cmp-server/config/plugin.yaml
+          subPath: sops-helm.yaml
+        - name: tmp
+          mountPath: /tmp

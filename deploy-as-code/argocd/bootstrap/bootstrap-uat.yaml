@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gitops-platform-uat
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/Selco-Foundation/DIGIT-DevOps.git
+    targetRevision: main
+    path: deploy-as-code/argocd/platform
+
+    helm:
+      valueFiles:
+        - values-uat.yaml
+
+  destination:
+    server: https://C13CCDBFBEE48C6C36406B7C252E06F3.gr7.ap-south-1.eks.amazonaws.com
+    namespace: core-dev
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

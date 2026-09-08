@@ -1,0 +1,17 @@
+# Overlay for the upstream argo-helm `argo-cd` chart. Grants argocd-application-controller
+# an IRSA identity so it can authenticate to dev/uat clusters via AWS IAM (aws eks get-token)
+# instead of a static bearer token. Merge alongside repo-server-cmp/values.yaml, e.g.:
+#
+#   helm upgrade --install argocd deploy-as-code/argocd/helm -n argocd --create-namespace \
+#     -f deploy-as-code/argocd/helm/values.yaml \
+#     -f deploy-as-code/argocd/repo-server-cmp/values.yaml \
+#     -f deploy-as-code/argocd/controller-cross-cluster-values.yaml
+#
+# Authentication only (IAM identity) — authorization on the dev/uat side is a separate
+# step: an EKS Access Entry mapping this role to a Kubernetes group, plus a namespace-scoped
+# Role/RoleBinding for that group in core-dev on each target cluster.
+
+controller:
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: "arn:aws:iam::654654556600:role/prod-cross-cluster-access"
