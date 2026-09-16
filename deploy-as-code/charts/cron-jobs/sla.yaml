@@ -4,7 +4,7 @@ metadata:
   name: sla-compute-job
   namespace: core
 spec:
-  schedule: "28 * * * *"
+  schedule: "5 * * * *"
   timeZone: Asia/Kolkata
   jobTemplate:
     spec:
