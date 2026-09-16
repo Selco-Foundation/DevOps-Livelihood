@@ -36,9 +36,9 @@ lifecycle:
         - -c
         - |
           set -e
-          apt-get update && apt-get install -y --no-install-recommends ffmpeg cpulimit
-          ln -s /usr/bin/ffprobe /usr/local/bin/ffprobe   ##Symbolic link at different directory
-          ln -s /usr/bin/ffmpeg /usr/local/bin/ffmpeg
+          apk add --no-cache ffmpeg cpulimit
+          ln -fs /usr/bin/ffprobe /usr/local/bin/ffprobe   ##Symbolic link at different directory
+          ln -fs /usr/bin/ffmpeg /usr/local/bin/ffmpeg
 
 nodeSelector:
   accelerator: none
