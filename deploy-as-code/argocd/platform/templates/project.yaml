@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace | default "argocd" }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: {{ .Values.project.description | quote }}
+  sourceRepos:
+    {{- toYaml .Values.project.sourceRepos | nindent 4 }}
+
+  destinations:
+  - {{- if .Values.project.destination.name }}
+    name: {{ .Values.project.destination.name | quote }}
+    {{- else }}
+    server: {{ .Values.project.destination.server | quote }}
+    {{- end }}
+    namespace: {{ .Values.project.destination.namespace | quote }}
+
+  {{- if .Values.project.clusterResourceWhitelist }}
+  clusterResourceWhitelist:
+  {{- toYaml .Values.project.clusterResourceWhitelist | nindent 4 }}
+  {{- else }}
+  clusterResourceWhitelist: []
+  {{- end }}
+
+  {{- if .Values.project.namespaceResourceWhitelist }}
+  namespaceResourceWhitelist:
+  {{- toYaml .Values.project.namespaceResourceWhitelist | nindent 4 }}
+  {{- end }}
+
+  {{- if .Values.project.namespaceResourceBlacklist }}
+  namespaceResourceBlacklist:
+  {{- toYaml .Values.project.namespaceResourceBlacklist | nindent 4 }}
+  {{- end }}

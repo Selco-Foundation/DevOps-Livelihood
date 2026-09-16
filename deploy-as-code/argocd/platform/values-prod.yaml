@@ -1,0 +1,32 @@
+name: digit-devops-prod
+namespace: argocd
+
+project:
+  description: Restrict ArgoCD access to core-dev namespace
+  sourceRepos:
+    - https://github.com/Selco-Foundation/DIGIT-DevOps.git
+  destination:
+    # TODO: confirm this ArgoCD instance actually runs in-cluster on prod
+    # (matching Livelihood's hub pattern). If it runs elsewhere, swap this
+    # for a `name:` referencing a registered remote cluster instead.
+    server: https://kubernetes.default.svc
+    namespace: core-dev
+  clusterResourceWhitelist: []
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  namespaceResourceBlacklist:
+    - group: networking.k8s.io
+      kind: Ingress
+
+applicationset:
+  repoURL: https://github.com/Selco-Foundation/DIGIT-DevOps.git
+  revision: main
+  chartRoot: deploy-as-code/charts/core-services/*
+  # Renders each core-services sub-chart via the sops-helm CMP sidecar
+  # (see ../repo-server-cmp/values.yaml) so selco-prod-secrets.yaml
+  # (SOPS-encrypted) is decrypted before `helm template` runs.
+  cmpPlugin: sops-helm
+  valueFiles:
+    - ../../environments/selco-prod.yaml
+    - ../../environments/selco-prod-secrets.yaml

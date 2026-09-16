@@ -1,0 +1,34 @@
+name: digit-devops-dev
+namespace: argocd
+
+project:
+  description: Restrict ArgoCD access to core-dev namespace
+  sourceRepos:
+    - https://github.com/Selco-Foundation/DIGIT-DevOps.git
+  destination:
+    # TODO: confirm whether this ArgoCD instance's hub cluster is the same
+    # prod EKS cluster as Livelihood's, or a different one. If dev is a
+    # remote spoke relative to that hub, register it first:
+    #   argocd cluster add <dev-kubeconfig-context> --name digit-dev-cluster
+    # Keep this in sync with whatever --name you actually register it as.
+    name: new-selco-dev
+    namespace: core-dev
+  clusterResourceWhitelist: []
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  namespaceResourceBlacklist:
+    - group: networking.k8s.io
+      kind: Ingress
+
+applicationset:
+  repoURL: https://github.com/Selco-Foundation/DIGIT-DevOps.git
+  revision: Selco-Dev
+  chartRoot: deploy-as-code/charts/core-services/*
+  # Renders each core-services sub-chart via the sops-helm CMP sidecar
+  # (see ../repo-server-cmp/values.yaml) so selco-dev-secrets.yaml
+  # (SOPS-encrypted) is decrypted before `helm template` runs.
+  cmpPlugin: sops-helm
+  valueFiles:
+    - ../../environments/selco-dev.yaml
+    - ../../environments/selco-dev-secrets.yaml

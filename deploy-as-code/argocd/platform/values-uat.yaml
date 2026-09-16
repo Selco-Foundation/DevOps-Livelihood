@@ -1,0 +1,32 @@
+name: digit-devops-uat
+namespace: argocd
+
+project:
+  description: Restrict ArgoCD access to core-dev namespace
+  sourceRepos:
+    - https://github.com/Selco-Foundation/DIGIT-DevOps.git
+  destination:
+    # TODO: confirm hub cluster + register uat as a remote spoke if needed:
+    #   argocd cluster add <uat-kubeconfig-context> --name digit-uat-cluster
+    # Keep this in sync with whatever --name you actually register it as.
+    name: new-selco-uat
+    namespace: core-dev
+  clusterResourceWhitelist: []
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  namespaceResourceBlacklist:
+    - group: networking.k8s.io
+      kind: Ingress
+
+applicationset:
+  repoURL: https://github.com/Selco-Foundation/DIGIT-DevOps.git
+  revision: Selco-Uat
+  chartRoot: deploy-as-code/charts/core-services/*
+  # Renders each core-services sub-chart via the sops-helm CMP sidecar
+  # (see ../repo-server-cmp/values.yaml) so selco-uat-secrets.yaml
+  # (SOPS-encrypted) is decrypted before `helm template` runs.
+  cmpPlugin: sops-helm
+  valueFiles:
+    - ../../environments/selco-uat.yaml
+    - ../../environments/selco-uat-secrets.yaml
