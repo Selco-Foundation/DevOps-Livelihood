@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: daily-new
+  namespace: core
+spec:
+  schedule: 0 */2 * * *
+  timeZone: Asia/Kolkata
+  suspend: true
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: daily-new-job
+            image: selcohub/cronjob-livelihood:latest-develop-10-july-2026
+            args:
+            - livelihood
+          restartPolicy: OnFailure
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
