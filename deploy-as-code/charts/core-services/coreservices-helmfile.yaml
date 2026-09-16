@@ -63,6 +63,10 @@ releases:
 #    installed: true
 #    <<: *default
 #
+#  - name: egov-url-shortening
+#    installed: true
+#    <<: *default
+#
 #  - name: egov-user # Replace with your desired namespace
 #    installed: true
 #    needs:

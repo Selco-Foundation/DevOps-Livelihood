@@ -42,7 +42,7 @@ configmaps:
       field-planner-activity: http://field-planner-activity.core:8080/
       jaeger: http://jaeger-tracing-collector.backbone:4318/
       billing-service: http://billing-service.core:8080/
-      egov-url-shortening: http://eus:8080/
+      egov-url-shortening: http://egov-url-shortening.core:8080/
       egov-searcher: http://egov-searcher.core:8080/
       birth-death-services: http://birth-death-services.core8080/
       bpa-calculator: http://bpa-calculator.core:8080/
