@@ -1,5 +1,5 @@
 apiVersion: v2
-name: digit-devops-platform
+name: livelihood-devops-platform
 description: Helm chart for managing this ArgoCD instance's platform resources (AppProjects, ApplicationSets, RBAC, Repositories)
 
 type: application
@@ -13,10 +13,10 @@ keywords:
   - applicationset
   - appproject
 
-home: https://github.com/Selco-Foundation/DIGIT-DevOps
+home: https://github.com/Selco-Foundation/DevOps-Livelihood
 
 maintainers:
   - name: Selco Platform Team
 
 sources:
-  - https://github.com/Selco-Foundation/DIGIT-DevOps
+  - https://github.com/Selco-Foundation/DevOps-Livelihood

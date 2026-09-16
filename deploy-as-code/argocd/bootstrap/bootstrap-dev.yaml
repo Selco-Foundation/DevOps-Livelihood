@@ -7,8 +7,8 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/Selco-Foundation/DIGIT-DevOps.git
-    targetRevision: main
+    repoURL: https://github.com/Selco-Foundation/DevOps-Livelihood.git
+    targetRevision: Prod
     path: deploy-as-code/argocd/platform
 
     helm:
@@ -16,8 +16,13 @@ spec:
         - values-dev.yaml
 
   destination:
-    server: https://AB343EA957DD5FCE7A2CA27E91114AC5.gr7.ap-south-1.eks.amazonaws.com
-    namespace: core-dev
+    # This Application creates the dev AppProject + ApplicationSet, which are
+    # ArgoCD CRDs that must live in the cluster running ArgoCD itself (prod).
+    # The child apps rendered by that ApplicationSet target the dev EKS
+    # cluster instead, via the remote cluster registered in
+    # ../controller-cross-cluster-values.yaml.
+    server: https://kubernetes.default.svc
+    namespace: argocd
 
   syncPolicy:
     automated:

@@ -15,3 +15,49 @@ controller:
   serviceAccount:
     annotations:
       eks.amazonaws.com/role-arn: "arn:aws:iam::654654556600:role/prod-cross-cluster-access"
+
+# Registers the dev and uat EKS clusters (separate VPCs from prod) as remote
+# clusters so this single ArgoCD instance can manage all three environments.
+# Each cluster's application-controller auth uses the IRSA identity above via
+# `aws eks get-token` instead of a static bearer token/kubeconfig.
+# The `name` used here (livelihood-dev / livelihood-uat) must match
+# project.destination.name in ../platform/values-dev.yaml / values-uat.yaml.
+configs:
+  clusterCredentials:
+    livelihood-dev:
+      server: https://AB343EA957DD5FCE7A2CA27E91114AC5.gr7.ap-south-1.eks.amazonaws.com
+      namespaces: core
+      config:
+        # TODO: confirm the actual dev EKS cluster name (as registered in
+        # AWS, used by `aws eks get-token --cluster-name`) and paste its CA
+        # certificate: `aws eks describe-cluster --name <name> --region
+        # ap-south-1 --query "cluster.certificateAuthority.data" --output text`
+        tlsClientConfig:
+          caData: "<base64 encoded dev cluster CA certificate>"
+        execProviderConfig:
+          command: aws
+          args:
+            - eks
+            - get-token
+            - --cluster-name
+            - "<dev-eks-cluster-name>"
+          apiVersion: client.authentication.k8s.io/v1beta1
+          env:
+            AWS_REGION: ap-south-1
+    livelihood-uat:
+      server: https://C13CCDBFBEE48C6C36406B7C252E06F3.gr7.ap-south-1.eks.amazonaws.com
+      namespaces: core
+      config:
+        # TODO: same as above, for the uat cluster.
+        tlsClientConfig:
+          caData: "<base64 encoded uat cluster CA certificate>"
+        execProviderConfig:
+          command: aws
+          args:
+            - eks
+            - get-token
+            - --cluster-name
+            - "<uat-eks-cluster-name>"
+          apiVersion: client.authentication.k8s.io/v1beta1
+          env:
+            AWS_REGION: ap-south-1
