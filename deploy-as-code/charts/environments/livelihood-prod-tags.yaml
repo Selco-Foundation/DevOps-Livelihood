@@ -8,11 +8,11 @@ amc-service:
 
 asset-registry:
   image:
-    tag: v3.5.23-737bc697023d565f85e66d3a47d79cfe89409f71
+    tag: staging-602445f7efd05c10804e3abd773840b12eeb7547
   initContainers:
     dbMigration:
       image:
-        tag: v3.5.23-737bc697023d565f85e66d3a47d79cfe89409f71
+        tag: staging-602445f7efd05c10804e3abd773840b12eeb7547
 
 field-planner-activity:
   image:
@@ -32,7 +32,7 @@ field-planner:
 
 ingestion-service:
   image:
-    tag: v3.6.24-1e609f3077d20ec6cc98ef672923329c68de19a4
+    tag: staging-e6bfba242c172c08f0a0175d423e8ca2bb6c6f3a
 
 project:
   image:
@@ -44,11 +44,11 @@ project:
 
 vendor-registry:
   image:
-    tag: v3.6.26-8bf11f800d198d8e3f10e39d49598ef2577f682f
+    tag: staging-e49076017baee831d2e671643096fa47866b1bc5
   initContainers:
     dbMigration:
       image:
-        tag: v3.6.26-8bf11f800d198d8e3f10e39d49598ef2577f682f
+        tag: staging-e49076017baee831d2e671643096fa47866b1bc5
 
 installation-qc:
   image:
@@ -72,19 +72,19 @@ rms-service:
 
 boundary-service:
   image:
-    tag: v3.5.24-52511d8d8a66451b28a2f082a5d8ce7fc24830bd
+    tag: staging-e49076017baee831d2e671643096fa47866b1bc5
   initContainers:
     dbMigration:
       image:
-        tag: v3.5.24-52511d8d8a66451b28a2f082a5d8ce7fc24830bd
+        tag: staging-e49076017baee831d2e671643096fa47866b1bc5
 
 facility-service:
   image:
-    tag: v3.6.26-8bf11f800d198d8e3f10e39d49598ef2577f682f
+    tag: staging-d0c9ccd8b8fb5b416867bae62f3f7720924d9dd1
   initContainers:
     dbMigration:
       image:
-        tag: v3.6.26-8bf11f800d198d8e3f10e39d49598ef2577f682f
+        tag: staging-d0c9ccd8b8fb5b416867bae62f3f7720924d9dd1
 
 egov-hrms:
   image:
@@ -104,15 +104,15 @@ egov-filestore:
 
 egov-workflow-v2:
   image:
-    tag: v3.6.25-ac9e4ceb1c2b31207eeddcf883314e50aed15fe9
+    tag: staging-d0c9ccd8b8fb5b416867bae62f3f7720924d9dd1
   initContainers:
     dbMigration:
       image:
-        tag: v3.6.25-ac9e4ceb1c2b31207eeddcf883314e50aed15fe9
+        tag: staging-d0c9ccd8b8fb5b416867bae62f3f7720924d9dd1
 
 im-services-analytics:
   image:
-    tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
+    tag: staging-602445f7efd05c10804e3abd773840b12eeb7547
 
 processor-services:
   image:
@@ -120,15 +120,15 @@ processor-services:
 
 im-services:
   image:
-    tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
+    tag: enhancement-sms-template-update-cd0b1fc99aa300834832851ac251b29e47e9cc5e
   initContainers:
     dbMigration:
       image:
-        tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
+        tag: enhancement-sms-template-update-cd0b1fc99aa300834832851ac251b29e47e9cc5e
 
 livelihood-ui:
   image:
-    tag: fix-livelihood-ui-d5f2f5ce6325dbd53bc4b8ad635a93f6d8a78a03
+    tag: staging-ad0e301679b6afb01453deb4bc138ca2a71676c6
 
 digit-ui:
   image:
@@ -136,7 +136,7 @@ digit-ui:
 
 inbox:
   image:
-    tag: v3.3.7-73d0cc3be378c4495e6f7d7162b2c5d8c1951487
+    tag: staging-602445f7efd05c10804e3abd773840b12eeb7547
 
 egov-mdms-service:
   image:
