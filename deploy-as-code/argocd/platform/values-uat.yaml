@@ -32,3 +32,14 @@ applicationset:
     - ../../environments/livelihood-uat.yaml
     - ../../environments/livelihood-uat-tags.yaml
     - ../../environments/livelihood-uat-secrets.yaml
+  # UAT's `core` namespace currently holds ~34 Helm releases deployed by helmfile.
+  # Omitting `automated:` makes ArgoCD adopt them read-only: every app shows
+  # OutOfSync until it is synced by hand, so each diff can be reviewed before
+  # ArgoCD takes over. Flip to automated (prune + selfHeal) once the whole set
+  # syncs clean. syncOptions match the chart default.
+  syncPolicy:
+    syncOptions:
+      - Validate=true
+      - ServerSideApply=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
