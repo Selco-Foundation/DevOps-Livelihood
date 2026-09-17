@@ -47,19 +47,16 @@ configs:
               helm template "$release_name" . "${values_args[@]}"
 
 repoServer:
-  # TODO: create this IAM role — needs its own OIDC trust for whichever EKS
-  # cluster this DIGIT-DevOps ArgoCD's repo-server actually runs in (same
-  # account, 654654556600, per the KMS keys below, but registering an ArgoCD
-  # instance doesn't reuse another instance's cluster/OIDC registration —
-  # confirm cluster + register `argocd-repo-server` SA trust separately from
-  # the Livelihood role, even if it happens to be the same physical cluster).
-  # Scope to kms:Decrypt on all three env keys (see
-  # ../../charts/.sops.yaml) since one repo-server renders all three envs.
+  # Trusts the livelihood-prod EKS OIDC provider
+  # (oidc.eks.ap-south-2.amazonaws.com/id/682EFACC807F060F74BD802C688E3C1A),
+  # subject system:serviceaccount:argocd:argocd-repo-server. Scoped to
+  # kms:Decrypt on all three env keys (see ../../charts/.sops.yaml) since one
+  # repo-server renders all three envs.
   serviceAccount:
     create: true
     name: argocd-repo-server
     annotations:
-      eks.amazonaws.com/role-arn: "arn:aws:iam::654654556600:role/prod-eks-kms-access"
+      eks.amazonaws.com/role-arn: "arn:aws:iam::654654556600:role/livelihood-prod-eks-kms-access"
 
   volumes:
     - name: sops-helm-plugin-config

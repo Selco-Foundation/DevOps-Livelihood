@@ -1,0 +1,27 @@
+# Overlay for the upstream argo-helm `argo-cd` chart. Pins every ArgoCD component
+# (server, repo-server, application-controller, dex, redis, notifications,
+# applicationset-controller) onto the node reserved for this workload on
+# livelihood-prod — the only node carrying both the taint and label below.
+# Merge alongside the other overlays, e.g.:
+#
+#   helm upgrade --install argocd deploy-as-code/argocd/helm -n argocd --create-namespace \
+#     -f deploy-as-code/argocd/helm/values.yaml \
+#     -f deploy-as-code/argocd/repo-server-cmp/values.yaml \
+#     -f deploy-as-code/argocd/controller-cross-cluster-values.yaml \
+#     -f deploy-as-code/argocd/node-placement-values.yaml
+#
+# Every component template does
+# `.Values.<component>.nodeSelector | default .Values.global.nodeSelector` (and
+# the same for tolerations), and no component in helm/values.yaml sets its own
+# override (all default to {} / []), so setting these globally is enough — no
+# per-component duplication needed.
+global:
+  nodeSelector:
+    kubernetes.io/os: linux
+    accelerator: none
+
+  tolerations:
+    - key: cpu
+      operator: Equal
+      value: "true"
+      effect: NoSchedule

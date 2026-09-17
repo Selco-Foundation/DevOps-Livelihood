@@ -43,7 +43,7 @@ crds:
 global:
   # -- Default domain used by all components
   ## Used for ingresses, certificates, SSO, notifications, etc.
-  domain: saura-emitra.selcofoundation.org
+  domain: setu4livelihood.selcofoundation.org
 
   # -- Runtime class name for all components
   runtimeClassName: ""

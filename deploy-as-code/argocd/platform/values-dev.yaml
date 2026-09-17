@@ -1,18 +1,17 @@
-name: digit-devops-dev
+name: livelihood-devops-dev
 namespace: argocd
 
 project:
-  description: Restrict ArgoCD access to core-dev namespace
+  description: Restrict ArgoCD access to core namespace on the dev cluster
   sourceRepos:
-    - https://github.com/Selco-Foundation/DIGIT-DevOps.git
+    - https://github.com/Selco-Foundation/DevOps-Livelihood.git
   destination:
-    # TODO: confirm whether this ArgoCD instance's hub cluster is the same
-    # prod EKS cluster as Livelihood's, or a different one. If dev is a
-    # remote spoke relative to that hub, register it first:
-    #   argocd cluster add <dev-kubeconfig-context> --name digit-dev-cluster
-    # Keep this in sync with whatever --name you actually register it as.
-    name: new-selco-dev
-    namespace: core-dev
+    # Dev EKS runs in its own VPC, separate from the prod cluster that hosts
+    # this ArgoCD instance, so it's addressed as a registered remote cluster
+    # (name must match a key under configs.clusterCredentials in
+    # ../controller-cross-cluster-values.yaml) rather than a `server:` URL.
+    name: livelihood-dev
+    namespace: core
   clusterResourceWhitelist: []
   namespaceResourceWhitelist:
     - group: "*"
@@ -22,13 +21,14 @@ project:
       kind: Ingress
 
 applicationset:
-  repoURL: https://github.com/Selco-Foundation/DIGIT-DevOps.git
-  revision: Selco-Dev
+  repoURL: https://github.com/Selco-Foundation/DevOps-Livelihood.git
+  revision: develop
   chartRoot: deploy-as-code/charts/core-services/*
   # Renders each core-services sub-chart via the sops-helm CMP sidecar
-  # (see ../repo-server-cmp/values.yaml) so selco-dev-secrets.yaml
+  # (see ../repo-server-cmp/values.yaml) so livelihood-dev-secrets.yaml
   # (SOPS-encrypted) is decrypted before `helm template` runs.
   cmpPlugin: sops-helm
   valueFiles:
-    - ../../environments/selco-dev.yaml
-    - ../../environments/selco-dev-secrets.yaml
+    - ../../environments/livelihood-dev.yaml
+    - ../../environments/livelihood-dev-tags.yaml
+    - ../../environments/livelihood-dev-secrets.yaml

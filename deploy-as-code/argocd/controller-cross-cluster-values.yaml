@@ -1,6 +1,7 @@
 # Overlay for the upstream argo-helm `argo-cd` chart. Grants argocd-application-controller
-# an IRSA identity so it can authenticate to dev/uat clusters via AWS IAM (aws eks get-token)
-# instead of a static bearer token. Merge alongside repo-server-cmp/values.yaml, e.g.:
+# an IRSA identity so it can authenticate to dev/uat clusters via ArgoCD's native AWS auth
+# (awsAuthConfig, backed by the AWS SDK) instead of a static bearer token. Merge alongside
+# repo-server-cmp/values.yaml, e.g.:
 #
 #   helm upgrade --install argocd deploy-as-code/argocd/helm -n argocd --create-namespace \
 #     -f deploy-as-code/argocd/helm/values.yaml \
@@ -9,9 +10,40 @@
 #
 # Authentication only (IAM identity) — authorization on the dev/uat side is a separate
 # step: an EKS Access Entry mapping this role to a Kubernetes group, plus a namespace-scoped
-# Role/RoleBinding for that group in core-dev on each target cluster.
+# Role/RoleBinding for that group in `core` on each target cluster.
 
 controller:
   serviceAccount:
+    # NOTE: this role's trust policy must accept the OIDC provider of the cluster
+    # hosting this ArgoCD — livelihood-prod is
+    # oidc.eks.ap-south-2.amazonaws.com/id/682EFACC807F060F74BD802C688E3C1A,
+    # subject system:serviceaccount:argocd:argocd-application-controller.
     annotations:
-      eks.amazonaws.com/role-arn: "arn:aws:iam::654654556600:role/prod-cross-cluster-access"
+      eks.amazonaws.com/role-arn: "arn:aws:iam::654654556600:role/livelihood-prod-cross-cluster-access"
+
+# Registers the dev and uat EKS clusters as remote clusters so this single ArgoCD
+# instance can manage all three environments. Each cluster's application-controller
+# auth uses the IRSA identity above via awsAuthConfig (AWS SDK, no `aws` CLI binary
+# required in the controller image) instead of a static bearer token/kubeconfig.
+# The `name` used here (livelihood-dev / livelihood-uat) must match
+# project.destination.name in ../platform/values-dev.yaml / values-uat.yaml.
+configs:
+  clusterCredentials:
+    livelihood-dev:
+      server: https://A0D97F1AEC33F85FBA462F16A1B68A19.yl4.ap-south-2.eks.amazonaws.com
+      namespaces: core
+      config:
+        awsAuthConfig:
+          clusterName: livelihood-dev
+        tlsClientConfig:
+          insecure: false
+          caData: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJSjJzTWpEUTZnQ1V3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TmpBMk1UVXdPVE14TURkYUZ3MHpOakEyTVRJd09UTTJNRGRhTUJVeApFekFSQmdOVkJBTVRDbXQxWW1WeWJtVjBaWE13Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLCkFvSUJBUURURURXU01MUFFmMmcvVW1zK3BsMXduSGxweG9DUUUvUzdhUlpRREhaa3ZITUp4SWpUSlpTM1JHc2EKYm9uTmFrR0pBc3FjQnkvMFVVMUtkU2xwQkZUTGNmcHFoSUx1VCt6QXZQYU05NzhzbHZPblBySXFXcDIyTWZtNQo3VlZHNHVEbHRBVWZsZ1RkZFF3S09XeXA4Y0ZBWVVCWnJwektHQ2JmVTJkV01zQ05XZlBUcFY2dTJVWUxQdm9BCkxTT1lIeWNZVU1xRzRLVThvTDlYZmNOdi9pNG1JVG1EWlhIZnFITzRMek12OUNTYlNPM2MyOTBGbTlqRk5SSE8KOHRXOEVUa1lyWUVSVEdNQ0VTMXViRmdSRGYzY3NOREYySnB2cWZMSU4xUG8rczJDOVpZVkcxajN1NkRtZnRjWApDK0F6UHlTME80cVliN2l1MFJXSGd1WFpjMEhCQWdNQkFBR2pXVEJYTUE0R0ExVWREd0VCL3dRRUF3SUNwREFQCkJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJRbXd4UEx3UXpEby85YWYrUzhHUzBHMG9GRmtUQVYKQmdOVkhSRUVEakFNZ2dwcmRXSmxjbTVsZEdWek1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQzQ3a0duZmpYagpnTnhub1RjWjlLeVBhbFJEYVhFOThTTHg0VFVZNnlVOVBYMCsxQ2dGbmlvZEJuTVpJR3U0dm1ldGxIZVI1b1AxCi9VVDJCSWVPNXhFcGE4eGgzQjJzME9CODAreDB2a2pjNVk4MmR2Nm54YWZLK25wUk9qYzFFMzg2U2Z0N2J6dnAKQnhtNHFFakwzUnhxTnZ3akJFaGI3U2xQVHh5dUR0RE8wMlJhSDZHQ011aVAwdlpXM2YzTmk2WGFWYnlFQXc0YwppZGJpSU91d2puQVhXMjVzZkNBSWFURVU3anM2bHpsZzdnbWJaTzluNmI3WEx1NTZ2ekVta0JVZDlQMnZZbkdZCllFUEd2MDJLRE1JT2d6ZEw4blhjYThNK3dvZnZkZTYvZGxQbnBNVkFQZGpZRzExYkVZUVVxVzdQWDRRb0VndXoKMzJ6TXNLZU5ydlBDCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
+    livelihood-uat:
+      server: https://058A6DA225F9F0593D9996CBA5E114AB.gr7.ap-south-2.eks.amazonaws.com
+      namespaces: core
+      config:
+        awsAuthConfig:
+          clusterName: livelihood-uat
+        tlsClientConfig:
+          insecure: false
+          caData: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJU25hczdjMWFTSUV3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TmpBMk1qWXhNRFU0TlRoYUZ3MHpOakEyTWpNeE1UQXpOVGhhTUJVeApFekFSQmdOVkJBTVRDbXQxWW1WeWJtVjBaWE13Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLCkFvSUJBUUM5cE0xMHN2VmZodE9jQVhNcDRPTjhGcnFxL3k0TmJDZWwvbGRjQlRyVERwamozTUpKOEpKZldIWWUKNFMzSFlkcUNXSlEwbEtZU2hnaGpKOEg5TnBCQVBkbmpyQzl5clZzcUY2OGhpbDEyeHlGcHFqODBYNGxlUVF0SApnM1VCb0xMTjd1WGloN25jZS9IbitqS0JGMzhPTFE3Wm10UTdDemVjZE1nT2p0cjBlTlVENm1YSkViNjgwTVJWCkJHUDgrbG41WFJjY1E3S1FScU04SmlmMHpZdVp5WGdUbTVja1dFcHV6L0w4UUxxSkR3VTNwTW1WM2c5ZFoxTXQKNlZCSkV3RUp2ZXJMQ1h6RFBBWkl1K29FS3dXTnNhVDFvYlhLMmtSNk9vVjhibFZFZHNOZ1d5b2dYMzBZRVFpNgptRmFQK3FvR2FscVZuWkNCd01FbzBlV1ZhNmF2QWdNQkFBR2pXVEJYTUE0R0ExVWREd0VCL3dRRUF3SUNwREFQCkJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJTZlgyUm91MHpRSjRHRmFGeC9jNkVtSjR2L3B6QVYKQmdOVkhSRUVEakFNZ2dwcmRXSmxjbTVsZEdWek1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQ2xDamtaVmJPYwp3Z0haMU85ZGhNckVuaTFZWXk1bll6MWI0LzcxQ0pIWWNkVk9oYUV2dWxvOVV3TzRKU0p0UWFkd0xkL0VpSVlFCitiMTA0RjJNTVRBZlRJOVVxb3lyWmEvd2hxVVpXeFh3Zi9HMUt5bDg5U3lGTVlBTzdDenVidHNKTy9SeFVxanIKQzBhaDB3Q3l5dFVqM2RLY1hnNlZDQjVxUDZ0SW1jWHgyTFNXY01SdTMyQjd3bWpEVHM3aVI0QmphdnZGdVpnQQpZMStlNG9oRnV2MTZYYmxSbDduYU1jd0k0OTJzMVRFNHQyZElJMTkxbzZOZmhKTFIwUENWa05SY1V2RjVuNGJrCnNjdFZRRzRHd1FCWFJyQ3FzZEh6bnlicjJtekVUT1pSd2V5YVMxd21iY3dsWnd2ZkhRS25iUVFkVFdlRFZjT00KamdXMkxMMmFlUzVtCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
