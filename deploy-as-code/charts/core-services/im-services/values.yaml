@@ -133,11 +133,6 @@ env: |
       configMapKeyRef:
         name: egov-service-host
         key: vendor-registry
-  - name: EGOV_FACILITY_HOST
-    valueFrom:
-      configMapKeyRef:
-        key: facility-service
-        name: egov-service-host
   - name: EGOV_RMS_HOST
     valueFrom:
      configMapKeyRef:
@@ -145,18 +140,11 @@ env: |
         name: egov-service-host
   - name: EGOV_RMS_TICKET_STATUS_UPDATE_PATH
     value: /rms-service/v1/ticket/status/update
-  - name: EGOV_FACILITY_HOST
-    valueFrom:
-      configMapKeyRef:
-        name: egov-service-host
-        key: facility-service
   - name: EGOV_BOUNDARY_HOST
     valueFrom:
       configMapKeyRef:
         name: egov-service-host
         key: boundary-service
-  - name: SPRING_FLYWAY_ENABLED
-    value: "false"
   - name: SERVER_CONTEXT_PATH
     value: /im-services
   - name: FFMPEG_CPULIMITPERCENTAGE
@@ -176,8 +164,6 @@ env: |
       configMapKeyRef:
         key: egov-mdms-service
         name: egov-service-host
-  - name: SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE
-    value: 100MB
   - name: EGOV_USER_HOST
     valueFrom:
       configMapKeyRef:
