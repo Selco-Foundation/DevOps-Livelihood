@@ -1,4 +1,4 @@
-name: Update Service Image Tag
+name: Update Service Image Tag for Dev
 
 on:
   workflow_dispatch:
@@ -33,7 +33,7 @@ jobs:
       SERVICE_TAG: ${{ github.event.inputs.service_tag }}
       ENVIRONMENT: livelihood-dev
 
-    if: ${{ github.ref_name == 'develop' || github.ref_name == 'dev-image-updater' }}
+    if: ${{ github.ref_name == 'develop' }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -123,7 +123,7 @@ jobs:
           gh pr create \
             --base develop \
             --head "$BRANCH_NAME" \
-            --title "Update ${SERVICE_NAME} to ${SERVICE_TAG}" \
+            --title "Update ${SERVICE_NAME} to ${SERVICE_TAG} for dev" \
             --body "## Image Tag Update
 
           This PR was automatically created by GitHub Actions.
