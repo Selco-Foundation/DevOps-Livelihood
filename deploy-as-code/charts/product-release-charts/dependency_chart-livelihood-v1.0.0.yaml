@@ -1,6 +1,6 @@
-version: v3.7.26
+version: v1.0.0
 modules:
-  - name: backbone-dev
+  - name: backbone
     services:
       - kafka-kraft
       - elasticsearch-data
@@ -12,40 +12,33 @@ modules:
       - playground
       - redis
       - pgadmin
-  - name: core-dev
+  - name: core
     dependencies:
-      - "backbone-dev"
+      - "backbone"
     services:
+      egov-url-shortening: develop-f145aad42f6a4740531aab2b16c9cc0e2943d75b
       amc-service: v3.6.26-8bf11f800d198d8e3f10e39d49598ef2577f682f
-      asset-registry: v3.5.23-737bc697023d565f85e66d3a47d79cfe89409f71
+      asset-registry: staging-602445f7efd05c10804e3abd773840b12eeb7547
       field-planner-activity: v3.3.7-73d0cc3be378c4495e6f7d7162b2c5d8c1951487
       field-planner: v3.3.9-2eae964f8fa251e7adba756c2b6eb1f34ea47851
-      ingestion-service: v3.6.24-1e609f3077d20ec6cc98ef672923329c68de19a4
+      ingestion-service: staging-e6bfba242c172c08f0a0175d423e8ca2bb6c6f3a
       project: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
-      vendor-registry: v3.6.26-8bf11f800d198d8e3f10e39d49598ef2577f682f
+      vendor-registry: staging-e49076017baee831d2e671643096fa47866b1bc5
       installation-qc: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
       pdf-service: pdf-2.9-lts-a17e8ebea8-48
       workbench-ui: v3.3.7-73d0cc3be378c4495e6f7d7162b2c5d8c1951487
       rms-service: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
-      boundary-service: v3.5.24-52511d8d8a66451b28a2f082a5d8ce7fc24830bd
-      facility-service: v3.6.26-8bf11f800d198d8e3f10e39d49598ef2577f682f
-      maharashtra: v2.1.0-c0f56d4c169b43a17d2285403d41b3fb10c6dde7
-      meghalaya: v2.1.0-c0f56d4c169b43a17d2285403d41b3fb10c6dde7
-      gujarat: v2.1.0-c0f56d4c169b43a17d2285403d41b3fb10c6dde7
-      assam: v2.1.0-c0f56d4c169b43a17d2285403d41b3fb10c6dde7
-      odisha: v2.1.0-c0f56d4c169b43a17d2285403d41b3fb10c6dde7
-      sikkim: v2.1.0-c0f56d4c169b43a17d2285403d41b3fb10c6dde7
-      mizoram: v2.1.0-c0f56d4c169b43a17d2285403d41b3fb10c6dde7
-      manipur: v2.1.0-c0f56d4c169b43a17d2285403d41b3fb10c6dde7
-      nagaland: v2.1.0-c0f56d4c169b43a17d2285403d41b3fb10c6dde7
+      boundary-service: staging-e49076017baee831d2e671643096fa47866b1bc5
+      facility-service: staging-d0c9ccd8b8fb5b416867bae62f3f7720924d9dd1
       egov-hrms: v3.6.24-1e609f3077d20ec6cc98ef672923329c68de19a4
       egov-filestore: v2.0.3-7de51e1b5d83b29754c5e30d33c931d5cc9159aa
-      egov-workflow-v2: v3.6.25-ac9e4ceb1c2b31207eeddcf883314e50aed15fe9
-      im-services-analytics: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
-      processor-services: main-3aa146620a09ad8ec6a4650de881b8d44bf23306
-      im-services: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
+      egov-workflow-v2: staging-d0c9ccd8b8fb5b416867bae62f3f7720924d9dd1
+      im-services-analytics: staging-602445f7efd05c10804e3abd773840b12eeb7547
+      processor-services: main-989d294d0111097082f14e4045f6ddcb97007235
+      im-services: enhancement-sms-template-update-cd0b1fc99aa300834832851ac251b29e47e9cc5e
+      livelihood-ui: staging-ad0e301679b6afb01453deb4bc138ca2a71676c6
       digit-ui: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
-      inbox: v3.3.7-73d0cc3be378c4495e6f7d7162b2c5d8c1951487
+      inbox: staging-602445f7efd05c10804e3abd773840b12eeb7547
       egov-mdms-service: v2.9.2-4a60f20
       egov-notification-sms: master-03072024-1
       egov-notification-mail: v2.9.2-4a60f20
