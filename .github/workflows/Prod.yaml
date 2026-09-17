@@ -8,22 +8,6 @@ permissions:
   contents: write
 
 jobs:
-  check-changed-files:
-    runs-on: ubuntu-latest
-    outputs:
-      deploy-as-code-changed: ${{ steps.check_files.outputs.deploy-as-code-changed }}
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Check for changes in deploy-as-code
-        id: check_files
-        uses: tj-actions/changed-files@v42
-        with:
-          files: |
-            deploy-as-code/**
-
   DIGIT-deployment:
     runs-on: ubuntu-latest
 
@@ -52,8 +36,8 @@ jobs:
       - name: sops decryption
         run: |
           aws sts get-caller-identity
-          sops --decrypt --kms ${{ secrets.PUBLIC_KMS_KEY_PROD }} $HOME/work/DIGIT-DevOps/DIGIT-DevOps/deploy-as-code/charts/environments/selco-prod-secrets.yaml > env-secrets1.yaml
-          cp env-secrets1.yaml $HOME/work/DIGIT-DevOps/DIGIT-DevOps/deploy-as-code/charts/environments/selco-prod-secrets.yaml
+          sops --decrypt --kms ${{ secrets.PUBLIC_KMS_KEY_PROD }} $HOME/work/DevOps-Livelihood/DevOps-Livelihood/deploy-as-code/charts/environments/livelihood-prod-secrets.yaml > env-secrets1.yaml
+          cp env-secrets1.yaml $HOME/work/DevOps-Livelihood/DevOps-Livelihood/deploy-as-code/charts/environments/livelihood-prod-secrets.yaml
       # working-directory: deploy-as-code/charts/environments
 
 
@@ -78,7 +62,7 @@ jobs:
       - name: Parse YAML and export as environment variables
         id: set-env
         run: |
-          services=$(yq e '.modules[] | select(.name == "core-dev") | .services' deploy-as-code/charts/product-release-charts/dependency_chart-selco-v3.7.26.yaml) 
+          services=$(yq e '.modules[] | select(.name == "core-dev") | .services' deploy-as-code/charts/product-release-charts/dependency_chart-livelihood-v1.0.0.yaml) 
           
           # Iterate over each service and export as environment variables
           echo "$services" | while IFS=":" read -r key value; do
@@ -93,6 +77,9 @@ jobs:
       - name: digit deployment
         run: |
           helmfile -f digit-helmfile.yaml apply --include-needs=true\
+           --set egov-url-shortening.image.tag=${{ env.egov-url-shortening }} \
+           --set egov-url-shortening.initContainers.dbMigration.image.tag=${{ env.egov-url-shortening }} \
+           --set livelihood-ui.image.tag=${{ env.livelihood-ui }} \
            --set workbench-ui.image.tag=${{ env.workbench-ui }} \
            --set pdf-service.image.tag=${{ env.pdf-service }} \
            --set installation-qc.image.tag=${{ env.installation-qc }} \
@@ -161,4 +148,4 @@ jobs:
            --set egov-idgen.image.tag=${{ env.egov-idgen }} \
         working-directory: deploy-as-code
         env:
-          HELMFILE_ENV: "selco-prod"
+          HELMFILE_ENV: "livelihood-prod"
