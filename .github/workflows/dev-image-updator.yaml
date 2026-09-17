@@ -89,6 +89,7 @@ jobs:
         run: |
           # Create unique branch name
           BRANCH_NAME="update-dev-${SERVICE_NAME}-${SERVICE_TAG}"
+          echo "BRANCH_NAME=${BRANCH_NAME}" >> "$GITHUB_ENV"
 
           echo "Creating branch: $BRANCH_NAME"
           git checkout -b "$BRANCH_NAME"
@@ -102,6 +103,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes found."
             echo "Tag might already be set to $SERVICE_TAG."
+            echo "SKIP_PR=true" >> "$GITHUB_ENV"
             exit 0
           fi
 
@@ -112,11 +114,10 @@ jobs:
           echo "Branch pushed successfully."
 
       - name: Create Pull Request
+        if: ${{ env.SKIP_PR != 'true' }}
         env:
           GH_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
         run: |
-          BRANCH_NAME="update-${SERVICE_NAME}-${SERVICE_TAG}"
-
           echo "Creating Pull Request..."
 
           gh pr create \
