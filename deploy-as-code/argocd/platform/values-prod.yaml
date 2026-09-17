@@ -15,9 +15,7 @@ project:
   namespaceResourceWhitelist:
     - group: "*"
       kind: "*"
-  namespaceResourceBlacklist:
-    - group: networking.k8s.io
-      kind: Ingress
+  namespaceResourceBlacklist: []
 
 applicationset:
   repoURL: https://github.com/Selco-Foundation/DevOps-Livelihood.git
