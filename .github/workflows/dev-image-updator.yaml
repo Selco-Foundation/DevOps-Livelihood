@@ -1,4 +1,4 @@
-name: Update Service Image Tag
+name: Update Service Image Tag for Dev
 
 on:
   workflow_dispatch:
@@ -22,9 +22,8 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  id-token: write
+  pull-requests: write
   contents: write
-
 
 jobs:
   update-tag:
@@ -40,50 +39,96 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: develop
+          fetch-depth: 0
 
       - name: Validate Inputs
         run: |
-          if [ -z "${{ env.SERVICE_NAME }}" ] || [ -z "${{ env.SERVICE_TAG }}" ] || [ -z "${{ env.ENVIRONMENT }}" ]; then
-            echo "Error: Missing required inputs. Service Name, Tag, and Environment must be provided."
+          if [ -z "$SERVICE_NAME" ] || [ -z "$SERVICE_TAG" ] || [ -z "$ENVIRONMENT" ]; then
+            echo "Error: Missing required inputs."
+            echo "Service Name, Tag, and Environment must be provided."
             exit 1
           fi
 
-          # Sanitize tag input to prevent basic path traversal or command injections in yq
-          if [[ ! "${{ env.SERVICE_TAG }}" =~ ^[a-zA-Z0-9_.-]+$ ]]; then
+          # Allow only alphanumeric characters, underscore, dot and hyphen in the image tag.
+          if [[ ! "$SERVICE_TAG" =~ ^[a-zA-Z0-9_.-]+$ ]]; then
             echo "Error: Invalid characters in service_tag."
             exit 1
           fi
 
-      - name: Check if service exists in file and Update Image Tag.
+      - name: Update Service Image Tag
         run: |
-          IMAGE_TAGS_FILEPATH="./deploy-as-code/charts/environments/${{ env.ENVIRONMENT }}-tags.yaml"
+          IMAGE_TAGS_FILEPATH="./deploy-as-code/charts/environments/${ENVIRONMENT}-tags.yaml"
 
-          if [ "$(yq eval ".${{ env.SERVICE_NAME }}" "$IMAGE_TAGS_FILEPATH")" = "null" ]; then
-            echo "Error: '${{ env.SERVICE_NAME }}' does not exist in $IMAGE_TAGS_FILEPATH."
+          echo "Updating file:"
+          echo "$IMAGE_TAGS_FILEPATH"
+
+          # Check whether service exists
+          if [ "$(yq eval ".${SERVICE_NAME}" "$IMAGE_TAGS_FILEPATH")" = "null" ]; then
+            echo "Error: '${SERVICE_NAME}' does not exist in $IMAGE_TAGS_FILEPATH."
             exit 1
           fi
 
-          yq eval -i '.${{ env.SERVICE_NAME }}.image.tag="${{ env.SERVICE_TAG }}"' "$IMAGE_TAGS_FILEPATH"
+          # Update service image tag
+          yq eval -i \
+            ".${SERVICE_NAME}.image.tag = \"${SERVICE_TAG}\"" \
+            "$IMAGE_TAGS_FILEPATH"
 
           # Update DB Migration image if present
-          if [ "$(yq eval ".${{ env.SERVICE_NAME }}.initContainers.dbMigration" "$IMAGE_TAGS_FILEPATH")" != "null" ]; then
-            yq eval -i '.${{ env.SERVICE_NAME }}.initContainers.dbMigration.image.tag="${{ env.SERVICE_TAG }}"' "$IMAGE_TAGS_FILEPATH"
+          if [ "$(yq eval ".${SERVICE_NAME}.initContainers.dbMigration" "$IMAGE_TAGS_FILEPATH")" != "null" ]; then
+            yq eval -i \
+              ".${SERVICE_NAME}.initContainers.dbMigration.image.tag = \"${SERVICE_TAG}\"" \
+              "$IMAGE_TAGS_FILEPATH"
           fi
 
-      - name: Commit and Push Changes
+      - name: Show Changes
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git diff -- \
+            "./deploy-as-code/charts/environments/${ENVIRONMENT}-tags.yaml"
 
-          git add "./deploy-as-code/charts/environments/${{ env.ENVIRONMENT }}-tags.yaml"
+      - name: Create Branch and Push Changes
+        run: |
+          # Create unique branch name
+          BRANCH_NAME="update-dev-${SERVICE_NAME}-${SERVICE_TAG}"
+          echo "BRANCH_NAME=${BRANCH_NAME}" >> "$GITHUB_ENV"
 
-          # Check if tag is unchanged
-          if git diff-index --quiet HEAD; then
-            echo "No changes found. Tag might already be set to $SERVICE_TAG"
+          echo "Creating branch: $BRANCH_NAME"
+          git checkout -b "$BRANCH_NAME"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add "./deploy-as-code/charts/environments/${ENVIRONMENT}-tags.yaml"
+
+          # Check if there are changes
+          if git diff --cached --quiet; then
+            echo "No changes found."
+            echo "Tag might already be set to $SERVICE_TAG."
+            echo "SKIP_PR=true" >> "$GITHUB_ENV"
             exit 0
           fi
 
-          git commit -m "Update image tag of ${{ env.SERVICE_NAME }} to ${{ env.SERVICE_TAG }}"
+          git commit -m "Update image tag of ${SERVICE_NAME} to ${SERVICE_TAG}"
 
-          git pull --rebase
-          git push
+          echo "Pushing branch: $BRANCH_NAME"
+          git push origin "$BRANCH_NAME"
+          echo "Branch pushed successfully."
+
+      - name: Create Pull Request
+        if: ${{ env.SKIP_PR != 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+        run: |
+          echo "Creating Pull Request..."
+
+          gh pr create \
+            --base develop \
+            --head "$BRANCH_NAME" \
+            --title "Update ${SERVICE_NAME} to ${SERVICE_TAG} for dev" \
+            --body "## Image Tag Update
+
+          This PR was automatically created by GitHub Actions.
+          **Service:** ${SERVICE_NAME}
+          **Environment:** ${ENVIRONMENT}
+          **New Image Tag:** ${SERVICE_TAG}
+
+          Please review and merge the PR."
