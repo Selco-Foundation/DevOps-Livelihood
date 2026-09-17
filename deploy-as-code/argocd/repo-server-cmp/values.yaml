@@ -31,6 +31,15 @@ configs:
 
               release_name="${PARAM_RELEASE_NAME:-$ARGOCD_APP_NAME}"
 
+              # Decrypt into real temp files rather than `<(sops -d "$file")`:
+              # ArgoCD's CMP server execs this script through its own gRPC/exec
+              # wrapper, which tears down process-substitution pipes before the
+              # separately-exec'd `helm` binary can open /dev/fd/N, failing with
+              # "open /dev/fd/N: no such file or directory" on every render.
+              decrypted_files=()
+              cleanup() { rm -f "${decrypted_files[@]:-}"; }
+              trap cleanup EXIT
+
               values_args=()
               i=0
               while :; do
@@ -38,8 +47,13 @@ configs:
                 file="${!var:-}"
                 [ -z "$file" ] && break
                 case "$(basename "$file")" in
-                  *secrets*) values_args+=(-f <(sops -d "$file")) ;;
-                  *)         values_args+=(-f "$file") ;;
+                  *secrets*)
+                    decrypted="$(mktemp)"
+                    sops -d "$file" > "$decrypted"
+                    decrypted_files+=("$decrypted")
+                    values_args+=(-f "$decrypted")
+                    ;;
+                  *) values_args+=(-f "$file") ;;
                 esac
                 i=$((i + 1))
               done
