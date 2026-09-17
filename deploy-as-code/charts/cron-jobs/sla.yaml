@@ -2,8 +2,9 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: sla-compute-job
+  namespace: core
 spec:
-  schedule: "0 * * * *"  # every hour
+  schedule: "5 * * * *"  # every hour
   timeZone: Asia/Kolkata
   jobTemplate:
     spec:
@@ -13,5 +14,5 @@ spec:
           - name: sla-job
             image: selcohub/cronjob-sla-livelihood:latest
             args:
-              - in
+              - livelihood
           restartPolicy: OnFailure
