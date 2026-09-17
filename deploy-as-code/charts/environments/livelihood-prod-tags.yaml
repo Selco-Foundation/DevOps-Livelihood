@@ -210,6 +210,14 @@ egov-otp:
       image:
         tag: v2.9.2-4a60f20
 
+egov-url-shortening:
+  image:
+    tag: develop-f145aad42f6a4740531aab2b16c9cc0e2943d75b
+  initContainers:
+    dbMigration:
+      image:
+        tag: develop-f145aad42f6a4740531aab2b16c9cc0e2943d75b
+
 egov-persister:
   image:
     tag: v2.9.2-4a60f20
