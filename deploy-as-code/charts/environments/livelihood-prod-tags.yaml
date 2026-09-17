@@ -116,7 +116,7 @@ im-services-analytics:
 
 processor-services:
   image:
-    tag: main-3aa146620a09ad8ec6a4650de881b8d44bf23306
+    tag: main-989d294d0111097082f14e4045f6ddcb97007235
 
 im-services:
   image:
@@ -209,6 +209,14 @@ egov-otp:
     dbMigration:
       image:
         tag: v2.9.2-4a60f20
+
+egov-url-shortening:
+  image:
+    tag: develop-f145aad42f6a4740531aab2b16c9cc0e2943d75b
+  initContainers:
+    dbMigration:
+      image:
+        tag: develop-f145aad42f6a4740531aab2b16c9cc0e2943d75b
 
 egov-persister:
   image:
