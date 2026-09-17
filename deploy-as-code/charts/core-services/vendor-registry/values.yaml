@@ -55,11 +55,6 @@ env: |
     value: /vendor
   - name: JAVA_OPTS
     value: {{ index .Values "heap" | quote }}
-  - name: KAFKA_CONFIG_BOOTSTRAP_SERVER_CONFIG
-    valueFrom:
-      configMapKeyRef:
-        name: egov-config
-        key: kafka-brokers
   - name: EGOV_LOCALIZATION_HOST
     valueFrom:
       configMapKeyRef:

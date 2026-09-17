@@ -49,11 +49,6 @@ env: |
       configMapKeyRef:
         name: egov-service-host
         key: field-planner-activity
-  - name: OTEL_EXPORTER_OTLP_ENDPOINT
-    valueFrom:
-      configMapKeyRef:
-        name: egov-service-host
-        key: jaeger
   - name: EGOV_IDGEN_HOST
     valueFrom:
       configMapKeyRef:
