@@ -62,7 +62,7 @@ jobs:
       - name: Parse YAML and export as environment variables
         id: set-env
         run: |
-          services=$(yq e '.modules[] | select(.name == "core-dev") | .services' deploy-as-code/charts/product-release-charts/dependency_chart-livelihood-v1.0.0.yaml) 
+          services=$(yq e '.modules[] | select(.name == "core") | .services' deploy-as-code/charts/product-release-charts/dependency_chart-livelihood-v1.0.0.yaml) 
           
           # Iterate over each service and export as environment variables
           echo "$services" | while IFS=":" read -r key value; do
