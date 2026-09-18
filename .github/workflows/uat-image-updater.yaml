@@ -1,0 +1,134 @@
+name: Update Service Image Tag for UAT
+
+on:
+  workflow_dispatch:
+    inputs:
+      service_name:
+        description: "Select service"
+        required: true
+        type: choice
+        options:
+          - installation-qc
+      service_tag:
+        description: "Image tag (e.g. v2.3.7, uat-abcd123)"
+        required: true
+        type: string
+
+run-name: Update ${{ github.event.inputs.service_name }} to ${{ github.event.inputs.service_tag }}
+
+# Allow only one job at a time to prevent race conditions.
+concurrency:
+  group: uat-image-updater
+  cancel-in-progress: false
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  update-tag:
+    runs-on: ubuntu-latest
+    env:
+      SERVICE_NAME: ${{ github.event.inputs.service_name }}
+      SERVICE_TAG: ${{ github.event.inputs.service_tag }}
+      ENVIRONMENT: livelihood-uat
+
+    if: ${{ github.ref_name == 'uat' }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: uat
+          fetch-depth: 0
+
+      - name: Validate Inputs
+        run: |
+          if [ -z "$SERVICE_NAME" ] || [ -z "$SERVICE_TAG" ] || [ -z "$ENVIRONMENT" ]; then
+            echo "Error: Missing required inputs."
+            echo "Service Name, Tag, and Environment must be provided."
+            exit 1
+          fi
+
+          # Allow only alphanumeric characters, underscore, dot and hyphen in the image tag.
+          if [[ ! "$SERVICE_TAG" =~ ^[a-zA-Z0-9_.-]+$ ]]; then
+            echo "Error: Invalid characters in service_tag."
+            exit 1
+          fi
+
+      - name: Update Service Image Tag
+        run: |
+          IMAGE_TAGS_FILEPATH="./deploy-as-code/charts/environments/${ENVIRONMENT}-tags.yaml"
+
+          echo "Updating file:"
+          echo "$IMAGE_TAGS_FILEPATH"
+
+          # Check whether service exists
+          if [ "$(yq eval ".${SERVICE_NAME}" "$IMAGE_TAGS_FILEPATH")" = "null" ]; then
+            echo "Error: '${SERVICE_NAME}' does not exist in $IMAGE_TAGS_FILEPATH."
+            exit 1
+          fi
+
+          # Update service image tag
+          yq eval -i \
+            ".${SERVICE_NAME}.image.tag = \"${SERVICE_TAG}\"" \
+            "$IMAGE_TAGS_FILEPATH"
+
+          # Update DB Migration image if present
+          if [ "$(yq eval ".${SERVICE_NAME}.initContainers.dbMigration" "$IMAGE_TAGS_FILEPATH")" != "null" ]; then
+            yq eval -i \
+              ".${SERVICE_NAME}.initContainers.dbMigration.image.tag = \"${SERVICE_TAG}\"" \
+              "$IMAGE_TAGS_FILEPATH"
+          fi
+
+      - name: Show Changes
+        run: |
+          git diff -- \
+            "./deploy-as-code/charts/environments/${ENVIRONMENT}-tags.yaml"
+
+      - name: Create Branch and Push Changes
+        run: |
+          # Create unique branch name
+          BRANCH_NAME="update-uat-${SERVICE_NAME}-${SERVICE_TAG}"
+          echo "BRANCH_NAME=${BRANCH_NAME}" >> "$GITHUB_ENV"
+
+          echo "Creating branch: $BRANCH_NAME"
+          git checkout -b "$BRANCH_NAME"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add "./deploy-as-code/charts/environments/${ENVIRONMENT}-tags.yaml"
+
+          # Check if there are changes
+          if git diff --cached --quiet; then
+            echo "No changes found."
+            echo "Tag might already be set to $SERVICE_TAG."
+            echo "SKIP_PR=true" >> "$GITHUB_ENV"
+            exit 0
+          fi
+
+          git commit -m "Update image tag of ${SERVICE_NAME} to ${SERVICE_TAG}"
+
+          echo "Pushing branch: $BRANCH_NAME"
+          git push origin "$BRANCH_NAME"
+          echo "Branch pushed successfully."
+
+      - name: Create Pull Request
+        if: ${{ env.SKIP_PR != 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+        run: |
+          echo "Creating Pull Request..."
+
+          gh pr create \
+            --base uat \
+            --head "$BRANCH_NAME" \
+            --title "Update ${SERVICE_NAME} to ${SERVICE_TAG} for uat" \
+            --body "## Image Tag Update
+
+          This PR was automatically created by GitHub Actions.
+          **Service:** ${SERVICE_NAME}
+          **Environment:** ${ENVIRONMENT}
+          **New Image Tag:** ${SERVICE_TAG}
+
+          Please review and merge the PR."
