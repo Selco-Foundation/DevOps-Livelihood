@@ -8,11 +8,11 @@ amc-service:
 
 asset-registry:
   image:
-    tag: staging-bc02f5c23776016d0482a2537d6c176420b6ba91
+    tag: staging-23f86f133b83491c2a174abefcee699824d4aca5
   initContainers:
     dbMigration:
       image:
-        tag: staging-bc02f5c23776016d0482a2537d6c176420b6ba91
+        tag: staging-23f86f133b83491c2a174abefcee699824d4aca5
 
 field-planner-activity:
   image:
