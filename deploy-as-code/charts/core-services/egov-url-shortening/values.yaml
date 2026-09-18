@@ -15,11 +15,11 @@ initContainers:
     enabled: true
     schemaTable: "egov-url-shortening_schema"
     image:
-      repository: "egov-url-shortening-db"
+      repository: selcohub/egov-url-shortener-db
 
 # Container Configs
 image:
-  repository: "egov-url-shortening"
+  repository: selcohub/egov-url-shortener
 replicas: "1"
 healthChecks:
   enabled: true

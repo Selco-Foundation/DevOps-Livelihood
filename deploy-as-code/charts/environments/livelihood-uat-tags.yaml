@@ -8,11 +8,11 @@ amc-service:
 
 asset-registry:
   image:
-    tag: staging-bc02f5c23776016d0482a2537d6c176420b6ba91
+    tag: staging-23f86f133b83491c2a174abefcee699824d4aca5
   initContainers:
     dbMigration:
       image:
-        tag: staging-bc02f5c23776016d0482a2537d6c176420b6ba91
+        tag: staging-23f86f133b83491c2a174abefcee699824d4aca5
 
 field-planner-activity:
   image:
@@ -212,11 +212,11 @@ egov-otp:
 
 egov-url-shortening:
   image:
-    tag: develop-f145aad42f6a4740531aab2b16c9cc0e2943d75b
+    tag: staging-bc62b54d4c657f2bb382238be4b642b8d7930755
   initContainers:
     dbMigration:
       image:
-        tag: develop-f145aad42f6a4740531aab2b16c9cc0e2943d75b
+        tag: staging-bc62b54d4c657f2bb382238be4b642b8d7930755
 
 egov-persister:
   image:
