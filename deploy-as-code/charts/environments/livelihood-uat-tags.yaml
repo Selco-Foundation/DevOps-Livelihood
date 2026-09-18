@@ -116,7 +116,7 @@ im-services-analytics:
 
 processor-services:
   image:
-    tag: main-3aa146620a09ad8ec6a4650de881b8d44bf23306
+    tag: main-989d294d0111097082f14e4045f6ddcb97007235
 
 im-services:
   image:
