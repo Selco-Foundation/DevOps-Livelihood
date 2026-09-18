@@ -212,11 +212,11 @@ egov-otp:
 
 egov-url-shortening:
   image:
-    tag: develop-f145aad42f6a4740531aab2b16c9cc0e2943d75b
+    tag: staging-bc62b54d4c657f2bb382238be4b642b8d7930755
   initContainers:
     dbMigration:
       image:
-        tag: develop-f145aad42f6a4740531aab2b16c9cc0e2943d75b
+        tag: staging-bc62b54d4c657f2bb382238be4b642b8d7930755
 
 egov-persister:
   image:
