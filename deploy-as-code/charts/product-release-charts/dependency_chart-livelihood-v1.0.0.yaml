@@ -16,29 +16,29 @@ modules:
     dependencies:
       - "backbone"
     services:
-      egov-url-shortening: develop-f145aad42f6a4740531aab2b16c9cc0e2943d75b
+      egov-url-shortening: v1.0.0-7f294d8c9183fdd02b755d20fc4b262603167077
       amc-service: v3.6.26-8bf11f800d198d8e3f10e39d49598ef2577f682f
-      asset-registry: staging-602445f7efd05c10804e3abd773840b12eeb7547
+      asset-registry: v1.0.0-7f294d8c9183fdd02b755d20fc4b262603167077
       field-planner-activity: v3.3.7-73d0cc3be378c4495e6f7d7162b2c5d8c1951487
       field-planner: v3.3.9-2eae964f8fa251e7adba756c2b6eb1f34ea47851
-      ingestion-service: staging-e6bfba242c172c08f0a0175d423e8ca2bb6c6f3a
+      ingestion-service: v1.0.0-7f294d8c9183fdd02b755d20fc4b262603167077
       project: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
-      vendor-registry: staging-e49076017baee831d2e671643096fa47866b1bc5
+      vendor-registry: v1.0.0-7f294d8c9183fdd02b755d20fc4b262603167077
       installation-qc: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
       pdf-service: pdf-2.9-lts-a17e8ebea8-48
       workbench-ui: v3.3.7-73d0cc3be378c4495e6f7d7162b2c5d8c1951487
       rms-service: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
-      boundary-service: staging-e49076017baee831d2e671643096fa47866b1bc5
-      facility-service: staging-d0c9ccd8b8fb5b416867bae62f3f7720924d9dd1
+      boundary-service: v1.0.0-7f294d8c9183fdd02b755d20fc4b262603167077
+      facility-service: v1.0.0-7f294d8c9183fdd02b755d20fc4b262603167077
       egov-hrms: v3.6.24-1e609f3077d20ec6cc98ef672923329c68de19a4
       egov-filestore: v2.0.3-7de51e1b5d83b29754c5e30d33c931d5cc9159aa
-      egov-workflow-v2: staging-d0c9ccd8b8fb5b416867bae62f3f7720924d9dd1
-      im-services-analytics: staging-602445f7efd05c10804e3abd773840b12eeb7547
+      egov-workflow-v2: v1.0.0-7f294d8c9183fdd02b755d20fc4b262603167077
+      im-services-analytics: v1.0.0-7f294d8c9183fdd02b755d20fc4b262603167077
       processor-services: main-989d294d0111097082f14e4045f6ddcb97007235
-      im-services: enhancement-sms-template-update-cd0b1fc99aa300834832851ac251b29e47e9cc5e
-      livelihood-ui: staging-ad0e301679b6afb01453deb4bc138ca2a71676c6
+      im-services: v1.0.0-7f294d8c9183fdd02b755d20fc4b262603167077
+      livelihood-ui: v1.0.0-7f294d8c9183fdd02b755d20fc4b262603167077
       digit-ui: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
-      inbox: staging-602445f7efd05c10804e3abd773840b12eeb7547
+      inbox: v1.0.0-7f294d8c9183fdd02b755d20fc4b262603167077
       egov-mdms-service: v2.9.2-4a60f20
       egov-notification-sms: master-03072024-1
       egov-notification-mail: v2.9.2-4a60f20
