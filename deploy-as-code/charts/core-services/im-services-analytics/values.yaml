@@ -27,6 +27,10 @@ memory_limits: "2560Mi"
 memory_requests: "2Gi"
 minReplicas: 2
 
+# ENV-SPECIFIC (prod-only): pins this workload onto the tainted/labeled node
+# reserved for it on livelihood-prod. uat has no matching taint, so this block
+# intentionally has no counterpart there. Do not drop it when merging changes
+# from uat into this branch/file.
 nodeSelector:
   accelerator: none
 tolerations:

@@ -13,6 +13,9 @@ loki:
   storage_config:
     aws:
       region: ap-south-2
+      # ENV-SPECIFIC: must stay the prod bucket on this branch (uat points at
+      # livelihood-uat-loki-bucket). Do not overwrite during a uat -> Prod
+      # promotion merge.
       bucketnames: 'livelihood-prod-loki-bucket'
       s3forcepathstyle: false
   pattern_ingester:
@@ -32,6 +35,9 @@ loki:
 
   storage:
     type: s3
+    # ENV-SPECIFIC: must stay the prod bucket on this branch (uat points at
+    # livelihood-uat-loki-bucket). Do not overwrite during a uat -> Prod
+    # promotion merge.
     bucketNames:
       chunks: 'livelihood-prod-loki-bucket'
       ruler: 'livelihood-prod-loki-bucket'
