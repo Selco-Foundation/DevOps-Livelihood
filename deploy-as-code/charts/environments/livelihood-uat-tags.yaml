@@ -120,11 +120,11 @@ processor-services:
 
 im-services:
   image:
-    tag: staging-ea16bd2a3027701c06867874044d987ea0ca01bf
+    tag: staging-bc62b54d4c657f2bb382238be4b642b8d7930755
   initContainers:
     dbMigration:
       image:
-        tag: staging-ea16bd2a3027701c06867874044d987ea0ca01bf
+        tag: staging-bc62b54d4c657f2bb382238be4b642b8d7930755
 
 livelihood-ui:
   image:
