@@ -47,6 +47,9 @@ heap: "-Xmx700m -Xms700m"
 java-args: ""
 memory_requests: "1Gi"
 memory_limits: "1540Mi"
+kafka:
+  topic:
+    audit: enc-user-audit-data
 
 # Additional Container Envs
 env: |
