@@ -34,6 +34,8 @@ hub:
   revisionHistoryLimit:
   config:
     Authenticator:
+      # ENV-SPECIFIC: must stay "Selco-Uat" on this branch (Prod uses
+      # "Selco-Prod"). Do not overwrite during a promotion merge.
       admin_users:
         - Selco-Uat
     NativeAuthenticator:

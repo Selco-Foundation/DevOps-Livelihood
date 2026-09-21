@@ -1,0 +1,36 @@
+name: Guard env-specific config blocks
+# Protects lines/blocks tagged "ENV-SPECIFIC" (e.g. prod node taints, per-env
+# bucket names) from being silently dropped when a uat -> Prod (or Prod -> uat)
+# promotion PR merges a file that carries one of these markers on the target
+# branch. Fails the PR if any file loses ENV-SPECIFIC markers it had on the
+# base branch; passes silently if none are affected.
+on:
+  pull_request:
+    branches: [Prod, uat]
+
+jobs:
+  check-env-specific-markers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify ENV-SPECIFIC markers are not dropped
+        run: |
+          set -euo pipefail
+          base_ref="origin/${{ github.base_ref }}"
+          git fetch origin "${{ github.base_ref }}" --depth=1
+
+          failed=0
+          while IFS= read -r file; do
+            [ -f "$file" ] || continue
+            base_count=$(git show "$base_ref:$file" 2>/dev/null | grep -c 'ENV-SPECIFIC' || true)
+            head_count=$(grep -c 'ENV-SPECIFIC' "$file" || true)
+            if [ "$base_count" -gt "$head_count" ]; then
+              echo "::error file=$file::ENV-SPECIFIC marker count dropped from $base_count to $head_count. This file has environment-specific config (e.g. node taints, bucket names) on '${{ github.base_ref }}' that this PR appears to remove. If that's intentional, update/remove the marker comment deliberately; otherwise restore the block."
+              failed=1
+            fi
+          done < <(git diff --name-only "$base_ref"...HEAD)
+
+          exit $failed
