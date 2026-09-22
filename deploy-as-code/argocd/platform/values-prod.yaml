@@ -13,6 +13,8 @@ project:
       namespace: core
     - server: https://kubernetes.default.svc
       namespace: backbone
+    - server: https://kubernetes.default.svc
+      namespace: monitoring
   clusterResourceWhitelist: []
   namespaceResourceWhitelist:
     - group: "*"
