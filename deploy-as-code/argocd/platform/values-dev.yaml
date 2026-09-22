@@ -14,8 +14,6 @@ project:
       namespace: core
     - name: livelihood-dev
       namespace: backbone
-    - name: livelihood-dev
-      namespace: monitoring
   clusterResourceWhitelist: []
   namespaceResourceWhitelist:
     - group: "*"
