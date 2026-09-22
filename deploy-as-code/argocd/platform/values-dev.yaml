@@ -5,13 +5,15 @@ project:
   description: Restrict ArgoCD access to core namespace on the dev cluster
   sourceRepos:
     - https://github.com/Selco-Foundation/DevOps-Livelihood.git
-  destination:
+  destinations:
     # Dev EKS runs in its own VPC, separate from the prod cluster that hosts
     # this ArgoCD instance, so it's addressed as a registered remote cluster
     # (name must match a key under configs.clusterCredentials in
     # ../controller-cross-cluster-values.yaml) rather than a `server:` URL.
-    name: livelihood-dev
-    namespace: core
+    - name: livelihood-dev
+      namespace: core
+    - name: livelihood-dev
+      namespace: backbone
   clusterResourceWhitelist: []
   namespaceResourceWhitelist:
     - group: "*"
@@ -22,6 +24,9 @@ applicationset:
   repoURL: https://github.com/Selco-Foundation/DevOps-Livelihood.git
   revision: develop
   chartRoot: deploy-as-code/charts/core-services/*
+  destination:
+    name: livelihood-dev
+    namespace: core
   # Renders each core-services sub-chart via the sops-helm CMP sidecar
   # (see ../repo-server-cmp/values.yaml) so livelihood-dev-secrets.yaml
   # (SOPS-encrypted) is decrypted before `helm template` runs.
