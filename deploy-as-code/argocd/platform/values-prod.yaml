@@ -5,14 +5,12 @@ project:
   description: Restrict ArgoCD access to core namespace
   sourceRepos:
     - https://github.com/Selco-Foundation/DevOps-Livelihood.git
-  destinations:
+  destination:
     # TODO: confirm this ArgoCD instance actually runs in-cluster on prod
     # (matching Livelihood's hub pattern). If it runs elsewhere, swap this
     # for a `name:` referencing a registered remote cluster instead.
-    - server: https://kubernetes.default.svc
-      namespace: core
-    - server: https://kubernetes.default.svc
-      namespace: backbone
+    server: https://kubernetes.default.svc
+    namespace: core
   clusterResourceWhitelist: []
   namespaceResourceWhitelist:
     - group: "*"
@@ -23,9 +21,6 @@ applicationset:
   repoURL: https://github.com/Selco-Foundation/DevOps-Livelihood.git
   revision: Prod
   chartRoot: deploy-as-code/charts/core-services/*
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: core
   # Renders each core-services sub-chart via the sops-helm CMP sidecar
   # (see ../repo-server-cmp/values.yaml) so selco-prod-secrets.yaml
   # (SOPS-encrypted) is decrypted before `helm template` runs.
