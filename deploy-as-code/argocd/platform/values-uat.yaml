@@ -14,6 +14,8 @@ project:
       namespace: core
     - name: livelihood-uat
       namespace: backbone
+    - name: livelihood-uat
+      namespace: monitoring
   clusterResourceWhitelist: []
   namespaceResourceWhitelist:
     - group: "*"
