@@ -11,14 +11,12 @@ spec:
     {{- toYaml .Values.project.sourceRepos | nindent 4 }}
 
   destinations:
-  {{- range .Values.project.destinations }}
-  - {{- if .name }}
-    name: {{ .name | quote }}
+  - {{- if .Values.project.destination.name }}
+    name: {{ .Values.project.destination.name | quote }}
     {{- else }}
-    server: {{ .server | quote }}
+    server: {{ .Values.project.destination.server | quote }}
     {{- end }}
-    namespace: {{ .namespace | quote }}
-  {{- end }}
+    namespace: {{ .Values.project.destination.namespace | quote }}
 
   {{- if .Values.project.clusterResourceWhitelist }}
   clusterResourceWhitelist:
