@@ -35,12 +35,12 @@ spec:
                 {{- toYaml .Values.applicationset.valueFiles | nindent 16 }}
 
       destination:
-        {{- if .Values.project.destination.name }}
-        name: {{ .Values.project.destination.name | quote }}
+        {{- if .Values.applicationset.destination.name }}
+        name: {{ .Values.applicationset.destination.name | quote }}
         {{- else }}
-        server: {{ .Values.project.destination.server | quote }}
+        server: {{ .Values.applicationset.destination.server | quote }}
         {{- end }}
-        namespace: {{ .Values.project.destination.namespace | quote }}
+        namespace: {{ .Values.applicationset.destination.namespace | quote }}
 
       syncPolicy:
         {{- if .Values.applicationset.syncPolicy }}
