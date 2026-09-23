@@ -128,7 +128,7 @@ im-services:
 
 livelihood-ui:
   image:
-    tag: staging-93d9fb2612df77d271819ad44f8535d9ee68cd05
+    tag: staging-84e59166b6aafd78ebac29fdbc702fea9c793ef7
 
 digit-ui:
   image:
@@ -136,7 +136,7 @@ digit-ui:
 
 inbox:
   image:
-    tag: staging-602445f7efd05c10804e3abd773840b12eeb7547
+    tag: staging-4d6a8862246502b5d5609660a7a3eb2c118701c3
 
 egov-mdms-service:
   image:
