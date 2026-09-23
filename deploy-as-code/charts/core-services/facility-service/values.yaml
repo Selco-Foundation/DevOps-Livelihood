@@ -79,7 +79,7 @@ env: |
         name: egov-service-host
         key: egov-localization
   - name: EGOV_LOCALIZATION_SEARCH_ENDPOINT
-    value: /localization/messages/v1/_search
+    value: /_search
   - name: EGOV_IDGEN_HOST
     valueFrom:
       configMapKeyRef:
