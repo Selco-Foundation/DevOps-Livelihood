@@ -116,6 +116,9 @@ releases:
   <<: *default
   values:
     - ./pgadmin4/values.yaml
+    - env:
+        email: {{ .Values.secrets.pgadmin.email }}
+        password: {{ .Values.secrets.pgadmin.password }}
     - ingress:
         hosts:
           - host: {{ .Values.global.domain }}
