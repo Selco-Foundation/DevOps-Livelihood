@@ -116,7 +116,7 @@ egov-indexer:
     gitSync:
       repo: "git@github.com:Selco-Foundation/Configs-Livelihood"        ##### Change repo url with Your fork Repo url
       branch: "main"                                         ##### Change repo branch with Your fork Repo branch
-  egov-indexer-yaml-repo-path: "file:///work-dir/Configs-Livelihood/egov-indexer/project-indexer.yml,file:///work-dir/Configs-Livelihood/egov-indexer/im-services.yml,file:///work-dir/Configs-Livelihood/egov-indexer/privacy-audit.yaml,file:///work-dir/Configs-Livelihood/egov-indexer/egov-url-shortening-indexer.yaml,file:///work-dir/Configs-Livelihood/egov-indexer/individual-indexer.yml,file:///work-dir/Configs-Livelihood/egov-indexer/escalation-status-indexer.yml"
+  egov-indexer-yaml-repo-path: "file:///work-dir/Configs-Livelihood/egov-indexer/project-indexer.yml,file:///work-dir/Configs-Livelihood/egov-indexer/im-services.yml,file:///work-dir/Configs-Livelihood/egov-indexer/egov-url-shortening-indexer.yaml,file:///work-dir/Configs-Livelihood/egov-indexer/individual-indexer.yml,file:///work-dir/Configs-Livelihood/egov-indexer/escalation-status-indexer.yml"
 
 egov-persister:
   heap: "-Xmx256m -Xms256m"
