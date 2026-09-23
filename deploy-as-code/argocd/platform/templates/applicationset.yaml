@@ -42,6 +42,26 @@ spec:
         {{- end }}
         namespace: {{ .Values.project.destination.namespace | quote }}
 
+      # The common Deployment/StatefulSet/CronJob templates stamp a
+      # deployment-timestamp annotation from .Release.Time, which is a new
+      # value on every render. Since ArgoCD re-renders the chart on every
+      # refresh, that field never settles and every app shows OutOfSync
+      # forever. Ignore it for diffing/sync purposes; real config/image
+      # changes still show up and still sync normally.
+      ignoreDifferences:
+        - group: apps
+          kind: Deployment
+          jsonPointers:
+            - /spec/template/metadata/annotations/deployment-timestamp
+        - group: apps
+          kind: StatefulSet
+          jsonPointers:
+            - /spec/template/metadata/annotations/deployment-timestamp
+        - group: batch
+          kind: CronJob
+          jsonPointers:
+            - /spec/jobTemplate/spec/template/metadata/annotations/deployment-timestamp
+
       syncPolicy:
         {{- if .Values.applicationset.syncPolicy }}
         {{- toYaml .Values.applicationset.syncPolicy | nindent 8 }}
