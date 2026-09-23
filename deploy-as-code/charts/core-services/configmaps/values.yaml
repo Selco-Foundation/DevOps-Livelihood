@@ -127,9 +127,3 @@ secrets:
 #  rms-api-token:
 #    name: rms-api-token
 #    namespace: core
-  pgadmin:
-    name: pgadmin
-    namespace: backbone
-  loki-aws:
-    name: loki-aws
-    namespace: monitoring
