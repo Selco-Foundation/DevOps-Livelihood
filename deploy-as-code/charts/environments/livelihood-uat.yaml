@@ -117,7 +117,8 @@ egov-indexer:
   initContainers:
     gitSync:
       repo: "git@github.com:Selco-Foundation/Configs-Livelihood"        ##### Change repo url with Your fork Repo url
-      branch: "main"                                         ##### Change repo branch with Your fork Repo branch
+      branch: "uat_dev"                                         ##### Change repo branch with Your fork Repo branch
+      rev: 86a5acceec6067d1db0fd1547e5338fef4a7a87f
   egov-indexer-yaml-repo-path: "file:///work-dir/Configs-Livelihood/egov-indexer/project-indexer.yml,file:///work-dir/Configs-Livelihood/egov-indexer/im-services.yml,file:///work-dir/Configs-Livelihood/egov-indexer/egov-url-shortening-indexer.yaml,file:///work-dir/Configs-Livelihood/egov-indexer/individual-indexer.yml,file:///work-dir/Configs-Livelihood/egov-indexer/escalation-status-indexer.yml"
 
 egov-persister:
@@ -126,11 +127,19 @@ egov-persister:
   initContainers:
     gitSync:
       repo: "git@github.com:Selco-Foundation/Configs-Livelihood"      ##### Change repo url with Your fork Repo url
-      branch: "main"
+      branch: "uat_dev"
+      rev: 86a5acceec6067d1db0fd1547e5338fef4a7a87f
+
+pdf-service:
+  initContainers:
+    gitSync:
+      repo: "git@github.com:Selco-Foundation/Configs-Livelihood"
+      branch: "uat_dev"
+      rev: 86a5acceec6067d1db0fd1547e5338fef4a7a87f
 
 audit-service:
   persist-yml-path: "file:///work-dir/Configs-Livelihood/egov-persister/im-services-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/egov-workflow-v2-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/hrms-employee-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/boundary-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/asset-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/vendor-persister.yaml,file:///work-dir/Configs-Livelihood/egov-persister/mdms-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/egov-user-event-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/privacy-audit.yml"
   initContainers:
     gitSync:
       repo: "git@github.com:Selco-Foundation/Configs-Livelihood"
-      branch: "main"
+      branch: "uat_dev"
