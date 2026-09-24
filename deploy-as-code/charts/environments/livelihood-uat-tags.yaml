@@ -64,11 +64,11 @@ workbench-ui:
 
 rms-service:
   image:
-    tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
+    tag: v3.15.42-5a0319f9a5dfd891427e1b7e79f4ffae09d7fedc
   initContainers:
     dbMigration:
       image:
-        tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
+        tag: v3.15.42-5a0319f9a5dfd891427e1b7e79f4ffae09d7fedc
 
 boundary-service:
   image:

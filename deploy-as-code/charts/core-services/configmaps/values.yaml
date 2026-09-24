@@ -124,6 +124,6 @@ secrets:
   egov-pg-service:
     name: egov-pg-service
     namespace: core
-#  rms-api-token:
-#    name: rms-api-token
-#    namespace: core
+  rms-api-token:
+    name: rms-api-token
+    namespace: core
