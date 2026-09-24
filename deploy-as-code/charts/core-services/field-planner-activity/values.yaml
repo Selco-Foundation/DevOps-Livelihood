@@ -111,3 +111,21 @@ env: |
       configMapKeyRef:
         name: egov-service-host
         key: egov-hrms
+  - name: EGOV_OTP_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-otp
+  - name: EGOV_INGESTION_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: ingestion-service
+  - name: EGOV_LOCALIZATION_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-localization
+  - name: EGOV_OTP_BYPASS_VALIDATION
+    value: "true"
+  
