@@ -64,8 +64,6 @@ env: |
         name: egov-service-host
         key: im-services
   - name: EGOV_WF_FUZZYSEARCH_ISFUZZYENABLED
-    value: "false"
-  - name: EGOV_WF_FUZZYSEARCH_ISFUZZYENABLED
     value: 'false'
   - name: SPRING_KAFKA_CONSUMER_GROUP_ID
     value: egov-tl-services

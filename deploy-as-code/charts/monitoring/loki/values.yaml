@@ -81,6 +81,19 @@ chunksCache:
 minio:
   enabled: false
 
+# Creates the loki-aws secret referenced by singleBinary.extraEnv below,
+# using the credentials passed in from the helmfile release values.
+extraObjects:
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      name: loki-aws
+      namespace: monitoring
+    type: Opaque
+    stringData:
+      AWS_ACCESS_KEY_ID: "{{ .Values.awsAccessKeyId }}"
+      AWS_SECRET_ACCESS_KEY: "{{ .Values.awsSecretAccessKey }}"
+
 deploymentMode: SingleBinary
 
 singleBinary:

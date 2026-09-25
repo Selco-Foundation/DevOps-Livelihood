@@ -58,10 +58,12 @@ releases:
   #   values:
   #     - ./promtail/values.yaml
 
-  - name: loki
-    namespace: monitoring
-    chart: grafana/loki
-    version: 6.24.1
-    values:
-      - ./loki/values.yaml
+   - name: loki
+     namespace: monitoring
+     chart: grafana/loki
+     version: 6.24.1
+     values:
+       - ./loki/values.yaml
+       - awsAccessKeyId: {{ (index .Values.secrets "loki-aws").accesskey }}
+         awsSecretAccessKey: {{ (index .Values.secrets "loki-aws").secretaccesskey }}
 

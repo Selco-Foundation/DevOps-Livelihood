@@ -47,6 +47,9 @@ heap: "-Xmx700m -Xms700m"
 java-args: ""
 memory_requests: "1Gi"
 memory_limits: "1540Mi"
+kafka:
+  topic:
+    audit: enc-user-audit-data
 
 # Additional Container Envs
 env: |
@@ -100,8 +103,6 @@ env: |
         key: egov-state-level-tenant-id
   - name: DECRYPTION_ABAC_ENABLED
     value: {{ index .Values "decryption-abac-enabled" | quote }}
-  - name: KAFKA_TOPIC_AUDIT
-    value: "enc-user-audit-data"         
   - name: SPRING_KAFKA_CONSUMER_GROUP_ID
     value: "egov-user"
   - name: ACCOUNT_UNLOCK_COOL_DOWN_PERIOD_MINUTES

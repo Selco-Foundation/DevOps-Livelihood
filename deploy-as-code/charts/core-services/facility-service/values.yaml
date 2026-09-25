@@ -79,7 +79,7 @@ env: |
         name: egov-service-host
         key: egov-localization
   - name: EGOV_LOCALIZATION_SEARCH_ENDPOINT
-    value: /localization/messages/v1/_search
+    value: /_search
   - name: EGOV_IDGEN_HOST
     valueFrom:
       configMapKeyRef:
@@ -112,8 +112,6 @@ env: |
       configMapKeyRef:
         name: egov-service-host
         key: boundary-service
-  - name: OTEL_SERVICE_NAME
-    value: facility-service
   - name: OTEL_EXPORTER_ENDPOINT 
     value: "http://jaeger-tracing-collector.backbone:4318" 
   - name: OTEL INSTRUMENTATION_HTTP_SERVER_IGNORE_URLS
