@@ -76,7 +76,7 @@ jobs:
 
       - name: digit deployment
         run: |
-          helmfile -f digit-helmfile.yaml apply --include-needs=true\
+          helmfile -f digit-helmfile.yaml apply --include-needs=true \
            --set egov-url-shortening.image.tag=${{ env.egov-url-shortening }} \
            --set egov-url-shortening.initContainers.dbMigration.image.tag=${{ env.egov-url-shortening }} \
            --set livelihood-ui.image.tag=${{ env.livelihood-ui }} \
