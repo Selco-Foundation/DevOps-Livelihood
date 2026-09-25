@@ -57,6 +57,7 @@ configmaps:
       egov-hrms: http://egov-hrms.core:8080/
       egov-idgen: http://egov-idgen.core:8080/
       egov-indexer: http://egov-indexer.core:8080/
+      ingestion-service: http://ingestion-service.core:8080/
       egov-localization: http://egov-localization.core:8080/
       egov-location: http://egov-location.core:8080/
       egov-mdms-create: http://egov-mdms-create:8080/
