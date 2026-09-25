@@ -8,11 +8,11 @@ amc-service:
 
 asset-registry:
   image:
-    tag: staging-23f86f133b83491c2a174abefcee699824d4aca5
+    tag: staging-65df4bed23c5f31965dddbc4be7d618da64974eb
   initContainers:
     dbMigration:
       image:
-        tag: staging-23f86f133b83491c2a174abefcee699824d4aca5
+        tag: staging-65df4bed23c5f31965dddbc4be7d618da64974eb
 
 field-planner-activity:
   image:
@@ -32,15 +32,15 @@ field-planner:
 
 ingestion-service:
   image:
-    tag: staging-bc02f5c23776016d0482a2537d6c176420b6ba91
+    tag: staging-65df4bed23c5f31965dddbc4be7d618da64974eb
 
 project:
   image:
-    tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
+    tag: staging-65df4bed23c5f31965dddbc4be7d618da64974eb
   initContainers:
     dbMigration:
       image:
-        tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
+        tag: staging-65df4bed23c5f31965dddbc4be7d618da64974eb
 
 vendor-registry:
   image:
@@ -80,11 +80,11 @@ boundary-service:
 
 facility-service:
   image:
-    tag: staging-9bc1e3667436010ab565bc4786781497106f2fe5
+    tag: staging-e2797e1e424c3f32a80110579c0e4c5fcfba0649
   initContainers:
     dbMigration:
       image:
-        tag: staging-9bc1e3667436010ab565bc4786781497106f2fe5
+        tag: staging-e2797e1e424c3f32a80110579c0e4c5fcfba0649
 
 egov-hrms:
   image:
@@ -112,7 +112,7 @@ egov-workflow-v2:
 
 im-services-analytics:
   image:
-    tag: staging-e1bc2d0b7a279911d088e77cc4ecace4f57d6d5b
+    tag: staging-cc16ddd35c2943a72c52e5ff1a98520eff6d799e
 
 processor-services:
   image:
@@ -120,15 +120,15 @@ processor-services:
 
 im-services:
   image:
-    tag: staging-bc62b54d4c657f2bb382238be4b642b8d7930755
+    tag: staging-cc16ddd35c2943a72c52e5ff1a98520eff6d799e
   initContainers:
     dbMigration:
       image:
-        tag: staging-bc62b54d4c657f2bb382238be4b642b8d7930755
+        tag: staging-cc16ddd35c2943a72c52e5ff1a98520eff6d799e
 
 livelihood-ui:
   image:
-    tag: staging-84e59166b6aafd78ebac29fdbc702fea9c793ef7
+    tag: staging-7bc24f7a90b62c312cf82babb3bbb5c89ac80ff1
 
 digit-ui:
   image:
