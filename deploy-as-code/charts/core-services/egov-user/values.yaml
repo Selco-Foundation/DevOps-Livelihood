@@ -45,8 +45,13 @@ citizen-otp-fixed: "123456"
 citizen-otp-fixed-enabled: "true"
 heap: "-Xmx700m -Xms700m"
 java-args: ""
-memory_requests: "1Gi"
-memory_limits: "1540Mi"
+resources: |
+  requests:
+    memory: "1Gi"
+    cpu: 75m
+  limits:
+    memory: "1540Mi"
+    cpu: 300m
 kafka:
   topic:
     audit: enc-user-audit-data
