@@ -235,3 +235,8 @@ env: |
       configMapKeyRef: 
         key: filestore-download-enpoint
         name: egov-config
+  - name: EGOV_FACILITY_HOST
+    valueFrom:
+      configMapKeyRef:
+        key: facility-service
+        name: egov-service-host
