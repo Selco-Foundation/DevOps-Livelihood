@@ -41,11 +41,6 @@ env: |
     value: "8080"
   - name: SPRING_REDIS_HOST
     value: redis.backbone
-  - name: KAFKA_CONFIG_BOOTSTRAP_SERVER_CONFIG
-    valueFrom:
-      configMapKeyRef:
-        name: egov-config
-        key: kafka-brokers
   - name: EGOV_IDGEN_HOST
     valueFrom:
       configMapKeyRef:
