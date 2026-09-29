@@ -51,6 +51,14 @@ on:
         description: "Image tag (e.g. v2.3.7, uat-abcd123)"
         required: true
         type: string
+      image_repository:
+        description: "Optional image repository (e.g. selcohub/installation-qc-lh). Written to the tags file with the tag."
+        required: false
+        type: string
+      db_image_repository:
+        description: "Optional DB migration image repository (e.g. selcohub/amc-service-db-lh)"
+        required: false
+        type: string
       source_url:
         description: "Optional link to the build run / commit that produced the image"
         required: false
@@ -75,6 +83,8 @@ jobs:
     env:
       SERVICE_NAME: ${{ github.event.inputs.service_name }}
       SERVICE_TAG: ${{ github.event.inputs.service_tag }}
+      IMAGE_REPOSITORY: ${{ github.event.inputs.image_repository }}
+      DB_IMAGE_REPOSITORY: ${{ github.event.inputs.db_image_repository }}
       SOURCE_URL: ${{ github.event.inputs.source_url }}
       ENVIRONMENT: livelihood-uat
       CHARTS_DIR: ./deploy-as-code/charts
@@ -101,6 +111,19 @@ jobs:
             exit 1
           fi
 
+          for repo in "$IMAGE_REPOSITORY" "$DB_IMAGE_REPOSITORY"; do
+            if [ -n "$repo" ] && [[ ! "$repo" =~ ^[a-z0-9._/-]+$ ]]; then
+              echo "Error: Invalid image repository '$repo'."
+              exit 1
+            fi
+          done
+
+          if [ -n "$DB_IMAGE_REPOSITORY" ] && \
+             [ "$(yq eval '.[strenv(SERVICE_NAME)].initContainers.dbMigration' "$IMAGE_TAGS_FILEPATH")" = "null" ]; then
+            echo "::warning::${SERVICE_NAME} has no dbMigration in $IMAGE_TAGS_FILEPATH. Ignoring db_image_repository."
+            echo "DB_IMAGE_REPOSITORY=" >> "$GITHUB_ENV"
+          fi
+
           # Check whether service exists
           if [ "$(yq eval '.[strenv(SERVICE_NAME)]' "$IMAGE_TAGS_FILEPATH")" = "null" ]; then
             echo "Error: '${SERVICE_NAME}' does not exist in $IMAGE_TAGS_FILEPATH."
@@ -117,23 +140,25 @@ jobs:
 
       - name: Verify Image Exists in Registry
         run: |
-          # Resolve the image repository the same way the chart does:
-          # env override -> chart values.yaml, prefixed with global.containerRegistry if it has no '/'.
+          # Resolve the repository the same way the deployment will:
+          # input -> tags file -> env file -> chart values.yaml,
+          # prefixed with global.containerRegistry if it has no '/'.
+          ENV_VALUES="$CHARTS_DIR/environments/${ENVIRONMENT}.yaml"
+          REGISTRY=$(yq eval '.global.containerRegistry // "egovio"' "$CHARTS_DIR/common/values.yaml")
           mapfile -t CHART_VALUES < <(find "$CHARTS_DIR" -path "*/${SERVICE_NAME}/values.yaml" \
             -not -path "$CHARTS_DIR/environments/*" -not -path "$CHARTS_DIR/product-release-charts/*")
 
-          if [ "${#CHART_VALUES[@]}" -ne 1 ]; then
-            echo "::warning::Found ${#CHART_VALUES[@]} charts for '${SERVICE_NAME}' (${CHART_VALUES[*]}). Skipping registry check."
-            exit 0
-          fi
-
-          ENV_VALUES="$CHARTS_DIR/environments/${ENVIRONMENT}.yaml"
-          REGISTRY=$(yq eval '.global.containerRegistry // "egovio"' "$CHARTS_DIR/common/values.yaml")
-
           check_image() {
-            local path="$1" repo
-            repo=$(yq eval ".[strenv(SERVICE_NAME)]${path} // \"\"" "$ENV_VALUES")
-            [ -z "$repo" ] && repo=$(yq eval "${path} // \"\"" "${CHART_VALUES[0]}")
+            local path="$1" repo="$2"
+            [ -z "$repo" ] && repo=$(yq eval ".[strenv(SERVICE_NAME)]${path} // \"\"" "$IMAGE_TAGS_FILEPATH")
+            [ -z "$repo" ] && repo=$(yq eval ".[strenv(SERVICE_NAME)]${path} // \"\"" "$ENV_VALUES")
+            if [ -z "$repo" ]; then
+              if [ "${#CHART_VALUES[@]}" -ne 1 ]; then
+                echo "::warning::Found ${#CHART_VALUES[@]} charts for '${SERVICE_NAME}' (${CHART_VALUES[*]}). Skipping check of '${path}'."
+                return 0
+              fi
+              repo=$(yq eval "${path} // \"\"" "${CHART_VALUES[0]}")
+            fi
             if [ -z "$repo" ]; then
               echo "::warning::No repository found at '${path}' for ${SERVICE_NAME}. Skipping."
               return 0
@@ -147,9 +172,9 @@ jobs:
             fi
           }
 
-          check_image ".image.repository"
+          check_image ".image.repository" "$IMAGE_REPOSITORY"
           if [ "$(yq eval '.[strenv(SERVICE_NAME)].initContainers.dbMigration' "$IMAGE_TAGS_FILEPATH")" != "null" ]; then
-            check_image ".initContainers.dbMigration.image.repository"
+            check_image ".initContainers.dbMigration.image.repository" "$DB_IMAGE_REPOSITORY"
           fi
 
       - name: Prepare Branch
@@ -180,7 +205,11 @@ jobs:
           yq eval -i '
             .[strenv(SERVICE_NAME)].image.tag = strenv(SERVICE_TAG) |
             with(select(.[strenv(SERVICE_NAME)].initContainers.dbMigration != null);
-              .[strenv(SERVICE_NAME)].initContainers.dbMigration.image.tag = strenv(SERVICE_TAG))
+              .[strenv(SERVICE_NAME)].initContainers.dbMigration.image.tag = strenv(SERVICE_TAG)) |
+            with(select(strenv(IMAGE_REPOSITORY) != "");
+              .[strenv(SERVICE_NAME)].image.repository = strenv(IMAGE_REPOSITORY)) |
+            with(select(strenv(DB_IMAGE_REPOSITORY) != "");
+              .[strenv(SERVICE_NAME)].initContainers.dbMigration.image.repository = strenv(DB_IMAGE_REPOSITORY))
           ' "$IMAGE_TAGS_FILEPATH"
 
           sed -i 's/^#__BLANK__$//' "$IMAGE_TAGS_FILEPATH"
@@ -216,6 +245,7 @@ jobs:
           **Service:** ${SERVICE_NAME}
           **Environment:** ${ENVIRONMENT}
           **New Image Tag:** ${SERVICE_TAG}
+          **Image Repository:** ${IMAGE_REPOSITORY:-unchanged}
           **Source:** ${SOURCE_URL:-n/a}
           **Run:** ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
 
