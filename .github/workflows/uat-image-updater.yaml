@@ -7,18 +7,62 @@ on:
         description: "Select service"
         required: true
         type: choice
+        # Keys of deploy-as-code/charts/environments/livelihood-uat-tags.yaml
         options:
+          - amc-service
+          - asset-registry
+          - audit-service
+          - boundary-service
+          - digit-ui
+          - egov-accesscontrol
+          - egov-enc-service
+          - egov-filestore
+          - egov-hrms
+          - egov-idgen
+          - egov-indexer
+          - egov-localization
+          - egov-location
+          - egov-mdms-service
+          - egov-notification-mail
+          - egov-notification-sms
+          - egov-otp
+          - egov-persister
+          - egov-url-shortening
+          - egov-user
+          - egov-workflow-v2
+          - facility-service
+          - field-planner
+          - field-planner-activity
+          - gateway
+          - im-services
+          - im-services-analytics
+          - inbox
+          - ingestion-service
           - installation-qc
+          - livelihood-ui
+          - pdf-service
+          - processor-services
+          - project
+          - rms-service
+          - user-otp
+          - vendor-registry
+          - workbench-ui
       service_tag:
         description: "Image tag (e.g. v2.3.7, uat-abcd123)"
         required: true
         type: string
+      source_url:
+        description: "Optional link to the build run / commit that produced the image"
+        required: false
+        type: string
 
 run-name: Update ${{ github.event.inputs.service_name }} to ${{ github.event.inputs.service_tag }}
 
-# Allow only one job at a time to prevent race conditions.
+# One run per service at a time. Different services run in parallel since each
+# uses its own branch and touches its own keys. For the same service, the
+# running job finishes and only the newest pending request is kept.
 concurrency:
-  group: uat-image-updater
+  group: uat-image-updater-${{ github.event.inputs.service_name }}
   cancel-in-progress: false
 
 permissions:
@@ -31,7 +75,14 @@ jobs:
     env:
       SERVICE_NAME: ${{ github.event.inputs.service_name }}
       SERVICE_TAG: ${{ github.event.inputs.service_tag }}
+      SOURCE_URL: ${{ github.event.inputs.source_url }}
       ENVIRONMENT: livelihood-uat
+      CHARTS_DIR: ./deploy-as-code/charts
+      IMAGE_TAGS_FILEPATH: ./deploy-as-code/charts/environments/livelihood-uat-tags.yaml
+      BRANCH_NAME: update-uat-${{ github.event.inputs.service_name }}
+      GH_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+      DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
     if: ${{ github.ref_name == 'uat' }}
     steps:
@@ -40,95 +91,141 @@ jobs:
         with:
           ref: uat
           fetch-depth: 0
+          token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
 
       - name: Validate Inputs
         run: |
-          if [ -z "$SERVICE_NAME" ] || [ -z "$SERVICE_TAG" ] || [ -z "$ENVIRONMENT" ]; then
-            echo "Error: Missing required inputs."
-            echo "Service Name, Tag, and Environment must be provided."
-            exit 1
-          fi
-
           # Allow only alphanumeric characters, underscore, dot and hyphen in the image tag.
           if [[ ! "$SERVICE_TAG" =~ ^[a-zA-Z0-9_.-]+$ ]]; then
             echo "Error: Invalid characters in service_tag."
             exit 1
           fi
 
-      - name: Update Service Image Tag
-        run: |
-          IMAGE_TAGS_FILEPATH="./deploy-as-code/charts/environments/${ENVIRONMENT}-tags.yaml"
-
-          echo "Updating file:"
-          echo "$IMAGE_TAGS_FILEPATH"
-
           # Check whether service exists
-          if [ "$(yq eval ".${SERVICE_NAME}" "$IMAGE_TAGS_FILEPATH")" = "null" ]; then
+          if [ "$(yq eval '.[strenv(SERVICE_NAME)]' "$IMAGE_TAGS_FILEPATH")" = "null" ]; then
             echo "Error: '${SERVICE_NAME}' does not exist in $IMAGE_TAGS_FILEPATH."
             exit 1
           fi
 
-          # Update service image tag
-          yq eval -i \
-            ".${SERVICE_NAME}.image.tag = \"${SERVICE_TAG}\"" \
-            "$IMAGE_TAGS_FILEPATH"
+      # Private selcohub repositories need a login for the manifest check.
+      - name: Login to Docker Hub
+        if: ${{ env.DOCKER_PASSWORD != '' }}
+        uses: docker/login-action@v3
+        with:
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
 
-          # Update DB Migration image if present
-          if [ "$(yq eval ".${SERVICE_NAME}.initContainers.dbMigration" "$IMAGE_TAGS_FILEPATH")" != "null" ]; then
-            yq eval -i \
-              ".${SERVICE_NAME}.initContainers.dbMigration.image.tag = \"${SERVICE_TAG}\"" \
-              "$IMAGE_TAGS_FILEPATH"
+      - name: Verify Image Exists in Registry
+        run: |
+          # Resolve the image repository the same way the chart does:
+          # env override -> chart values.yaml, prefixed with global.containerRegistry if it has no '/'.
+          mapfile -t CHART_VALUES < <(find "$CHARTS_DIR" -path "*/${SERVICE_NAME}/values.yaml" \
+            -not -path "$CHARTS_DIR/environments/*" -not -path "$CHARTS_DIR/product-release-charts/*")
+
+          if [ "${#CHART_VALUES[@]}" -ne 1 ]; then
+            echo "::warning::Found ${#CHART_VALUES[@]} charts for '${SERVICE_NAME}' (${CHART_VALUES[*]}). Skipping registry check."
+            exit 0
           fi
 
-      - name: Show Changes
+          ENV_VALUES="$CHARTS_DIR/environments/${ENVIRONMENT}.yaml"
+          REGISTRY=$(yq eval '.global.containerRegistry // "egovio"' "$CHARTS_DIR/common/values.yaml")
+
+          check_image() {
+            local path="$1" repo
+            repo=$(yq eval ".[strenv(SERVICE_NAME)]${path} // \"\"" "$ENV_VALUES")
+            [ -z "$repo" ] && repo=$(yq eval "${path} // \"\"" "${CHART_VALUES[0]}")
+            if [ -z "$repo" ]; then
+              echo "::warning::No repository found at '${path}' for ${SERVICE_NAME}. Skipping."
+              return 0
+            fi
+            [[ "$repo" != */* ]] && repo="${REGISTRY}/${repo}"
+
+            echo "Checking ${repo}:${SERVICE_TAG}"
+            if ! docker manifest inspect "${repo}:${SERVICE_TAG}" > /dev/null; then
+              echo "::error::Image ${repo}:${SERVICE_TAG} not found in registry."
+              exit 1
+            fi
+          }
+
+          check_image ".image.repository"
+          if [ "$(yq eval '.[strenv(SERVICE_NAME)].initContainers.dbMigration' "$IMAGE_TAGS_FILEPATH")" != "null" ]; then
+            check_image ".initContainers.dbMigration.image.repository"
+          fi
+
+      - name: Prepare Branch
         run: |
-          git diff -- \
-            "./deploy-as-code/charts/environments/${ENVIRONMENT}-tags.yaml"
-
-      - name: Create Branch and Push Changes
-        run: |
-          # Create unique branch name
-          BRANCH_NAME="update-uat-${SERVICE_NAME}-${SERVICE_TAG}"
-          echo "BRANCH_NAME=${BRANCH_NAME}" >> "$GITHUB_ENV"
-
-          echo "Creating branch: $BRANCH_NAME"
-          git checkout -b "$BRANCH_NAME"
-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add "./deploy-as-code/charts/environments/${ENVIRONMENT}-tags.yaml"
+          PR_NUMBER=$(gh pr list --base uat --head "$BRANCH_NAME" --state open --json number --jq '.[0].number // empty')
+          echo "PR_NUMBER=${PR_NUMBER}" >> "$GITHUB_ENV"
 
-          # Check if there are changes
+          if [ -n "$PR_NUMBER" ]; then
+            # Build on top of the open PR so extra commits (e.g. env changes) are kept.
+            echo "Reusing open PR #${PR_NUMBER} on branch ${BRANCH_NAME}"
+            git checkout -B "$BRANCH_NAME" "origin/${BRANCH_NAME}"
+          else
+            # No open PR: start fresh from uat, discarding any stale branch.
+            echo "Starting ${BRANCH_NAME} from uat"
+            git checkout -B "$BRANCH_NAME" origin/uat
+          fi
+
+      - name: Update Service Image Tag
+        run: |
+          echo "Updating file: $IMAGE_TAGS_FILEPATH"
+
+          # yq drops blank lines; protect them so the diff only shows the tag change.
+          sed -i 's/^$/#__BLANK__/' "$IMAGE_TAGS_FILEPATH"
+
+          yq eval -i '
+            .[strenv(SERVICE_NAME)].image.tag = strenv(SERVICE_TAG) |
+            with(select(.[strenv(SERVICE_NAME)].initContainers.dbMigration != null);
+              .[strenv(SERVICE_NAME)].initContainers.dbMigration.image.tag = strenv(SERVICE_TAG))
+          ' "$IMAGE_TAGS_FILEPATH"
+
+          sed -i 's/^#__BLANK__$//' "$IMAGE_TAGS_FILEPATH"
+
+          git diff -- "$IMAGE_TAGS_FILEPATH"
+
+      - name: Commit and Push Changes
+        run: |
+          git add "$IMAGE_TAGS_FILEPATH"
+
           if git diff --cached --quiet; then
-            echo "No changes found."
-            echo "Tag might already be set to $SERVICE_TAG."
+            echo "No changes found. Tag might already be set to $SERVICE_TAG."
             echo "SKIP_PR=true" >> "$GITHUB_ENV"
             exit 0
           fi
 
           git commit -m "Update image tag of ${SERVICE_NAME} to ${SERVICE_TAG}"
 
-          echo "Pushing branch: $BRANCH_NAME"
-          git push origin "$BRANCH_NAME"
-          echo "Branch pushed successfully."
+          if [ -n "$PR_NUMBER" ]; then
+            git push origin "$BRANCH_NAME"
+          else
+            git push --force origin "$BRANCH_NAME"
+          fi
 
-      - name: Create Pull Request
+      - name: Create or Update Pull Request
         if: ${{ env.SKIP_PR != 'true' }}
-        env:
-          GH_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
         run: |
-          echo "Creating Pull Request..."
-
-          gh pr create \
-            --base uat \
-            --head "$BRANCH_NAME" \
-            --title "Update ${SERVICE_NAME} to ${SERVICE_TAG} for uat" \
-            --body "## Image Tag Update
+          TITLE="Update ${SERVICE_NAME} to ${SERVICE_TAG} for uat"
+          BODY="## Image Tag Update
 
           This PR was automatically created by GitHub Actions.
+
           **Service:** ${SERVICE_NAME}
           **Environment:** ${ENVIRONMENT}
           **New Image Tag:** ${SERVICE_TAG}
+          **Source:** ${SOURCE_URL:-n/a}
+          **Run:** ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
 
-          Please review and merge the PR."
+          If this release needs env changes, push them to \`${BRANCH_NAME}\` before merging.
+          Please review, merge and sync in Argo CD."
+
+          if [ -n "$PR_NUMBER" ]; then
+            echo "Updating PR #${PR_NUMBER}"
+            gh pr edit "$PR_NUMBER" --title "$TITLE" --body "$BODY"
+          else
+            echo "Creating Pull Request..."
+            gh pr create --base uat --head "$BRANCH_NAME" --title "$TITLE" --body "$BODY"
+          fi
