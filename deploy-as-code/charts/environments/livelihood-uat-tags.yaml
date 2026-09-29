@@ -8,11 +8,13 @@ amc-service:
 
 asset-registry:
   image:
-    tag: staging-65df4bed23c5f31965dddbc4be7d618da64974eb
+    tag: Uat-image-update-28ed74bc9a3190df4a6a8f423fdffb76650dfafe
+    repository: selcohub/asset-registry-lh
   initContainers:
     dbMigration:
       image:
-        tag: staging-65df4bed23c5f31965dddbc4be7d618da64974eb
+        tag: Uat-image-update-28ed74bc9a3190df4a6a8f423fdffb76650dfafe
+        repository: selcohub/asset-registry-db-lh
 
 field-planner-activity:
   image:
