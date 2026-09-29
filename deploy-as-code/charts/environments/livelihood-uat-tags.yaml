@@ -134,7 +134,7 @@ im-services:
 livelihood-ui:
   image:
     repository: selcohub/livelihood-ui-lh
-    tag: fix-project-installation-plan-creation-uat-9817445ab8599718ef3373600284c879caced9e2
+    tag: staging-a5dea1497870cc62fd3f56a3f5c56ebadbf2efd8
 
 digit-ui:
   image:
