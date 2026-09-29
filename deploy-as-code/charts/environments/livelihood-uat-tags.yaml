@@ -16,24 +16,26 @@ asset-registry:
 
 field-planner-activity:
   image:
-    tag: v3.15.39-751350e850072634ceb2c049a06588de388891a4
+    repository: selcohub/field-planner-activity-lh
+    tag: fix-project-installation-plan-creation-uat-9817445ab8599718ef3373600284c879caced9e2
   initContainers:
     dbMigration:
       image:
-        tag: v3.15.39-751350e850072634ceb2c049a06588de388891a4
+        repository: selcohub/field-planner-activity-db-lh
+        tag: fix-project-installation-plan-creation-uat-9817445ab8599718ef3373600284c879caced9e2
 
 field-planner:
   image:
-    tag: v3.15.39-751350e850072634ceb2c049a06588de388891a4
+    tag: staging-65df4bed23c5f31965dddbc4be7d618da64974eb
   initContainers:
     dbMigration:
       image:
-        tag: v3.15.39-751350e850072634ceb2c049a06588de388891a4
+        tag: staging-65df4bed23c5f31965dddbc4be7d618da64974eb
 
 ingestion-service:
   image:
     repository: "selcohub/ingestion-service-lh"
-    tag: staging-c71a29bae37868b609eaec786279f906ecbebb0f
+    tag: fix_project_creation_uat-0feea12739d3f9cd431457c4e005b0a18fb720c0
 
 project:
   image:
