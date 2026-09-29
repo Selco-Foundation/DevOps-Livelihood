@@ -32,7 +32,8 @@ field-planner:
 
 ingestion-service:
   image:
-    tag: staging-65df4bed23c5f31965dddbc4be7d618da64974eb
+    repository: "selcohub/ingestion-service-lh"
+    tag: staging-c71a29bae37868b609eaec786279f906ecbebb0f
 
 project:
   image:
@@ -96,11 +97,11 @@ egov-hrms:
 
 egov-filestore:
   image:
-    tag: v2.0.3-7de51e1b5d83b29754c5e30d33c931d5cc9159aa
+    tag: staging-ecf19cf7c5ca4c3790e3e73846aed15e44e1dde4
   initContainers:
     dbMigration:
       image:
-        tag: v2.0.3-7de51e1b5d83b29754c5e30d33c931d5cc9159aa
+        tag: staging-ecf19cf7c5ca4c3790e3e73846aed15e44e1dde4
 
 egov-workflow-v2:
   image:
@@ -112,7 +113,7 @@ egov-workflow-v2:
 
 im-services-analytics:
   image:
-    tag: staging-cc16ddd35c2943a72c52e5ff1a98520eff6d799e
+    tag: staging-e75273a54d61c2f1d765815982bb913c3dd83f57
 
 processor-services:
   image:
@@ -120,15 +121,18 @@ processor-services:
 
 im-services:
   image:
-    tag: staging-cc16ddd35c2943a72c52e5ff1a98520eff6d799e
+    repository: "selcohub/im-services-lh"
+    tag: staging-c71a29bae37868b609eaec786279f906ecbebb0f
   initContainers:
     dbMigration:
       image:
-        tag: staging-cc16ddd35c2943a72c52e5ff1a98520eff6d799e
+        repository: "selcohub/im-services-db-lh"
+        tag: staging-c71a29bae37868b609eaec786279f906ecbebb0f
 
 livelihood-ui:
   image:
-    tag: staging-7bc24f7a90b62c312cf82babb3bbb5c89ac80ff1
+    repository: selcohub/livelihood-ui-lh
+    tag: fix-project-installation-plan-creation-uat-9817445ab8599718ef3373600284c879caced9e2
 
 digit-ui:
   image:
