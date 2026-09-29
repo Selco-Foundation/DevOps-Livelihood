@@ -32,7 +32,8 @@ field-planner:
 
 ingestion-service:
   image:
-    tag: staging-65df4bed23c5f31965dddbc4be7d618da64974eb
+    repository: "selcohub/ingestion-service-lh"
+    tag: staging-c71a29bae37868b609eaec786279f906ecbebb0f
 
 project:
   image:
@@ -120,15 +121,18 @@ processor-services:
 
 im-services:
   image:
-    tag: staging-cc16ddd35c2943a72c52e5ff1a98520eff6d799e
+    repository: "selcohub/im-services-lh"
+    tag: staging-c71a29bae37868b609eaec786279f906ecbebb0f
   initContainers:
     dbMigration:
       image:
-        tag: staging-cc16ddd35c2943a72c52e5ff1a98520eff6d799e
+        repository: "selcohub/im-services-db-lh"
+        tag: staging-c71a29bae37868b609eaec786279f906ecbebb0f
 
 livelihood-ui:
   image:
-    tag: staging-1f87ce75939f6c1719569501747726b73917faf0
+    repository: selcohub/livelihood-ui-lh
+    tag: fix-project-installation-plan-creation-uat-9817445ab8599718ef3373600284c879caced9e2
 
 digit-ui:
   image:
