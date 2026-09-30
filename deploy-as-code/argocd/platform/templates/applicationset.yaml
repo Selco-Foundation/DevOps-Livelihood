@@ -53,6 +53,7 @@ spec:
           kind: Deployment
           jsonPointers:
             - /spec/template/metadata/annotations/deployment-timestamp
+            - /spec/replicas
         - group: apps
           kind: StatefulSet
           jsonPointers:
