@@ -36,7 +36,7 @@ is-nfs-enabled: false
 is-s3-enabled: true
 memory_requests: "1560Mi"
 memory_limits: "2560Mi"
-minReplicas: 2
+minReplicas: 1
 
 
 persistence:
