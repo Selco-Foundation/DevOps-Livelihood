@@ -136,7 +136,8 @@ digit-ui:
 
 inbox:
   image:
-    tag: staging-602445f7efd05c10804e3abd773840b12eeb7547
+    repository: selcohub/inbox-lh
+    tag: main-f25d21c30e79f067fb8a7b2aee5b21b3816e7e26
 
 egov-mdms-service:
   image:
