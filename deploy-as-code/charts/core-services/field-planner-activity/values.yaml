@@ -31,9 +31,9 @@ healthChecks:
   readinessProbePath: "/activity/health"
 appType: "java-spring"
 tracing-enabled: true
-heap: "-Xmx256m -Xms256m"
-memory_limits: 768Mi
-memory_requests: 512Mi
+heap: "-Xmx512m -Xms512m"
+memory_limits: 1Gi
+memory_requests: 768Mi
 
 # Additional Container Envs
 env: |
@@ -123,4 +123,6 @@ env: |
         key: egov-localization
   - name: EGOV_OTP_BYPASS_VALIDATION
     value: "true"
+  - name: JAVA_OPTS
+    value: {{ index .Values "heap" | quote }}
   

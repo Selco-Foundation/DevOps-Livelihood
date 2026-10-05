@@ -31,9 +31,9 @@ healthChecks:
   readinessProbePath: "/field-planner/health"
 appType: "java-spring"
 tracing-enabled: true
-heap: "-Xmx256m -Xms256m"
-memory_limits: 768Mi
-memory_requests: 512Mi
+heap: "-Xmx512m -Xms512m"
+memory_limits: 1Gi
+memory_requests: 768Mi
 
 # Additional Container Envs
 env: |
@@ -96,3 +96,5 @@ env: |
       configMapKeyRef:
         name: egov-service-host
         key: field-planner-activity
+  - name: JAVA_OPTS
+    value: {{ index .Values "heap" | quote }}
