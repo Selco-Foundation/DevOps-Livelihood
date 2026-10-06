@@ -120,6 +120,7 @@ egov-indexer:
     gitSync:
       repo: "git@github.com:Selco-Foundation/Configs-Livelihood"        ##### Change repo url with Your fork Repo url
       branch: "main"                                         ##### Change repo branch with Your fork Repo branch
+      rev: b475135106825baaec50e62c7e44e0c0965bee0e
   egov-indexer-yaml-repo-path: "file:///work-dir/Configs-Livelihood/egov-indexer/project-indexer.yml,file:///work-dir/Configs-Livelihood/egov-indexer/im-services.yml,file:///work-dir/Configs-Livelihood/egov-indexer/egov-url-shortening-indexer.yaml,file:///work-dir/Configs-Livelihood/egov-indexer/individual-indexer.yml,file:///work-dir/Configs-Livelihood/egov-indexer/escalation-status-indexer.yml"
 
 egov-persister:
@@ -129,6 +130,14 @@ egov-persister:
     gitSync:
       repo: "git@github.com:Selco-Foundation/Configs-Livelihood"      ##### Change repo url with Your fork Repo url
       branch: "main"
+      rev: b475135106825baaec50e62c7e44e0c0965bee0e
+
+pdf-service:
+  initContainers:
+    gitSync:
+      repo: "git@github.com:Selco-Foundation/Configs-Livelihood"
+      branch: "main"
+      rev: b475135106825baaec50e62c7e44e0c0965bee0e
 
 audit-service:
   persist-yml-path: "file:///work-dir/Configs-Livelihood/egov-persister/im-services-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/egov-workflow-v2-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/hrms-employee-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/boundary-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/asset-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/vendor-persister.yaml,file:///work-dir/Configs-Livelihood/egov-persister/mdms-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/egov-user-event-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/privacy-audit.yml"
