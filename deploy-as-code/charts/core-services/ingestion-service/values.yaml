@@ -106,3 +106,10 @@ env: |
         key: db-name
   - name: ENVIRONMENT
     value: uat
+  - name: INGESTION_SERVICE_PUBLIC_URL
+    value: https://{{ .Values.global.domain }}
+  - name: FILESTORE_SERVICE_URL
+    valueFrom:
+      configMapKeyRef:
+        key: egov-filestore
+        name: egov-service-host

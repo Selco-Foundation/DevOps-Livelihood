@@ -8,11 +8,13 @@ amc-service:
 
 asset-registry:
   image:
-    tag: staging-602445f7efd05c10804e3abd773840b12eeb7547
+    repository: selcohub/asset-registry-lh
+    tag: main-f25d21c30e79f067fb8a7b2aee5b21b3816e7e26
   initContainers:
     dbMigration:
       image:
-        tag: staging-602445f7efd05c10804e3abd773840b12eeb7547
+        repository: selcohub/asset-registry-db-lh
+        tag: main-f25d21c30e79f067fb8a7b2aee5b21b3816e7e26
 
 field-planner-activity:
   image:
@@ -32,7 +34,8 @@ field-planner:
 
 ingestion-service:
   image:
-    tag: staging-e6bfba242c172c08f0a0175d423e8ca2bb6c6f3a
+    repository: selcohub/ingestion-service-lh
+    tag: main-f25d21c30e79f067fb8a7b2aee5b21b3816e7e26
 
 project:
   image:
@@ -80,11 +83,13 @@ boundary-service:
 
 facility-service:
   image:
-    tag: staging-d0c9ccd8b8fb5b416867bae62f3f7720924d9dd1
+    repository: selcohub/facility-registry-lh
+    tag: main-f25d21c30e79f067fb8a7b2aee5b21b3816e7e26
   initContainers:
     dbMigration:
       image:
-        tag: staging-d0c9ccd8b8fb5b416867bae62f3f7720924d9dd1
+        repository: selcohub/facility-registry-db-lh
+        tag: main-f25d21c30e79f067fb8a7b2aee5b21b3816e7e26
 
 egov-hrms:
   image:
@@ -136,7 +141,8 @@ digit-ui:
 
 inbox:
   image:
-    tag: staging-602445f7efd05c10804e3abd773840b12eeb7547
+    repository: selcohub/inbox-lh
+    tag: main-f25d21c30e79f067fb8a7b2aee5b21b3816e7e26
 
 egov-mdms-service:
   image:
