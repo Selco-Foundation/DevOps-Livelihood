@@ -35,7 +35,7 @@ field-planner:
 ingestion-service:
   image:
     repository: "selcohub/ingestion-service-lh"
-    tag: staging-6b2dcab9d45d8a83fb8e3c5032754609747462fc
+    tag: staging-5f936bccaec4499b0190803d96ce9828ff09f6d8
 
 project:
   image:
