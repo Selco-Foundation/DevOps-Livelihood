@@ -47,11 +47,13 @@ project:
 
 vendor-registry:
   image:
-    tag: staging-e49076017baee831d2e671643096fa47866b1bc5
+    tag: staging-6b2dcab9d45d8a83fb8e3c5032754609747462fc
+    repository: selcohub/vendor-registry-lh
   initContainers:
     dbMigration:
       image:
-        tag: staging-e49076017baee831d2e671643096fa47866b1bc5
+        tag: staging-6b2dcab9d45d8a83fb8e3c5032754609747462fc
+        repository: selcohub/vendor-registry-db-lh
 
 installation-qc:
   image:
