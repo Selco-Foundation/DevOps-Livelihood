@@ -17,12 +17,12 @@ asset-registry:
 field-planner-activity:
   image:
     repository: selcohub/field-planner-activity-lh
-    tag: admin_module_uat-fa4dbd0906f9a0f2dec7eb62a0b356a2045e7469
+    tag: staging-65718d2980884bc97e50aab5823ef5d4e8b7f48f
   initContainers:
     dbMigration:
       image:
         repository: selcohub/field-planner-activity-db-lh
-        tag: admin_module_uat-fa4dbd0906f9a0f2dec7eb62a0b356a2045e7469
+        tag: staging-65718d2980884bc97e50aab5823ef5d4e8b7f48f
 
 field-planner:
   image:
