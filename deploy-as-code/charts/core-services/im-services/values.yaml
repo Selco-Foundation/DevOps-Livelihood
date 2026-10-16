@@ -104,7 +104,7 @@ healthChecks:
   readinessProbePath: "/im-services/health"
 appType: "java-spring"
 tracing-enabled: true
-heap: "-Xmx384m -Xms384m"
+heap: "-XX:MaxRAMPercentage=70.0 -XX:InitialRAMPercentage=25.0 -XX:+UseG1GC -XX:G1PeriodicGCInterval=30000"
 memory_requests: "512Mi"
 memory_limits: "1Gi"
 minReplicas: 1

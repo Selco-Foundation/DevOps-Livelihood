@@ -26,7 +26,7 @@ tracing-enabled: true
 heap: "-Xmx768m -Xms768m"
 java-args: "-Dspring.profiles.active=monitoring"
 memory_requests: "1024Mi"
-memory_limits: "1512Mi"
+memory_limits: "1536Mi"
 minReplicas: 1
 
 
