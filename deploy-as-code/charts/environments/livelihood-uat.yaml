@@ -118,7 +118,7 @@ egov-persister:
     gitSync:
       repo: "git@github.com:Selco-Foundation/Configs-Livelihood"      ##### Change repo url with Your fork Repo url
       branch: "uat_dev"
-      rev: 86a5acceec6067d1db0fd1547e5338fef4a7a87f
+      rev: bc1f25340daa69b4dd95577cbecb5c8a4615be78
 
 pdf-service:
   initContainers:

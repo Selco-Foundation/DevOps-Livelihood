@@ -31,7 +31,7 @@ healthChecks:
   readinessProbePath: "/activity/health"
 appType: "java-spring"
 tracing-enabled: true
-heap: "-Xmx384m -Xms384m"
+heap: "-Xmx384m -Xms384m -XX:+UseG1GC -XX:G1PeriodicGCInterval=30000"
 memory_requests: 512Mi
 memory_limits: 768Mi
 
