@@ -80,3 +80,5 @@ env: |
       configMapKeyRef:
         name: egov-service-host
         key: egov-hrms
+  - name: JAVA_OPTS
+    value: {{ index .Values "heap" | quote }}

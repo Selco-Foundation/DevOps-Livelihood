@@ -43,11 +43,11 @@ roles-state-level: "true"
 citizen-registration-withlogin: "true"
 citizen-otp-fixed: "123456"
 citizen-otp-fixed-enabled: "true"
-heap: "-Xmx512m -Xms512m -XX:+UseG1GC"
+heap: "-Xmx384m -Xms384m -XX:+UseG1GC"
 java-args: ""
 resources: |
   requests:
-    memory: "768Gi"
+    memory: "512Mi"
     cpu: 75m
   limits:
     memory: "1024Mi"
