@@ -33,8 +33,8 @@ heap: "-Xmx512m -Xms512m"
 java-args: "-Dspring.profiles.active=monitoring"
 egov-mdms-schema-definition-save-topic: "save-mdms-schema-definition"
 egov-mdms-data-save-topic: "save-mdms-data"
-memory_requests: "1536Mi"
-memory_limits: 2048Mi
+memory_requests: "768Mi"
+memory_limits: 1024Mi
 
 # Additional Container Envs
 env: |

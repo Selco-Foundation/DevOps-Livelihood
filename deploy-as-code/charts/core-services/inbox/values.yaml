@@ -23,11 +23,11 @@ healthChecks:
   readinessProbePath: "/inbox/health"
 appType: "java-spring"
 tracing-enabled: true
-heap: "-Xmx1g -Xms1g"
+heap: "-Xmx768m -Xms768m"
 java-args: "-Dspring.profiles.active=monitoring"
-memory_limits: "2Gi"
-memory_requests: "1540Mi"
-minReplicas: 2
+memory_requests: "1024Mi"
+memory_limits: "1512Mi"
+minReplicas: 1
 
 
 # Additional Container Envs

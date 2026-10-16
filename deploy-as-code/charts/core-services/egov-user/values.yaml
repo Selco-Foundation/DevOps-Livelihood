@@ -43,18 +43,21 @@ roles-state-level: "true"
 citizen-registration-withlogin: "true"
 citizen-otp-fixed: "123456"
 citizen-otp-fixed-enabled: "true"
-heap: "-Xmx700m -Xms700m"
+heap: "-Xmx512m -Xms512m -XX:+UseG1GC"
 java-args: ""
 resources: |
   requests:
-    memory: "1Gi"
+    memory: "768Gi"
     cpu: 75m
   limits:
-    memory: "1540Mi"
+    memory: "1024Mi"
     cpu: 300m
 kafka:
   topic:
     audit: enc-user-audit-data
+
+minReplicas: 1
+maxReplicas: 2
 
 # Additional Container Envs
 env: |
