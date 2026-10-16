@@ -26,6 +26,7 @@ tracing-enabled: true
 heap: "-Xmx192m -Xms192m"
 otel: "true"
 java-args: ""
+memory_requests: "384Mi"
 memory_limits: "768Mi"
 
 # Additional Container Envs

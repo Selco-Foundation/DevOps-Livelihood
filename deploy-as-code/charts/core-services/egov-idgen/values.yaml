@@ -33,6 +33,7 @@ heap: "-Xmx192m -Xms192m"
 java-args: "-Dspring.profiles.active=monitoring"
 idformat-from-mdms: "false"
 autocreate-new-seq: "false"
+memory_requests: "384Mi"
 memory_limits: "768Mi"
 
 # Additional Container Envs

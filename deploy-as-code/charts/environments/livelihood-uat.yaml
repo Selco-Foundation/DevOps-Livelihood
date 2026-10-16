@@ -73,19 +73,11 @@ egov-filestore:
   filestore-url-validity: 3600
   fixed-bucketname: livelihood-uat-filestore-bucket  ## Add filestore bucket name
 
-egov-enc-service:
-  heap: "-Xmx256m -Xms256m"
-
 
 egov-idgen:
   idformat-from-mdms: "true"
   java-args: -Dspring.profiles.active=monitoring
-  heap: "-Xmx192m -Xms192m"
   autocreate-new-seq: "true"
-
-egov-localization:
-  heap: "-Xmx256m -Xms256m"
-
 
 
 egov-notification-sms:
@@ -113,7 +105,6 @@ egov-mdms-service:
   java-args: -Dspring.profiles.active=monitoring
 
 egov-indexer:
-  heap: "-Xmx512m -Xms512m"
   initContainers:
     gitSync:
       repo: "git@github.com:Selco-Foundation/Configs-Livelihood"        ##### Change repo url with Your fork Repo url
@@ -122,7 +113,6 @@ egov-indexer:
   egov-indexer-yaml-repo-path: "file:///work-dir/Configs-Livelihood/egov-indexer/project-indexer.yml,file:///work-dir/Configs-Livelihood/egov-indexer/im-services.yml,file:///work-dir/Configs-Livelihood/egov-indexer/egov-url-shortening-indexer.yaml,file:///work-dir/Configs-Livelihood/egov-indexer/individual-indexer.yml,file:///work-dir/Configs-Livelihood/egov-indexer/escalation-status-indexer.yml"
 
 egov-persister:
-  heap: "-Xmx256m -Xms256m"
   persist-yml-path: "file:///work-dir/Configs-Livelihood/health/egov-persister/facility-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/field-plan-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/activity-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/project-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/egov-user-event-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/egov-workflow-v2-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/im-services-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/hrms-employee-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/mdms-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/audit-service-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/privacy-audit.yml,file:///work-dir/Configs-Livelihood/egov-persister/boundary-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/asset-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/vendor-persister.yaml"
   initContainers:
     gitSync:
