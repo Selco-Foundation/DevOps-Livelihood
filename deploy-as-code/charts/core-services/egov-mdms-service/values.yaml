@@ -29,12 +29,12 @@ healthChecks:
 appType: "java-spring"
 tracing-enabled: true
 otel: "true"
-heap: "-Xmx512m -Xms512m"
+heap: "-Xmx384m -Xms384m"
 java-args: "-Dspring.profiles.active=monitoring"
 egov-mdms-schema-definition-save-topic: "save-mdms-schema-definition"
 egov-mdms-data-save-topic: "save-mdms-data"
-memory_requests: "1536Mi"
-memory_limits: 2048Mi
+memory_requests: "512Mi"
+memory_limits: 768Mi
 
 # Additional Container Envs
 env: |

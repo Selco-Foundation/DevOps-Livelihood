@@ -9,7 +9,7 @@ initContainers:
     enabled: true
     schemaTable: "boundary_service_schema"
     image:
-      repository: "selcohub/egov-boundary-service-db"
+      repository: "selcohub/egov-boundary-service-db-lh"
       tag: develop-fc0950fa22fd077978baf6adddca0bf0eafd7914
 
 # Ingress Configs
@@ -20,7 +20,7 @@ ingress:
 
 # Container Configs
 image:
-  repository: "selcohub/egov-boundary-service"
+  repository: "selcohub/egov-boundary-service-lh"
   tag: develop-fc0950fa22fd077978baf6adddca0bf0eafd7914
 replicas: "1"
 healthChecks:

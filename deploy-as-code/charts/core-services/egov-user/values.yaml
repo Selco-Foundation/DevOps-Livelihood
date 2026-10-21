@@ -43,10 +43,10 @@ roles-state-level: "true"
 citizen-registration-withlogin: "true"
 citizen-otp-fixed: "123456"
 citizen-otp-fixed-enabled: "true"
-heap: "-Xmx700m -Xms700m"
+heap: "-XX:MaxRAMPercentage=70.0 -XX:InitialRAMPercentage=25.0 -XX:+UseG1GC"
 java-args: ""
-memory_requests: "1Gi"
-memory_limits: "1540Mi"
+memory_requests: "768Mi"
+memory_limits: "1Gi"
 
 # Additional Container Envs
 env: |

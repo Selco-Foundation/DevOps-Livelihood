@@ -9,7 +9,7 @@ initContainers:
     enabled: true
     schemaTable: "facility_registry_schema"
     image:
-      repository: "selcohub/facility-registry-db"
+      repository: "selcohub/facility-registry-db-lh"
       tag: develop-c2d550845143a72be8dfa120527a5678979c19c5
 
 # Ingress Configs
@@ -20,7 +20,7 @@ ingress:
 
 # Container Configs
 image:
-  repository: "selcohub/facility-registry"
+  repository: "selcohub/facility-registry-lh"
   tag: develop-c2d550845143a72be8dfa120527a5678979c19c5
 replicas: "1"
 healthChecks:
@@ -29,9 +29,9 @@ healthChecks:
   readinessProbePath: "/facility-service/health"
 appType: "java-spring"
 tracing-enabled: true
-heap: "-Xmx192m -Xms192m"
-memory_limits: "1536Mi"
-memory_requests: "1Gi"
+heap: "-Xmx256m -Xms256m"
+memory_limits: "768Mi"
+memory_requests: "512Mi"
 
 persistence:
   enabled: false
@@ -112,8 +112,6 @@ env: |
       configMapKeyRef:
         name: egov-service-host
         key: boundary-service
-  - name: OTEL_SERVICE_NAME
-    value: facility-service
   - name: OTEL_EXPORTER_ENDPOINT 
     value: "http://jaeger-tracing-collector.backbone:4318" 
   - name: OTEL INSTRUMENTATION_HTTP_SERVER_IGNORE_URLS

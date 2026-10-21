@@ -17,13 +17,11 @@ initContainers:
     enabled: true
     schemaTable: "field_planner_activity_schema"
     image:
-      repository: "selcohub/field-planner-activity-db"
-      tag: "develop-61a468f4efec1a34aa45976ce546b33f209b21ff"
+      repository: "selcohub/field-planner-activity-db-lh"
 
 # Container Configs
 image:
-  repository: "selcohub/field-planner-activity"
-  tag: "develop-61a468f4efec1a34aa45976ce546b33f209b21ff"
+  repository: "selcohub/field-planner-activity-lh"
 replicas: "1"
 healthChecks:
   enabled: true
@@ -31,7 +29,7 @@ healthChecks:
   readinessProbePath: "/activity/health"
 appType: "java-spring"
 tracing-enabled: true
-heap: "-Xmx256m -Xms256m"
+heap: "-Xmx384m -Xms384m -XX:+UseG1GC -XX:G1PeriodicGCInterval=30000"
 memory_limits: 768Mi
 memory_requests: 512Mi
 
@@ -56,11 +54,6 @@ env: |
     value: "8080"
   - name: SPRING_REDIS_HOST
     value: redis.backbone
-  - name: KAFKA_CONFIG_BOOTSTRAP_SERVER_CONFIG
-    valueFrom:
-      configMapKeyRef:
-        name: egov-config
-        key: kafka-brokers
   - name: EGOV_IDGEN_HOST
     valueFrom:
       configMapKeyRef:
@@ -111,3 +104,22 @@ env: |
       configMapKeyRef:
         name: egov-service-host
         key: egov-hrms
+  - name: JAVA_OPTS
+    value: {{ .Values.heap | quote }}
+  - name: EGOV_OTP_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-otp
+  - name: EGOV_INGESTION_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: ingestion-service
+  - name: EGOV_OTP_BYPASS_VALIDATION
+    value: "true"
+  - name: EGOV_LOCALIZATION_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-localization

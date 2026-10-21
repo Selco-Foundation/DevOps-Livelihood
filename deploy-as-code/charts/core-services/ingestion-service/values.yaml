@@ -11,7 +11,7 @@ ingress:
 
 # Container Configs
 image:
-  repository: "selcohub/ingestion-service"
+  repository: "selcohub/ingestion-service-lh"
   tag: develop-9e49c3921b4b5a3b11dab4bb3b932d947971ef0a
 replicas: "1"
 healthChecks:
@@ -106,3 +106,10 @@ env: |
         key: db-name
   - name: ENVIRONMENT
     value: uat
+  - name: FILESTORE_SERVICE_URL
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: egov-filestore
+  - name: INGESTION_SERVICE_PUBLIC_URL
+    value: https://{{ .Values.global.domain }}

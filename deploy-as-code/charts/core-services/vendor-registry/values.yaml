@@ -9,7 +9,7 @@ initContainers:
     enabled: true
     schemaTable: "vendor_registry_schema"
     image:
-      repository: "selcohub/vendor-registry-db"
+      repository: "selcohub/vendor-registry-db-lh"
       tag: develop-0214f52984b750fb97d7bc41728e0074e95414fc
 
 # Ingress Configs
@@ -20,7 +20,7 @@ ingress:
 
 # Container Configs
 image:
-  repository: "selcohub/vendor-registry"
+  repository: "selcohub/vendor-registry-lh"
   tag: develop-0214f52984b750fb97d7bc41728e0074e95414fc
 replicas: "1"
 healthChecks:
@@ -29,7 +29,7 @@ healthChecks:
   readinessProbePath: "/vendor/health"
 appType: "java-spring"
 tracing-enabled: true
-heap: "-Xmx192m -Xms192m"
+heap: "-Xmx256m -Xms256m -XX:+UseG1GC -XX:G1PeriodicGCInterval=30000"
 memory_limits: "768Mi"
 
 persistence:

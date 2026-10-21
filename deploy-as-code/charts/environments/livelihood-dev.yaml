@@ -19,7 +19,7 @@ configmaps:
 egov-user:
   otp-validation: "true"
   citizen-otp-enabled: "true"
-  employee-otp-enabled: "true"
+  employee-otp-enabled: "false"
   access-token-validity: 10080
   refresh-token-validity: 20160
   default-password-expiry: 90
@@ -111,24 +111,28 @@ egov-mdms-service:
   java-args: -Dspring.profiles.active=monitoring
 
 egov-indexer:
-  heap: "-Xmx512m -Xms512m"
   initContainers:
     gitSync:
       repo: "git@github.com:Selco-Foundation/Configs-Livelihood"        ##### Change repo url with Your fork Repo url
-      branch: "main"                                         ##### Change repo branch with Your fork Repo branch
+      branch: uat_dev                                        ##### Change repo branch with Your fork Repo branch
   egov-indexer-yaml-repo-path: "file:///work-dir/Configs-Livelihood/egov-indexer/project-indexer.yml,file:///work-dir/Configs-Livelihood/egov-indexer/im-services.yml,file:///work-dir/Configs-Livelihood/egov-indexer/egov-url-shortening-indexer.yaml,file:///work-dir/Configs-Livelihood/egov-indexer/individual-indexer.yml,file:///work-dir/Configs-Livelihood/egov-indexer/escalation-status-indexer.yml"
 
 egov-persister:
-  heap: "-Xmx256m -Xms256m"
   persist-yml-path: "file:///work-dir/Configs-Livelihood/health/egov-persister/facility-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/field-plan-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/activity-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/project-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/egov-user-event-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/egov-workflow-v2-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/im-services-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/hrms-employee-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/mdms-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/audit-service-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/privacy-audit.yml,file:///work-dir/Configs-Livelihood/egov-persister/boundary-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/asset-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/vendor-persister.yaml"
   initContainers:
     gitSync:
       repo: "git@github.com:Selco-Foundation/Configs-Livelihood"      ##### Change repo url with Your fork Repo url
-      branch: "main"
+      branch: uat_dev
 
 audit-service:
   persist-yml-path: "file:///work-dir/Configs-Livelihood/egov-persister/im-services-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/egov-workflow-v2-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/hrms-employee-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/boundary-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/asset-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/vendor-persister.yaml,file:///work-dir/Configs-Livelihood/egov-persister/mdms-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/egov-user-event-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/privacy-audit.yml"
   initContainers:
     gitSync:
       repo: "git@github.com:Selco-Foundation/Configs-Livelihood"
-      branch: "main"
+      branch: uat_dev
+
+pdf-service:
+  initContainers:
+    gitSync:
+      repo: git@github.com:Selco-Foundation/Configs-Livelihood.git
+      branch: uat_dev

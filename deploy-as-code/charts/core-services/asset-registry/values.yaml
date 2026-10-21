@@ -15,14 +15,13 @@ initContainers:
     enabled: true
     schemaTable: "asset_registry_schema"
     image:
-      repository: "selcohub/asset-registry-db"
+      repository: "selcohub/asset-registry-db-lh"
       tag: core-2.9-lts-mvn-check-c33cfe45ab-9
 
 
 # Container Configs
 image:
-  repository: "selcohub/asset-registry"
-  tag: develop-9e49c3921b4b5a3b11dab4bb3b932d947971ef0a
+  repository: "selcohub/asset-registry-lh"
 replicas: "1"
 healthChecks:
   enabled: true
@@ -31,7 +30,8 @@ healthChecks:
 appType: "java-spring"
 tracing-enabled: true
 heap: "-Xmx256m -Xms256m"
-memory_limits: "768Mi"
+memory_requests: "256Mi"
+memory_limits: "512Mi"
 
 # Additional Container Envs
 env: |
@@ -49,11 +49,6 @@ env: |
       configMapKeyRef:
         name: egov-service-host
         key: field-planner-activity
-  - name: OTEL_EXPORTER_OTLP_ENDPOINT
-    valueFrom:
-      configMapKeyRef:
-        name: egov-service-host
-        key: jaeger
   - name: EGOV_IDGEN_HOST
     valueFrom:
       configMapKeyRef:
@@ -94,5 +89,10 @@ env: |
       configMapKeyRef:
         name: egov-service-host
         key: vendor-registry
+  - name: EGOV_ORGANISATION_HOST
+    valueFrom:
+      configMapKeyRef:
+        key: vendor-registry
+        name: egov-service-host
   
 
