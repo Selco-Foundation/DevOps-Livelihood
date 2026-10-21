@@ -28,8 +28,8 @@ healthChecks:
   readinessProbePath: "/project/health"
 appType: "java-spring"
 tracing-enabled: true
-heap: "-Xmx192m -Xms192m"
-memory_requests: "384Mi"
+heap: "-Xmx384m -Xms384m -XX:+UseG1GC -XX:G1PeriodicGCInterval=30000"
+memory_requests: "512Mi"
 memory_limits: "768Mi"
 
 # Additional Container Envs
