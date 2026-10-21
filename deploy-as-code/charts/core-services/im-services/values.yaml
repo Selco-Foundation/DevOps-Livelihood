@@ -20,7 +20,7 @@ initContainers:
     enabled: true
     schemaTable: "im_service_schema"
     image:
-      repository: "selcohub/im-services-db"
+      repository: "selcohub/im-services-db-lh"
       tag: "main-87dbaeea5af057c243a85e625dc8f5ee3f434681"
     env: |
       - name: EGOV_USER_HOST
@@ -95,7 +95,7 @@ initContainers:
 
 # Container Configs
 image:
-  repository: "selcohub/im-services"
+  repository: "selcohub/im-services-lh"
   tag: "main-87dbaeea5af057c243a85e625dc8f5ee3f434681"
 replicas: "1"
 healthChecks:
@@ -104,10 +104,13 @@ healthChecks:
   readinessProbePath: "/im-services/health"
 appType: "java-spring"
 tracing-enabled: true
-heap: "-Xmx2900m -Xms2900m"
-memory_requests: "2Gi"
-memory_limits: "4Gi"
+heap: "-XX:MaxRAMPercentage=70.0 -XX:InitialRAMPercentage=25.0 -XX:+UseG1GC -XX:G1PeriodicGCInterval=30000"
+memory_requests: "512Mi"
+memory_limits: "768Mi"
 minReplicas: 2
+
+hparam:
+  enabled: false
 
 lifecycle:
   postStart:
