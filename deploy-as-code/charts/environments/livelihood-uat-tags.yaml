@@ -140,7 +140,7 @@ im-services:
 livelihood-ui:
   image:
     repository: selcohub/livelihood-ui-lh
-    tag: staging-0aa6fdbf64ed7cb6d26cce4c9b637b04bbe877b7
+    tag: staging-75d1409aa713ef7dc6cc1adf0eed2c6bc5dd28d8
 
 digit-ui:
   image:
