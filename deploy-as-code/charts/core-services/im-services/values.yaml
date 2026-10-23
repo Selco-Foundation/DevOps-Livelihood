@@ -20,7 +20,7 @@ initContainers:
     enabled: true
     schemaTable: "im_service_schema"
     image:
-      repository: "selcohub/im-services-db"
+      repository: "selcohub/im-services-db-lh"
       tag: "main-87dbaeea5af057c243a85e625dc8f5ee3f434681"
     env: |
       - name: EGOV_USER_HOST
@@ -95,7 +95,7 @@ initContainers:
 
 # Container Configs
 image:
-  repository: "selcohub/im-services"
+  repository: "selcohub/im-services-lh"
   tag: "main-87dbaeea5af057c243a85e625dc8f5ee3f434681"
 replicas: "1"
 healthChecks:

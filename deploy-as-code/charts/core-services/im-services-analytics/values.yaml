@@ -13,7 +13,7 @@ ingress:
 
 # Container Configs
 image:
-  repository: "selcohub/im-services-analytics"
+  repository: "selcohub/im-services-analytics-lh"
   tag: "im-services-analytics-27624fe645-11"
 replicas: "1"
 healthChecks:

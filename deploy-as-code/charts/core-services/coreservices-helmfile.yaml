@@ -93,9 +93,9 @@ releases:
 #    installed: true
 #    <<: *default
 
-  - name: livelihood-ui # Replace with your desired namespace
-    installed: true
-    <<: *default
+#  - name: livelihood-ui # Replace with your desired namespace
+#    installed: true
+#    <<: *default
 #
 #  - name: digit-ui # Replace with your desired namespace
 #    installed: true
@@ -110,13 +110,13 @@ releases:
 #    installed: true
 #    <<: *default
 #
-#  - name: im-services # Replace with your desired namespace
-#    installed: true
-#    <<: *default
+  - name: im-services # Replace with your desired namespace
+    installed: true
+    <<: *default
 ##
-#  - name: im-services-analytics # Replace with your desired namespace
-#    installed: true
-#    <<: *default
+  - name: im-services-analytics # Replace with your desired namespace
+    installed: true
+    <<: *default
 #
 #  - name: inbox # Replace with your desired namespace
 #    installed: true
@@ -134,14 +134,14 @@ releases:
 #    installed: true
 #    <<: *default
 #
-  - name: facility-service  # Replace with your desired namespace
-    installed: true
-    <<: *default
+#  - name: facility-service  # Replace with your desired namespace
+#    installed: true
+#    <<: *default
 
 #
-  - name: asset-registry # Replace with your desired namespace
-    installed: true
-    <<: *default
+#  - name: asset-registry # Replace with your desired namespace
+#    installed: true
+#    <<: *default
 #
 #  - name: project # Replace with your desired namespace
 #    installed: true
@@ -151,9 +151,9 @@ releases:
 #    installed: true
 #    <<: *default
 #
-  - name: ingestion-service # Replace with your desired namespace
-    installed: true
-    <<: *default
+#  - name: ingestion-service # Replace with your desired namespace
+#    installed: true
+#    <<: *default
 #
 #  - name: pdf-service
 #    installed: true
