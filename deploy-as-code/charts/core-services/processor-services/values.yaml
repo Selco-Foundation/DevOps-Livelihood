@@ -26,6 +26,7 @@ healthChecks:
   readinessProbePath: "/processor-services/health"
 appType: "java-spring"
 tracing-enabled: true
+heap: "-XX:MaxRAMPercentage=70.0 -XX:InitialRAMPercentage=25.0 -XX:+UseG1GC -XX:G1PeriodicGCInterval=30000"
 memory_limits: "2560Mi"
 memory_requests: "2Gi"
 lifecycle:
@@ -39,14 +40,6 @@ lifecycle:
           apk add --no-cache ffmpeg cpulimit
           ln -fs /usr/bin/ffprobe /usr/local/bin/ffprobe   ##Symbolic link at different directory
           ln -fs /usr/bin/ffmpeg /usr/local/bin/ffmpeg
-
-nodeSelector:
-  accelerator: none
-tolerations:
-  - effect: NoSchedule
-    key: cpu
-    operator: Equal
-    value: "true"
 
 # Additional Container Envs
 env: |
@@ -72,4 +65,6 @@ env: |
     value: "1"
   - name: SPRING_KAFKA_CONSUMER_GROUPID
     value: egov-processor-services
+  - name: JAVA_OPTS
+    value: {{ index .Values "heap" | quote }}
 
