@@ -104,7 +104,7 @@ healthChecks:
   readinessProbePath: "/im-services/health"
 appType: "java-spring"
 tracing-enabled: true
-heap: "-Xmx2900m -Xms2900m"
+heap: "-Xmx2900m -Xms2900m -XX:+UseG1GC -XX:G1PeriodicGCInterval=30000"
 memory_requests: "2Gi"
 memory_limits: "4Gi"
 minReplicas: 2

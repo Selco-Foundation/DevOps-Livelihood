@@ -22,7 +22,7 @@ healthChecks:
   readinessProbePath: "/im-services-analytics/health"
 appType: "java-spring"
 tracing-enabled: true
-heap: "-Xmx1560m -Xms1560m"
+heap: "-Xmx1560m -Xms1560m -XX:+UseG1GC -XX:G1PeriodicGCInterval=30000"
 memory_limits: "2560Mi"
 memory_requests: "2Gi"
 minReplicas: 2

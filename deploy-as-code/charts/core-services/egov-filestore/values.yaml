@@ -30,7 +30,7 @@ appType: "java-spring"
 tracing-enabled: true
 is-bucket-fixed: "true"
 fixed-bucketname: "selco"
-heap: "-Xmx1560m -Xms1560m"
+heap: "-Xmx1560m -Xms1560m -XX:+UseG1GC -XX:G1PeriodicGCInterval=30000"
 file-storage-mount-path: "/filestore"
 is-nfs-enabled: false
 is-s3-enabled: true
