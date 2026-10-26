@@ -82,3 +82,8 @@ env: |
         key: egov-hrms
   - name: JAVA_OPTS
     value: {{ index .Values "heap" | quote }}
+  - name: EGOV_FIELDPLAN_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: egov-service-host
+        key: field-plan
