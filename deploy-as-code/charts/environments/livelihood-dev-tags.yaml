@@ -168,7 +168,7 @@ egov-idgen:
   initContainers:
     dbMigration:
       image:
-        tag: v2.2.1-9dd1451c12150aca6d1bcf06565c2d6a7bb32a04
+        tag: core-2.9-lts-mvn-check-c33cfe45ab-7
 
 egov-indexer:
   image:

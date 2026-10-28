@@ -94,8 +94,8 @@ diagnosticMode:
 ##
 image:
   registry: docker.io
-  repository: bitnami/postgresql
-  tag: 14.5.0-debian-11-r35
+  repository: library/postgres
+  tag: "14"
   digest: ""
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -440,7 +440,9 @@ primary:
   ## @param primary.resources.requests.cpu The requested cpu for the PostgreSQL Primary containers
   ##
   resources:
-    limits: {}
+    limits:
+      cpu: 500m
+      memory: 512Mi
     requests:
       memory: 256Mi
       cpu: 250m
