@@ -55,6 +55,8 @@ releases:
   values:
     - ./kibana/values.yaml
     - ingress:
+        annotations:
+          kubernetes.io/ingress.class: {{ .Values.global.ingressClassName }}
         hosts:
           - host: {{ .Values.global.domain }}
             paths:
@@ -102,6 +104,8 @@ releases:
 #  values:
 #    - ./jupyterhub/values.yaml
 #    - ingress:
+#        annotations:
+#          kubernetes.io/ingress.class: {{ .Values.global.ingressClassName }}
 #        hosts:
 #          - {{ .Values.global.domain }}
 #        tls:
@@ -117,6 +121,8 @@ releases:
   values:
     - ./pgadmin4/values.yaml
     - ingress:
+        annotations: 
+          kubernetes.io/ingress.class: {{ .Values.global.ingressClassName }}
         hosts:
           - host: {{ .Values.global.domain }}
             paths:
