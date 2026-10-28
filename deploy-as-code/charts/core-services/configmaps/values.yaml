@@ -72,6 +72,7 @@ configmaps:
       im-services: http://im-services.core:8080/
       inbox: http://inbox.core:8080/
       individual: http://individual.core:8080/
+      ingestion-service: http://ingestion-service.core:8080/
       location: http://location:8080/
       mdms-service-v2: http://mdms-v2.core:8080/
       minio-url: https://minio-uat.digit.org/
@@ -90,9 +91,10 @@ root-ingress:
   name: root-ingress
   namespace: core
   cert-issuer: "letsencrypt-staging"
-  appRoot: digit-ui
-  serviceName: digit-ui
+  appRoot: livelihood-ui
+  serviceName: livelihood-ui
   servicePort: 80
+
 secrets:
   db:
     name: db

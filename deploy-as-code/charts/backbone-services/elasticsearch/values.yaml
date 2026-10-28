@@ -1,6 +1,6 @@
 
 name: elasticsearch-master
-replicas: 3
+replicas: 2
 
 image:
   pullPolicy: IfNotPresent  
@@ -18,7 +18,7 @@ masterService: "elasticsearch-master"
 # These will be set as environment variables. E.g. node.master=true
 roles:
   - master
-minimumMasterNodes: 3
+minimumMasterNodes: 2
 
 esMajorVersion: ""
 
@@ -79,13 +79,13 @@ podAnnotations: {}
 # additionals labels
 labels: {}
 
-esJavaOpts: "-Xmx2100m -Xms2100m"
+esJavaOpts: "-Xmx768m -Xms768m"
 
 resources:
   requests:
-    memory: "3Gi"
+    memory: "1Gi"
   limits:
-    memory: "4Gi"
+    memory: "2Gi"
 
 initResources: {}
   # limits:

@@ -69,7 +69,7 @@ spec:
     {{- end }}     
       initContainers:
       {{- with .Values.initContainers.extraInitContainers }}
-        {{- tpl . $ | nindent 8 }}
+        {{- tpl . $ | nindent 6 }}
       {{- end }}
       {{- if .Values.initContainers.dbMigration.enabled }}
       {{ with .Values.initContainers.dbMigration}}
