@@ -1,5 +1,6 @@
 global:
   domain:  setu4livelihood-dev.selcofoundation.org
+  ingressClassName: ingress-livelihood
 root-ingress:
   cert-issuer: "letsencrypt-prod"
 configmaps:
