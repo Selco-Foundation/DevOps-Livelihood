@@ -286,5 +286,5 @@ vpa:
   updateMode: "Off"
 
 hparam:
-  enabled: true
+  enabled: false
 minReplicas: 1
