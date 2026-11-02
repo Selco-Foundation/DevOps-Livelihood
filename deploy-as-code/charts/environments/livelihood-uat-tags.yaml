@@ -132,12 +132,12 @@ processor-services:
 im-services:
   image:
     repository: "selcohub/im-services-lh"
-    tag: staging-5f936bccaec4499b0190803d96ce9828ff09f6d8
+    tag: staging-6d62f82430d75c30089c466927f821527ec50eef
   initContainers:
     dbMigration:
       image:
         repository: "selcohub/im-services-db-lh"
-        tag: staging-5f936bccaec4499b0190803d96ce9828ff09f6d8
+        tag: staging-6d62f82430d75c30089c466927f821527ec50eef
 
 livelihood-ui:
   image:
