@@ -185,7 +185,8 @@ audit-service:
 
 egov-accesscontrol:
   image:
-    tag: v2.9.2-4a60f20
+    tag: staging-ef8ecf2c74e47e71164bc9633d1760e1fed2888c
+    repository: selcohub/egov-accesscontrol-lh
 
 egov-enc-service:
   image:
