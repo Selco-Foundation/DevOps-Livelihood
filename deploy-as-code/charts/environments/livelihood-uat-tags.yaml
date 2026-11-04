@@ -245,11 +245,13 @@ egov-persister:
 
 egov-user:
   image:
-    tag: core-2.9-lts-egov-user-deployement-c33cfe45ab-13
+    tag: staging-ef8ecf2c74e47e71164bc9633d1760e1fed2888c
+    repository: selcohub/egov-user-lh
   initContainers:
     dbMigration:
       image:
-        tag: core-2.9-lts-egov-user-deployement-c33cfe45ab-13
+        tag: staging-ef8ecf2c74e47e71164bc9633d1760e1fed2888c
+        repository: selcohub/egov-user-db-lh
 
 gateway:
   image:
