@@ -41,11 +41,13 @@ ingestion-service:
 
 project:
   image:
-    tag: staging-65df4bed23c5f31965dddbc4be7d618da64974eb
+    tag: staging-eaac0d31b5ef2d421c9d0fb94adb1f63b2c62fe9
+    repository: selcohub/project-lh
   initContainers:
     dbMigration:
       image:
-        tag: staging-65df4bed23c5f31965dddbc4be7d618da64974eb
+        tag: staging-eaac0d31b5ef2d421c9d0fb94adb1f63b2c62fe9
+        repository: selcohub/project-db-lh
 
 vendor-registry:
   image:
