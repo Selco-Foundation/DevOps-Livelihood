@@ -187,6 +187,11 @@ egov-accesscontrol:
   image:
     tag: staging-ef8ecf2c74e47e71164bc9633d1760e1fed2888c
     repository: selcohub/egov-accesscontrol-lh
+  initContainers:
+    dbMigration:
+      image:
+        repository: selcohub/egov-accesscontrol-db-lh
+        tag: staging-ef8ecf2c74e47e71164bc9633d1760e1fed2888c
 
 egov-enc-service:
   image:
