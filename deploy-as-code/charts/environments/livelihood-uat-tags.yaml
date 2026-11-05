@@ -93,12 +93,12 @@ boundary-service:
 
 facility-service:
   image:
-    tag: staging-8b7a01952ffb958ed84dd446a8c9715daf4bd2ee
+    tag: staging-42a6b7e242a2bd74ab21ee56a8f2525c9424b028
     repository: selcohub/facility-registry-lh
   initContainers:
     dbMigration:
       image:
-        tag: staging-8b7a01952ffb958ed84dd446a8c9715daf4bd2ee
+        tag: staging-42a6b7e242a2bd74ab21ee56a8f2525c9424b028
         repository: selcohub/facility-registry-db-lh
 
 egov-hrms:
