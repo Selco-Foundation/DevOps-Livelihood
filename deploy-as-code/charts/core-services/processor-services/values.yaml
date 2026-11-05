@@ -13,7 +13,7 @@ ingress:
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: 500m
 
-minReplicas: 1
+minReplicas: 2
 
 # Container Configs
 image:
@@ -26,9 +26,9 @@ healthChecks:
   readinessProbePath: "/processor-services/health"
 appType: "java-spring"
 tracing-enabled: true
-heap: -XX:MaxRAMPercentage=70.0 -XX:InitialRAMPercentage=25.0 -XX:+UseG1GC -XX:G1PeriodicGCInterval=30000
-memory_requests: "256Mi"
-memory_limits: "512Mi"
+heap: "-XX:MaxRAMPercentage=70.0 -XX:InitialRAMPercentage=25.0 -XX:+UseG1GC -XX:G1PeriodicGCInterval=30000"
+memory_requests: "2Gi"
+memory_limits: "2560Mi"
 lifecycle:
   postStart:
     exec:
