@@ -35,11 +35,11 @@ memory_limits: "768Mi"
 
 # Additional Container Envs
 env: |
-  - name: EGOV_BOUNDARY_HOST
+  - name: EGOV_VENDOR_HOST
     valueFrom:
       configMapKeyRef:
+        key: vendor-registry
         name: egov-service-host
-        key: boundary-service
   - name: EGOV_BOUNDARY_HOST
     valueFrom:
       configMapKeyRef:

@@ -25,8 +25,8 @@ appType: "java-spring"
 tracing-enabled: true
 heap: "-Xmx1g -Xms1g"
 java-args: "-Dspring.profiles.active=monitoring"
-memory_limits: "2Gi"
 memory_requests: "1540Mi"
+memory_limits: "2Gi"
 minReplicas: 2
 
 
@@ -118,10 +118,5 @@ env: |
     value: "false"
   - name: JAVA_ENABLE_DEBUG
     value: "true"
-  - name: EGOV_ASSET_HOST
-    valueFrom: 
-      configMapKeyRef: 
-        name: egov-service-host
-        key: asset-registry
 
 

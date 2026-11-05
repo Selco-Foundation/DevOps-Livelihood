@@ -27,8 +27,8 @@ appType: "java-spring"
 tracing-enabled: true
 otel: "true"
 heap: "-Xmx512m -Xms512m"
-memory_limits: "1Gi"
 memory_requests: "1Gi"
+memory_limits: "1Gi"
 healthChecks:
   enabled: true
   livenessProbePath: "/localization/health"

@@ -27,8 +27,8 @@ healthChecks:
 appType: "java-spring"
 tracing-enabled: true
 heap: "-XX:MaxRAMPercentage=70.0 -XX:InitialRAMPercentage=25.0 -XX:+UseG1GC -XX:G1PeriodicGCInterval=30000"
-memory_limits: "2560Mi"
 memory_requests: "2Gi"
+memory_limits: "2560Mi"
 lifecycle:
   postStart:
     exec:
@@ -41,13 +41,9 @@ lifecycle:
           ln -fs /usr/bin/ffprobe /usr/local/bin/ffprobe   ##Symbolic link at different directory
           ln -fs /usr/bin/ffmpeg /usr/local/bin/ffmpeg
 
+
 # Additional Container Envs
 env: |
-  - name: KAFKA_CONFIG_BOOTSTRAP_SERVER_CONFIG
-    valueFrom:
-      configMapKeyRef:
-        name: egov-config
-        key: kafka-brokers
   - name: SERVER_PORT
     value: "8080"
   - name: EGOV_FILESTORE_HOST
