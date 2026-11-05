@@ -112,8 +112,6 @@ env: |
       configMapKeyRef:
         name: egov-service-host
         key: boundary-service
-  - name: OTEL_SERVICE_NAME
-    value: facility-service
   - name: OTEL_EXPORTER_ENDPOINT 
     value: "http://jaeger-tracing-collector.backbone:4318" 
   - name: OTEL INSTRUMENTATION_HTTP_SERVER_IGNORE_URLS

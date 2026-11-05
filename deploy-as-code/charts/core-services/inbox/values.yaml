@@ -118,5 +118,10 @@ env: |
     value: "false"
   - name: JAVA_ENABLE_DEBUG
     value: "true"
+  - name: EGOV_ASSET_HOST
+    valueFrom: 
+      configMapKeyRef: 
+        name: egov-service-host
+        key: asset-registry
 
 
