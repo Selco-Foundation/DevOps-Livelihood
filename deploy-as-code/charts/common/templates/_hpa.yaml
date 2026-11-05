@@ -12,7 +12,7 @@ spec:
     kind: Deployment
     name: {{ template "common.name" . }}
   minReplicas: {{ .Values.minReplicas }}
-  maxReplicas: 5
+  maxReplicas: {{ .Values.maxReplicas | default 5 }}
   metrics:
     - type: Resource
       resource:

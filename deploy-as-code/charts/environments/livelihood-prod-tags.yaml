@@ -243,3 +243,31 @@ gateway:
 user-otp:
   image:
     tag: v2.9.2-4a60f20
+
+field-planner:
+  image:
+    tag: staging-eaac0d31b5ef2d421c9d0fb94adb1f63b2c62fe9
+    repository: selcohub/field-planner-lh
+  initContainers:
+    dbMigration:
+      image:
+        tag: staging-eaac0d31b5ef2d421c9d0fb94adb1f63b2c62fe9
+        repository: selcohub/field-planner-db-lh
+
+field-planner-activity:
+  image:
+    repository: selcohub/field-planner-activity-lh
+    tag: staging-8b7a01952ffb958ed84dd446a8c9715daf4bd2ee
+  initContainers:
+    dbMigration:
+      image:
+        repository: selcohub/field-planner-activity-db-lh
+        tag: staging-8b7a01952ffb958ed84dd446a8c9715daf4bd2ee
+
+rms-service:
+  image:
+    tag: v3.15.42-5a0319f9a5dfd891427e1b7e79f4ffae09d7fedc
+  initContainers:
+    dbMigration:
+      image:
+        tag: v3.15.42-5a0319f9a5dfd891427e1b7e79f4ffae09d7fedc

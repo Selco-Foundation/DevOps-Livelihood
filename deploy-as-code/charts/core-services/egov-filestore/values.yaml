@@ -38,6 +38,7 @@ memory_requests: "1560Mi"
 memory_limits: "2560Mi"
 minReplicas: 2
 
+
 persistence:
   enabled: false
 

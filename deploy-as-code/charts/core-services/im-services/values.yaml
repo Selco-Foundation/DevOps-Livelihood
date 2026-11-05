@@ -20,7 +20,7 @@ initContainers:
     enabled: true
     schemaTable: "im_service_schema"
     image:
-      repository: "selcohub/im-services-db-lh"
+      repository: "selcohub/im-services-db"
       tag: "main-87dbaeea5af057c243a85e625dc8f5ee3f434681"
     env: |
       - name: EGOV_USER_HOST
@@ -86,7 +86,7 @@ initContainers:
             key: flyway-password
             name: db
       - name: FLYWAY_LOCATIONS
-        value: filesystem:/flyway/sql,filesystem:/flyway/seed,filesystem:/flyway/qa # exclude java migrations path
+        value: "filesystem:/flyway/sql,filesystem:/flyway/seed,filesystem:/flyway/qa"
       - name: EGOV_MDMS_HOST
         valueFrom:
           configMapKeyRef:
@@ -95,7 +95,7 @@ initContainers:
 
 # Container Configs
 image:
-  repository: "selcohub/im-services-lh"
+  repository: "selcohub/im-services"
   tag: "main-87dbaeea5af057c243a85e625dc8f5ee3f434681"
 replicas: "1"
 healthChecks:
@@ -133,11 +133,6 @@ env: |
       configMapKeyRef:
         name: egov-service-host
         key: vendor-registry
-  - name: EGOV_FACILITY_HOST
-    valueFrom:
-      configMapKeyRef:
-        key: facility-service
-        name: egov-service-host
   - name: EGOV_RMS_HOST
     valueFrom:
      configMapKeyRef:
@@ -145,18 +140,11 @@ env: |
         name: egov-service-host
   - name: EGOV_RMS_TICKET_STATUS_UPDATE_PATH
     value: /rms-service/v1/ticket/status/update
-  - name: EGOV_FACILITY_HOST
-    valueFrom:
-      configMapKeyRef:
-        name: egov-service-host
-        key: facility-service
   - name: EGOV_BOUNDARY_HOST
     valueFrom:
       configMapKeyRef:
         name: egov-service-host
         key: boundary-service
-  - name: SPRING_FLYWAY_ENABLED
-    value: "false"
   - name: SERVER_CONTEXT_PATH
     value: /im-services
   - name: FFMPEG_CPULIMITPERCENTAGE
@@ -176,8 +164,6 @@ env: |
       configMapKeyRef:
         key: egov-mdms-service
         name: egov-service-host
-  - name: SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE
-    value: 100MB
   - name: EGOV_USER_HOST
     valueFrom:
       configMapKeyRef:
@@ -249,3 +235,8 @@ env: |
       configMapKeyRef: 
         key: filestore-download-enpoint
         name: egov-config
+  - name: EGOV_FACILITY_HOST
+    valueFrom:
+      configMapKeyRef:
+        key: facility-service
+        name: egov-service-host

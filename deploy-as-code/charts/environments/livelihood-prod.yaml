@@ -20,6 +20,9 @@ configmaps:
       egov-state-level-tenant-id: livelihood
 
 egov-user:
+  heap: "-Xmx700m -Xms700m"
+  memory_requests: "1Gi"
+  memory_limits: "1540Mi"
   otp-validation: "true"
   citizen-otp-enabled: "true"
   employee-otp-enabled: "false"
@@ -64,6 +67,10 @@ installation-qc:
 #       ';"   
 
 egov-filestore:
+  heap: "-Xmx1560m -Xms1560m -XX:+UseG1GC -XX:G1PeriodicGCInterval=30000"
+  memory_requests: "1560Mi"
+  memory_limits: "2560Mi"
+  minReplicas: 2
   volume: /opt/eGov/filestore
   is-bucket-fixed: "true"
   minio.url : "http://minio.backbone:9000/"
@@ -76,21 +83,27 @@ egov-filestore:
   fixed-bucketname: livelihood-prod-filestore-bucket  ## Add filestore bucket name
 
 egov-enc-service:
+  memory_limits: "768Mi"
   heap: "-Xmx256m -Xms256m"
 
 
 egov-idgen:
+  memory_limits: "768Mi"
   idformat-from-mdms: "true"
   java-args: -Dspring.profiles.active=monitoring
   heap: "-Xmx192m -Xms192m"
   autocreate-new-seq: "true"
 
 egov-localization:
+  memory_requests: "1Gi"
+  memory_limits: "1Gi"
   heap: "-Xmx256m -Xms256m"
 
 
 
 egov-notification-sms:
+  heap: "-Xmx192m -Xms192m"
+  memory_limits: "768Mi"
   sms-provider-url: "https://restapi.smscountry.com/v0.1/Accounts/A2mCONOT0pIjJ12fuKC8/SMSes/" ## Add sms provider url
   sms.provider.class: "Generic"
   sms.provider.contentType:  "application/json"
@@ -109,12 +122,17 @@ egov-notification-sms:
   sms-error-codes: "401,403,404,405,406,407,408,409,410,411,412,413,414"
 
 egov-mdms-service:
+  heap: "-Xmx512m -Xms512m"
+  memory_requests: "1536Mi"
+  memory_limits: 2048Mi
   mdms-path: "/work-dir/egov-mdms-data/data"
   mdms-folder: "selco-mdms-data"
   masters-config-url: "file:///work-dir/egov-mdms-data/master-config.json"
   java-args: -Dspring.profiles.active=monitoring
 
 egov-indexer:
+  memory_requests: "768Mi"
+  memory_limits: "1024Mi"
   heap: "-Xmx512m -Xms512m"
   initContainers:
     gitSync:
@@ -124,6 +142,8 @@ egov-indexer:
   egov-indexer-yaml-repo-path: "file:///work-dir/Configs-Livelihood/egov-indexer/project-indexer.yml,file:///work-dir/Configs-Livelihood/egov-indexer/im-services.yml,file:///work-dir/Configs-Livelihood/egov-indexer/egov-url-shortening-indexer.yaml,file:///work-dir/Configs-Livelihood/egov-indexer/individual-indexer.yml,file:///work-dir/Configs-Livelihood/egov-indexer/escalation-status-indexer.yml"
 
 egov-persister:
+  memory_requests: "768Mi"
+  memory_limits: "1Gi"
   heap: "-Xmx256m -Xms256m"
   persist-yml-path: "file:///work-dir/Configs-Livelihood/health/egov-persister/facility-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/field-plan-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/activity-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/project-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/egov-user-event-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/egov-workflow-v2-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/im-services-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/hrms-employee-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/mdms-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/audit-service-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/privacy-audit.yml,file:///work-dir/Configs-Livelihood/egov-persister/boundary-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/asset-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/vendor-persister.yaml"
   initContainers:
@@ -140,8 +160,68 @@ pdf-service:
       rev: b475135106825baaec50e62c7e44e0c0965bee0e
 
 audit-service:
+  heap: "-Xmx64m -Xms64m"
+  memory_limits: "768Mi"
   persist-yml-path: "file:///work-dir/Configs-Livelihood/egov-persister/im-services-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/egov-workflow-v2-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/hrms-employee-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/boundary-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/asset-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/vendor-persister.yaml,file:///work-dir/Configs-Livelihood/egov-persister/mdms-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/egov-user-event-persister.yml,file:///work-dir/Configs-Livelihood/egov-persister/privacy-audit.yml"
   initContainers:
     gitSync:
       repo: "git@github.com:Selco-Foundation/Configs-Livelihood"
       branch: "main"
+
+# ---- PROD-specific resource sizing / HPA ----
+minReplicas: 2
+
+boundary-service:
+  heap: "-Xmx192m -Xms192m"
+  memory_limits: "768Mi"
+egov-accesscontrol:
+  heap: "-Xmx192m -Xms192m"
+  memory_limits: "768Mi"
+egov-hrms:
+  heap: "-Xmx192m -Xms192m"
+  memory_limits: "768Mi"
+egov-location:
+  heap: "-Xmx192m -Xms192m"
+  memory_limits: "728Mi"
+egov-otp:
+  heap: "-Xmx192m -Xms192m"
+  memory_limits: "768Mi"
+egov-url-shortening:
+  heap: "-Xmx256m -Xms256m"
+  memory_limits: 512Mi
+egov-workflow-v2:
+  heap: "-Xmx64m -Xms64m"
+  memory_limits: "768Mi"
+facility-service:
+  heap: "-Xmx192m -Xms192m"
+  memory_requests: "1Gi"
+  memory_limits: "1536Mi"
+im-services-analytics:
+  heap: "-Xmx1560m -Xms1560m -XX:+UseG1GC -XX:G1PeriodicGCInterval=30000"
+  memory_requests: "2Gi"
+  memory_limits: "2560Mi"
+  minReplicas: 2
+im-services:
+  heap: "-Xmx2900m -Xms2900m -XX:+UseG1GC -XX:G1PeriodicGCInterval=30000"
+  memory_requests: "2Gi"
+  memory_limits: "4Gi"
+  minReplicas: 2
+inbox:
+  heap: "-Xmx1g -Xms1g"
+  memory_requests: "1540Mi"
+  memory_limits: "2Gi"
+  minReplicas: 2
+processor-services:
+  heap: "-XX:MaxRAMPercentage=70.0 -XX:InitialRAMPercentage=25.0 -XX:+UseG1GC -XX:G1PeriodicGCInterval=30000"
+  memory_requests: "2Gi"
+  memory_limits: "2560Mi"
+  minReplicas: 2
+project:
+  heap: "-Xmx192m -Xms192m"
+  memory_limits: "768Mi"
+user-otp:
+  heap: "-Xmx192m -Xms192m"
+  memory_limits: "768Mi"
+vendor-registry:
+  heap: "-Xmx192m -Xms192m"
+  memory_limits: "768Mi"
