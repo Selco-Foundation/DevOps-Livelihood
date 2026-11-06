@@ -83,12 +83,12 @@ rms-service:
 
 boundary-service:
   image:
-    tag: staging-75d1409aa713ef7dc6cc1adf0eed2c6bc5dd28d8
+    tag: v1.1.3-60c8da4e6ff4a9bd0ad6f512a1a27d75f9e58f45
     repository: selcohub/egov-boundary-service-lh
   initContainers:
     dbMigration:
       image:
-        tag: staging-75d1409aa713ef7dc6cc1adf0eed2c6bc5dd28d8
+        tag: v1.1.3-60c8da4e6ff4a9bd0ad6f512a1a27d75f9e58f45
         repository: selcohub/egov-boundary-service-db-lh
 
 facility-service:
