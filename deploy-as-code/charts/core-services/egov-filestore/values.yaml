@@ -9,7 +9,7 @@ initContainers:
     enabled: true
     schemaTable: "egov_filestore_schema"
     image:
-      repository: "selcohub/egov-filestore-db"
+      repository: "selcohub/egov-filestore-db-lh"
       tag: main-9577b7cb41f4de9f0a720ca168339c7c514c6a61
 
 # Ingress Configs
@@ -19,7 +19,7 @@ ingress:
 
 # Container Configs
 image:
-  repository: "selcohub/egov-filestore"
+  repository: "selcohub/egov-filestore-lh"
   tag: main-9577b7cb41f4de9f0a720ca168339c7c514c6a61
 replicas: "1"
 healthChecks:

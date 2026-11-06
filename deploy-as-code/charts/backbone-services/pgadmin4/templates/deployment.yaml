@@ -150,8 +150,13 @@ spec:
             - name: PGADMIN_DEFAULT_EMAIL
               valueFrom:
                 secretKeyRef:
+          {{- if not .Values.existingSecret }}
+                  name: {{ $fullName }}
+                  key: email
+          {{- else }}
                   name: {{ .Values.existingSecret }}
                   key: {{ .Values.secretKeys.pgadminEmailKey }}
+          {{- end }}
           {{- if .Values.env.pgpassfile }}
             - name: PGPASSFILE
               value: {{ .Values.env.pgpassfile }}

@@ -9,7 +9,7 @@ initContainers:
     enabled: true
     schemaTable: "project_schema"
     image:
-      repository: "selcohub/project-db"
+      repository: "selcohub/project-db-lh"
       tag: v1.1.6-1f79b92f65-33
 
 # Ingress Configs
@@ -19,7 +19,7 @@ ingress:
 
 # Container Configs
 image:
-  repository: "selcohub/project"
+  repository: "selcohub/project-lh"
   tag: v1.1.6-1f79b92f65-33
 replicas: "1"
 healthChecks:

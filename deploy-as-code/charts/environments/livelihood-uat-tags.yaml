@@ -8,47 +8,58 @@ amc-service:
 
 asset-registry:
   image:
-    tag: v3.5.23-737bc697023d565f85e66d3a47d79cfe89409f71
+    tag: staging-7fb4f69616cda2c865daa2440e66fddf14bb6d68
+    repository: selcohub/asset-registry-lh
   initContainers:
     dbMigration:
       image:
-        tag: v3.5.23-737bc697023d565f85e66d3a47d79cfe89409f71
+        tag: staging-7fb4f69616cda2c865daa2440e66fddf14bb6d68
+        repository: selcohub/asset-registry-db-lh
 
 field-planner-activity:
   image:
-    tag: v3.3.7-73d0cc3be378c4495e6f7d7162b2c5d8c1951487
+    repository: selcohub/field-planner-activity-lh
+    tag: staging-8b7a01952ffb958ed84dd446a8c9715daf4bd2ee
   initContainers:
     dbMigration:
       image:
-        tag: v3.3.7-73d0cc3be378c4495e6f7d7162b2c5d8c1951487
+        repository: selcohub/field-planner-activity-db-lh
+        tag: staging-8b7a01952ffb958ed84dd446a8c9715daf4bd2ee
 
 field-planner:
   image:
-    tag: v3.3.9-2eae964f8fa251e7adba756c2b6eb1f34ea47851
+    tag: staging-eaac0d31b5ef2d421c9d0fb94adb1f63b2c62fe9
+    repository: selcohub/field-planner-lh
   initContainers:
     dbMigration:
       image:
-        tag: v3.3.9-2eae964f8fa251e7adba756c2b6eb1f34ea47851
+        tag: staging-eaac0d31b5ef2d421c9d0fb94adb1f63b2c62fe9
+        repository: selcohub/field-planner-db-lh
 
 ingestion-service:
   image:
-    tag: v3.6.24-1e609f3077d20ec6cc98ef672923329c68de19a4
+    repository: "selcohub/ingestion-service-lh"
+    tag: staging-bb7beb2330d1d9ed57969dbe207fc672823a6ba9
 
 project:
   image:
-    tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
+    tag: staging-eaac0d31b5ef2d421c9d0fb94adb1f63b2c62fe9
+    repository: selcohub/project-lh
   initContainers:
     dbMigration:
       image:
-        tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
+        tag: staging-eaac0d31b5ef2d421c9d0fb94adb1f63b2c62fe9
+        repository: selcohub/project-db-lh
 
 vendor-registry:
   image:
-    tag: v3.6.26-8bf11f800d198d8e3f10e39d49598ef2577f682f
+    tag: staging-7fb4f69616cda2c865daa2440e66fddf14bb6d68
+    repository: selcohub/vendor-registry-lh
   initContainers:
     dbMigration:
       image:
-        tag: v3.6.26-8bf11f800d198d8e3f10e39d49598ef2577f682f
+        tag: staging-7fb4f69616cda2c865daa2440e66fddf14bb6d68
+        repository: selcohub/vendor-registry-db-lh
 
 installation-qc:
   image:
@@ -64,27 +75,31 @@ workbench-ui:
 
 rms-service:
   image:
-    tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
+    tag: v3.15.42-5a0319f9a5dfd891427e1b7e79f4ffae09d7fedc
   initContainers:
     dbMigration:
       image:
-        tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
+        tag: v3.15.42-5a0319f9a5dfd891427e1b7e79f4ffae09d7fedc
 
 boundary-service:
   image:
-    tag: v3.5.24-52511d8d8a66451b28a2f082a5d8ce7fc24830bd
+    tag: staging-75d1409aa713ef7dc6cc1adf0eed2c6bc5dd28d8
+    repository: selcohub/egov-boundary-service-lh
   initContainers:
     dbMigration:
       image:
-        tag: v3.5.24-52511d8d8a66451b28a2f082a5d8ce7fc24830bd
+        tag: staging-75d1409aa713ef7dc6cc1adf0eed2c6bc5dd28d8
+        repository: selcohub/egov-boundary-service-db-lh
 
 facility-service:
   image:
-    tag: v3.6.26-8bf11f800d198d8e3f10e39d49598ef2577f682f
+    tag: staging-42a6b7e242a2bd74ab21ee56a8f2525c9424b028
+    repository: selcohub/facility-registry-lh
   initContainers:
     dbMigration:
       image:
-        tag: v3.6.26-8bf11f800d198d8e3f10e39d49598ef2577f682f
+        tag: staging-42a6b7e242a2bd74ab21ee56a8f2525c9424b028
+        repository: selcohub/facility-registry-db-lh
 
 egov-hrms:
   image:
@@ -96,39 +111,44 @@ egov-hrms:
 
 egov-filestore:
   image:
-    tag: v2.0.3-7de51e1b5d83b29754c5e30d33c931d5cc9159aa
+    tag: staging-7c27b41b6d7ffa69f6ac87c9627f1d855c89b4c9
+    repository: selcohub/egov-filestore-lh
   initContainers:
     dbMigration:
       image:
-        tag: v2.0.3-7de51e1b5d83b29754c5e30d33c931d5cc9159aa
+        tag: staging-7c27b41b6d7ffa69f6ac87c9627f1d855c89b4c9
+        repository: selcohub/egov-filestore-db-lh
 
 egov-workflow-v2:
   image:
-    tag: v3.6.25-ac9e4ceb1c2b31207eeddcf883314e50aed15fe9
+    tag: staging-d0c9ccd8b8fb5b416867bae62f3f7720924d9dd1
   initContainers:
     dbMigration:
       image:
-        tag: v3.6.25-ac9e4ceb1c2b31207eeddcf883314e50aed15fe9
+        tag: staging-d0c9ccd8b8fb5b416867bae62f3f7720924d9dd1
 
 im-services-analytics:
   image:
-    tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
+    tag: staging-e75273a54d61c2f1d765815982bb913c3dd83f57
 
 processor-services:
   image:
-    tag: main-3aa146620a09ad8ec6a4650de881b8d44bf23306
+    tag: main-989d294d0111097082f14e4045f6ddcb97007235
 
 im-services:
   image:
-    tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
+    repository: "selcohub/im-services-lh"
+    tag: staging-6d62f82430d75c30089c466927f821527ec50eef
   initContainers:
     dbMigration:
       image:
-        tag: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
+        repository: "selcohub/im-services-db-lh"
+        tag: staging-6d62f82430d75c30089c466927f821527ec50eef
 
 livelihood-ui:
   image:
-    tag: fix-livelihood-ui-d5f2f5ce6325dbd53bc4b8ad635a93f6d8a78a03
+    repository: selcohub/livelihood-ui-lh
+    tag: staging-6d62f82430d75c30089c466927f821527ec50eef
 
 digit-ui:
   image:
@@ -136,7 +156,8 @@ digit-ui:
 
 inbox:
   image:
-    tag: v3.3.7-73d0cc3be378c4495e6f7d7162b2c5d8c1951487
+    tag: staging-6d62f82430d75c30089c466927f821527ec50eef
+    repository: selcohub/inbox-lh
 
 egov-mdms-service:
   image:
@@ -164,7 +185,13 @@ audit-service:
 
 egov-accesscontrol:
   image:
-    tag: v2.9.2-4a60f20
+    tag: staging-ef8ecf2c74e47e71164bc9633d1760e1fed2888c
+    repository: selcohub/egov-accesscontrol-lh
+  initContainers:
+    dbMigration:
+      image:
+        repository: selcohub/egov-accesscontrol-db-lh
+        tag: staging-ef8ecf2c74e47e71164bc9633d1760e1fed2888c
 
 egov-enc-service:
   image:
@@ -210,17 +237,27 @@ egov-otp:
       image:
         tag: v2.9.2-4a60f20
 
+egov-url-shortening:
+  image:
+    tag: staging-bc62b54d4c657f2bb382238be4b642b8d7930755
+  initContainers:
+    dbMigration:
+      image:
+        tag: staging-bc62b54d4c657f2bb382238be4b642b8d7930755
+
 egov-persister:
   image:
     tag: v2.9.2-4a60f20
 
 egov-user:
   image:
-    tag: core-2.9-lts-egov-user-deployement-c33cfe45ab-13
+    tag: staging-ef8ecf2c74e47e71164bc9633d1760e1fed2888c
+    repository: selcohub/egov-user-lh
   initContainers:
     dbMigration:
       image:
-        tag: core-2.9-lts-egov-user-deployement-c33cfe45ab-13
+        tag: staging-ef8ecf2c74e47e71164bc9633d1760e1fed2888c
+        repository: selcohub/egov-user-db-lh
 
 gateway:
   image:
