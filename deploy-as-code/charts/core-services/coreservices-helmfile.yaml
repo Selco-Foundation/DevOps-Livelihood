@@ -74,9 +74,9 @@ releases:
 #   installed: true
 #   <<: *default
 
-- name: egov-persister # Replace with your desired namespace
-  installed: true
-  <<: *default
+# - name: egov-persister # Replace with your desired namespace
+#   installed: true
+#   <<: *default
 
 # - name: egov-workflow-v2 # Replace with your desired namespace
 #   installed: true
@@ -134,9 +134,9 @@ releases:
 #   installed: true
 #   <<: *default
 
-# - name: asset-registry # Replace with your desired namespace
-#   installed: true
-#   <<: *default
+- name: asset-registry # Replace with your desired namespace
+  installed: true
+  <<: *default
 
 # - name: project # Replace with your desired namespace
 #   installed: true
