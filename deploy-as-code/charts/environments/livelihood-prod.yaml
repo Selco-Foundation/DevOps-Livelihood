@@ -19,6 +19,9 @@ configmaps:
       filestore-download-enpoint: "https://setu4livelihood.selcofoundation.org/filestore/v1/files/file"
       egov-state-level-tenant-id: livelihood
 
+monitoring:
+  lokiS3BucketName: livelihood-prod-loki-bucket
+
 egov-user:
   heap: "-Xmx700m -Xms700m"
   memory_requests: "1Gi"
@@ -214,7 +217,7 @@ inbox:
 processor-services:
   heap: "-XX:MaxRAMPercentage=70.0 -XX:InitialRAMPercentage=25.0 -XX:+UseG1GC -XX:G1PeriodicGCInterval=30000"
   memory_requests: "2Gi"
-  memory_limits: "2560Mi"
+  memory_limits: "4Gi"
   minReplicas: 2
 project:
   heap: "-Xmx192m -Xms192m"
