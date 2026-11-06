@@ -111,12 +111,12 @@ egov-hrms:
 
 egov-filestore:
   image:
-    tag: staging-7c27b41b6d7ffa69f6ac87c9627f1d855c89b4c9
+    tag: v1.1.3-60c8da4e6ff4a9bd0ad6f512a1a27d75f9e58f45
     repository: selcohub/egov-filestore-lh
   initContainers:
     dbMigration:
       image:
-        tag: staging-7c27b41b6d7ffa69f6ac87c9627f1d855c89b4c9
+        tag: v1.1.3-60c8da4e6ff4a9bd0ad6f512a1a27d75f9e58f45
         repository: selcohub/egov-filestore-db-lh
 
 egov-workflow-v2:
