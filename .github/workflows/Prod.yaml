@@ -124,6 +124,7 @@ jobs:
            --set audit-service.image.tag=${{ env.audit-service }} \
            --set audit-service.initContainers.dbMigration.image.tag=${{ env.audit-service }} \
            --set egov-accesscontrol.image.tag=${{ env.egov-accesscontrol }} \
+           --set egov-accesscontrol.initContainers.dbMigration.image.tag=${{ env.egov-accesscontrol }} \
            --set egov-enc-service.image.tag=${{ env.egov-enc-service }} \
            --set egov-enc-service.initContainers.dbMigration.image.tag=${{ env.egov-enc-service }} \
            --set egov-indexer.image.tag=${{ env.egov-indexer }} \

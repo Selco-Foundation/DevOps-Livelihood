@@ -13,7 +13,7 @@ initContainers: {}
 
 # Container Configs
 image:
-  repository: "selcohub/livelihood-ui"
+  repository: "selcohub/livelihood-ui-lh"
 replicas: "1"
 httpPort: 80
 healthChecks:
