@@ -134,9 +134,9 @@ releases:
 #   installed: true
 #   <<: *default
 
-- name: asset-registry # Replace with your desired namespace
-  installed: true
-  <<: *default
+# - name: asset-registry # Replace with your desired namespace
+#   installed: true
+#   <<: *default
 
 # - name: project # Replace with your desired namespace
 #   installed: true
@@ -150,9 +150,9 @@ releases:
 #   installed: true
 #   <<: *default
 
-# - name: pdf-service
-#   installed: true
-#   <<: *default
+- name: pdf-service
+  installed: true
+  <<: *default
 
 # - name: field-planner
 #   installed: true
