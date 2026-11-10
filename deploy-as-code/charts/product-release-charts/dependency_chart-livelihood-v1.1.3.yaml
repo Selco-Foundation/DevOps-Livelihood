@@ -1,0 +1,56 @@
+version: v1.0.3
+modules:
+  - name: backbone
+    services:
+      - kafka-kraft
+      - elasticsearch-data
+      - elasticsearch-master
+      - kibana
+      - cert-manager
+      - ingress-nginx
+      - minio
+      - playground
+      - redis
+      - pgadmin
+  - name: core
+    dependencies:
+      - "backbone"
+    services:
+      egov-url-shortening: v1.0.0-7f294d8c9183fdd02b755d20fc4b262603167077
+      amc-service: v3.6.26-8bf11f800d198d8e3f10e39d49598ef2577f682f
+      asset-registry: v1.1.3-60c8da4e6ff4a9bd0ad6f512a1a27d75f9e58f45
+      field-planner-activity: v1.1.3-60c8da4e6ff4a9bd0ad6f512a1a27d75f9e58f45
+      field-planner: v1.1.3-60c8da4e6ff4a9bd0ad6f512a1a27d75f9e58f45
+      ingestion-service: v1.1.3-60c8da4e6ff4a9bd0ad6f512a1a27d75f9e58f45
+      project: v1.1.3-60c8da4e6ff4a9bd0ad6f512a1a27d75f9e58f45
+      vendor-registry: v1.1.3-60c8da4e6ff4a9bd0ad6f512a1a27d75f9e58f45
+      installation-qc: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
+      pdf-service: pdf-2.9-lts-a17e8ebea8-48
+      workbench-ui: v3.3.7-73d0cc3be378c4495e6f7d7162b2c5d8c1951487
+      rms-service: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
+      boundary-service: v1.1.3-60c8da4e6ff4a9bd0ad6f512a1a27d75f9e58f45
+      facility-service: v1.1.3-60c8da4e6ff4a9bd0ad6f512a1a27d75f9e58f45
+      egov-hrms: v3.6.24-1e609f3077d20ec6cc98ef672923329c68de19a4
+      egov-filestore: v1.1.3-60c8da4e6ff4a9bd0ad6f512a1a27d75f9e58f45
+      egov-workflow-v2: v1.0.0-7f294d8c9183fdd02b755d20fc4b262603167077
+      im-services-analytics: v1.0.3-1dc0dfcd19ead4599f125e2c87ca2d153f2eb9b9
+      processor-services: main-989d294d0111097082f14e4045f6ddcb97007235
+      im-services: v1.1.3-60c8da4e6ff4a9bd0ad6f512a1a27d75f9e58f45
+      livelihood-ui: v1.1.3-60c8da4e6ff4a9bd0ad6f512a1a27d75f9e58f45
+      digit-ui: v3.7.26-dfdf5e0e2013eb8c97531f91308a25dbfe3bd6de
+      inbox: v1.1.3-60c8da4e6ff4a9bd0ad6f512a1a27d75f9e58f45
+      egov-mdms-service: v2.9.2-4a60f20
+      egov-notification-sms: master-03072024-1
+      egov-notification-mail: v2.9.2-4a60f20
+      audit-service: v2.9.2-4a60f20
+      egov-accesscontrol: v1.1.3-60c8da4e6ff4a9bd0ad6f512a1a27d75f9e58f45
+      egov-enc-service: v2.9.2-4a60f20
+      egov-idgen: v2.2.1-9dd1451c12150aca6d1bcf06565c2d6a7bb32a04
+      egov-indexer: v2.9.2-4a60f20
+      egov-localization: v2.9.2-4a60f20
+      egov-location: v2.9.2-4a60f20
+      egov-otp: v2.9.2-4a60f20
+      egov-persister: v2.9.2-4a60f20
+      egov-user: v1.1.3-60c8da4e6ff4a9bd0ad6f512a1a27d75f9e58f45
+      gateway: gateway-form-data-whilelisting-fix-71aff8f
+      user-otp: v2.9.2-4a60f20

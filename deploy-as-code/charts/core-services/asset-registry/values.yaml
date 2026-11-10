@@ -89,5 +89,10 @@ env: |
       configMapKeyRef:
         name: egov-service-host
         key: facility-service
+  - name: EGOV_ORGANISATION_HOST
+    valueFrom:
+      configMapKeyRef:
+        key: vendor-registry
+        name: egov-service-host
   
 

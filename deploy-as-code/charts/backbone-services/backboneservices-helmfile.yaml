@@ -47,24 +47,23 @@ releases:
 #   values:
 #     - ./elasticsearch-data/values.yaml
 
-- name: kibana
-  chart: ./kibana
-  version: 8.11.3
-  force: true
-  <<: *default
-  values:
-    - ./kibana/values.yaml
-    - ingress:
-        hosts:
-          - host: {{ .Values.global.domain }}
-            paths:
-              - path: /kibana
-        tls:
-          - secretName: {{ .Values.global.domain }}-tls-certs
-            hosts:
-              - {{ .Values.global.domain }}
-      image: "selcohub/livelihood-custom-kibana"
-      imageTag: "main-20261023"
+# - name: kibana
+#   chart: ./kibana
+#   version: 8.11.3
+#   force: true
+#   <<: *default
+#   values:
+#     - ./kibana/values.yaml
+#     - ingress:
+#         hosts:
+#           - host: {{ .Values.global.domain }}
+#             paths:
+#               - path: /kibana
+#         tls:
+#           - secretName: {{ .Values.global.domain }}-tls-certs
+#             hosts:
+#               - {{ .Values.global.domain }}
+
 
 
 # - name: kafka-kraft
@@ -95,20 +94,20 @@ releases:
 #   values:
 #     - ./playground/values.yaml
 
-# - name: jupyterhub
-#   installed: true
-#   chart: ./jupyterhub
-#   version: 4.0.0
-#   <<: *default
-#   values:
-#     - ./jupyterhub/values.yaml
-#     - ingress:
-#         hosts:
-#           - {{ .Values.global.domain }}
-#         tls:
-#           - secretName: {{ .Values.global.domain }}-tls-certs
-#             hosts:
-#               - "{{ .Values.global.domain }}"
+#- name: jupyterhub
+#  installed: true
+#  chart: ./jupyterhub
+#  version: 4.0.0
+#  <<: *default
+#  values:
+#    - ./jupyterhub/values.yaml
+#    - ingress:
+#        hosts:
+#          - {{ .Values.global.domain }}
+#        tls:
+#          - secretName: {{ .Values.global.domain }}-tls-certs
+#            hosts:
+#              - "{{ .Values.global.domain }}"
 
 # - name: pgadmin4
 #   installed: true
@@ -117,6 +116,9 @@ releases:
 #   <<: *default
 #   values:
 #     - ./pgadmin4/values.yaml
+#     - env:
+#         email: {{ .Values.secrets.pgadmin.email }}
+#         password: {{ .Values.secrets.pgadmin.password }}
 #     - ingress:
 #         hosts:
 #           - host: {{ .Values.global.domain }}

@@ -62,7 +62,7 @@ jobs:
       - name: Parse YAML and export as environment variables
         id: set-env
         run: |
-          services=$(yq e '.modules[] | select(.name == "core") | .services' deploy-as-code/charts/product-release-charts/dependency_chart-livelihood-v1.0.3.yaml) 
+          services=$(yq e '.modules[] | select(.name == "core") | .services' deploy-as-code/charts/product-release-charts/dependency_chart-livelihood-v1.1.3.yaml) 
           
           # Iterate over each service and export as environment variables
           echo "$services" | while IFS=":" read -r key value; do
@@ -124,6 +124,7 @@ jobs:
            --set audit-service.image.tag=${{ env.audit-service }} \
            --set audit-service.initContainers.dbMigration.image.tag=${{ env.audit-service }} \
            --set egov-accesscontrol.image.tag=${{ env.egov-accesscontrol }} \
+           --set egov-accesscontrol.initContainers.dbMigration.image.tag=${{ env.egov-accesscontrol }} \
            --set egov-enc-service.image.tag=${{ env.egov-enc-service }} \
            --set egov-enc-service.initContainers.dbMigration.image.tag=${{ env.egov-enc-service }} \
            --set egov-indexer.image.tag=${{ env.egov-indexer }} \
