@@ -216,8 +216,8 @@ inbox:
   minReplicas: 2
 processor-services:
   heap: "-XX:MaxRAMPercentage=70.0 -XX:InitialRAMPercentage=25.0 -XX:+UseG1GC -XX:G1PeriodicGCInterval=30000"
-  memory_requests: "2Gi"
-  memory_limits: "4Gi"
+  memory_requests: "256Mi"
+  memory_limits: "256Mi"
   minReplicas: 2
 project:
   heap: "-Xmx192m -Xms192m"

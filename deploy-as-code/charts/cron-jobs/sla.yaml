@@ -12,7 +12,7 @@ spec:
         spec:
           containers:
           - name: sla-job
-            image: selcohub/cronjob-sla-livelihood:staging-10-july-2026-v2
+            image: selcohub/cronjob-sla-livelihood:prod-20261005
             args:
               - livelihood
           restartPolicy: OnFailure
