@@ -148,7 +148,7 @@ im-services:
 livelihood-ui:
   image:
     repository: selcohub/livelihood-ui-lh
-    tag: staging-6d62f82430d75c30089c466927f821527ec50eef
+    tag: v1.1.4-a1dacc1b751db8a868b74c329250efa781d2bbf2
 
 digit-ui:
   image:
