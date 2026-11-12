@@ -37,6 +37,8 @@ releases:
   set:
     - name: query.ingress.hosts[0]
       value: "{{ .Values.global.domain }}"
+    - name: query.ingress.ingressClassName
+      value: "{{ .Values.global.ingressClassName }}"
 
 #- name: grafana
 #  installed: true

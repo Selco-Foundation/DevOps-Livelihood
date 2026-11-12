@@ -760,7 +760,7 @@ controller:
     ## If undefined (the default) or set to null, no storageClassName spec is
     ## set, choosing the default provisioner.
     ##
-    storageClass: ""
+    storageClass: "expandable-gp3"
     ## @param controller.persistence.accessModes Persistent Volume Access Modes
     ##
     accessModes:

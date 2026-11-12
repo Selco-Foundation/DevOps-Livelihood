@@ -13,7 +13,7 @@ initContainers: {}
 
 # Container Configs
 image:
-  repository: "selcohub/workbench-ui"
+  repository: "selcohub/workbench-ui-lh"
   tag: master-12e9ce07-1270
 replicas: "1"
 httpPort: 80

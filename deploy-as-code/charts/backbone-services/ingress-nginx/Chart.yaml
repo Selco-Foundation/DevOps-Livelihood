@@ -12,7 +12,7 @@ keywords:
 - ingress
 - nginx
 kubeVersion: '>=1.20.0-0'
-name: ingress-nginx
+name: ingress-livelihood
 sources:
 - https://github.com/kubernetes/ingress-nginx
 version: 4.10.0

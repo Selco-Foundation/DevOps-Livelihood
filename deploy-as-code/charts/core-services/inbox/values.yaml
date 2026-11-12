@@ -15,7 +15,7 @@ ingress:
 
 # Container Configs
 image:
-  repository: "selcohub/inbox"
+  repository: "selcohub/inbox-lh"
   tag: "main-9577b7cb41f4de9f0a720ca168339c7c514c6a61"
 healthChecks:
   enabled: true

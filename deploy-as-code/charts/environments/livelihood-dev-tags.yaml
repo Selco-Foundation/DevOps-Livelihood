@@ -8,15 +8,15 @@ asset-registry:
 
 field-planner-activity:
   image:
-    tag: admin_module_dev-ff7f8d31f580e2902b7a91926a157ead193135f0
+    tag: develop-d69f89857fc9efbe0babff1303e670b90bbf6a5b
   initContainers:
     dbMigration:
       image:
-        tag: admin_module_dev-ff7f8d31f580e2902b7a91926a157ead193135f0
+        tag: develop-d69f89857fc9efbe0babff1303e670b90bbf6a5b
 
 field-planner:
   image:
-    tag: feature-project-geo-edit-b2570bec692ced287782630cd7a80a1374c1cb6c
+    tag: feature-project-installation-changes-d2818436f9e1ccde7c70b0ce1917f1e762ce3a10
   initContainers:
     dbMigration:
       image:
@@ -24,11 +24,11 @@ field-planner:
 
 ingestion-service:
   image:
-    tag: onboarding-allboundaries-f43ebf7d373a137d41e96e96f890b347faf6b513
+    tag: develop-6abef34c5d09eb87458bb937b9814f38a58176c6
 
 project:
   image:
-    tag: feature-project-geo-edit-b2570bec692ced287782630cd7a80a1374c1cb6c
+    tag: feature-project-installation-changes-d2818436f9e1ccde7c70b0ce1917f1e762ce3a10
   initContainers:
     dbMigration:
       image:
@@ -52,7 +52,7 @@ pdf-service:
 
 workbench-ui:
   image:
-    tag: v3.3.7-73d0cc3be378c4495e6f7d7162b2c5d8c1951487
+    tag: feature-mdms-ui-screen-346543421e84c6db92ca263b3df1b4a904c27932
 
 rms-service:
   image:
@@ -72,7 +72,7 @@ boundary-service:
 
 facility-service:
   image:
-    tag: feature-admin-module-ingestion-dee710c8896aaf7ac3e515b192eaca8941714673
+    tag: fix-jurisdiction-check-update-7fde6db2c8285f2118289d9e76174b811b3fa5fc
   initContainers:
     dbMigration:
       image:
@@ -112,7 +112,7 @@ processor-services:
 
 im-services:
   image:
-    tag: develop-103ad7608d639948890977e1af8f01636825f851
+    tag: develop-0ce1ee335bee4259259c462c400943c3056c60eb
   initContainers:
     dbMigration:
       image:
@@ -120,11 +120,11 @@ im-services:
 
 livelihood-ui:
   image:
-    tag: onboarding-allboundaries-5404143b89ca50e64c17bf80874ef5b7696c1fde
+    tag: develop-0f20d10c6b17e05cd68aa7da7599720bc55b36fd
 
 inbox:
   image:
-    tag: develop-212831b5bacc6d0a910919b2e7b60442fdb05e20
+    tag: develop-0ce1ee335bee4259259c462c400943c3056c60eb
 
 egov-mdms-service:
   image:
