@@ -1,3 +1,11 @@
+amc-service:
+  image:
+    tag: feature-livelihood-amc-module-4b99fbdffa1f02543f077667adbac2bce588a26e
+  initContainers:
+    dbMigration:
+      image:
+        tag: feature-livelihood-amc-module-4b99fbdffa1f02543f077667adbac2bce588a26e
+
 asset-registry:
   image:
     tag: search-asset-fix-a3e7524ba8baf735f133972b214682858f3c9f28

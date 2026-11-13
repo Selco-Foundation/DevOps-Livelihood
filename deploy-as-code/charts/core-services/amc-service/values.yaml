@@ -9,7 +9,7 @@ initContainers:
     enabled: true
     schemaTable: "amc_service_schema"
     image:
-      repository: "selcohub/amc-service-db"
+      repository: "selcohub/amc-service-db-lh"
       tag: develop-0214f52984b750fb97d7bc41728e0074e95414fc
 
 # Ingress Configs
@@ -20,7 +20,7 @@ ingress:
 
 # Container Configs
 image:
-  repository: "selcohub/amc-service"
+  repository: "selcohub/amc-service-lh"
   tag: develop-0214f52984b750fb97d7bc41728e0074e95414fc
 replicas: "1"
 healthChecks:

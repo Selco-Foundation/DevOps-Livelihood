@@ -167,3 +167,6 @@ releases:
 #   installed: true
 #   <<: *default
 
+# - name: amc-service
+#   installed: true # Replace with the version of your chart, if needed
+#   <<: *default
