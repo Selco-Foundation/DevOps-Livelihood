@@ -14,14 +14,15 @@ values:
   - ../environments/{{ requiredEnv "HELMFILE_ENV" }}.yaml
 
 releases:
-- name: cert-manager
-  chart: ./cert-manager
-  namespace: backbone
-  installed: true
-  version: v1.16.2
-  disableValidation: true
-  values:
-    - ./cert-manager/values.yaml
+# - name: cert-manager
+#   chart: ./cert-manager
+#   namespace: backbone
+#   installed: true
+#   version: v1.16.2
+#   disableValidation: true
+#   values:
+#     - ./cert-manager/values.yaml
+#     - ingressClassName: {{ .Values.global.ingressClassName }}
 
 # - name: redis
 #   installed: true
@@ -47,24 +48,24 @@ releases:
 #   values:
 #     - ./elasticsearch-data/values.yaml
 
-# - name: kibana
-#   chart: ./kibana
-#   version: 8.11.3
-#   force: true
-#   <<: *default
-#   values:
-#     - ./kibana/values.yaml
-#     - ingress:
-#         annotations:
-#           kubernetes.io/ingress.class: {{ .Values.global.ingressClassName }}
-#         hosts:
-#           - host: {{ .Values.global.domain }}
-#             paths:
-#               - path: /kibana
-#         tls:
-#           - secretName: {{ .Values.global.domain }}-tls-certs
-#             hosts:
-#               - {{ .Values.global.domain }}
+- name: kibana
+  chart: ./kibana
+  version: 8.11.3
+  force: true
+  <<: *default
+  values:
+    - ./kibana/values.yaml
+    - ingress:
+        annotations:
+          kubernetes.io/ingress.class: {{ .Values.global.ingressClassName }}
+        hosts:
+          - host: {{ .Values.global.domain }}
+            paths:
+              - path: /kibana
+        tls:
+          - secretName: {{ .Values.global.domain }}-tls-certs
+            hosts:
+              - {{ .Values.global.domain }}
 
 
 
