@@ -106,6 +106,7 @@ sidecarResources: {}
 networkHost: "0.0.0.0"
 
 volumeClaimTemplate:
+  storageClassName: expandable-gp3
   accessModes: [ "ReadWriteOnce" ]
   resources:
     requests:

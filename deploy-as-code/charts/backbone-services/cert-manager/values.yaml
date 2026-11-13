@@ -55,21 +55,21 @@ global:
 
 installCRDs: false
 
-fullnameOverride: "cert-manager"
+fullnameOverride: "cert-manager-livelihood"
 
 clusterIssuer:
   stage:
-    name: letsencrypt-staging
+    name: letsencrypt-staging-lh
     acme:
       server: https://acme-staging-v02.api.letsencrypt.org/directory 
       email: sre-staff@egovernments.org
-      secretName: letsencrypt-staging
+      secretName: letsencrypt-staging-lh
   prod:
-    name: letsencrypt-prod
+    name: letsencrypt-prod-lh
     acme:
       server: https://acme-v02.api.letsencrypt.org/directory
       email: sre-staff@egovernments.org
-      secretName: letsencrypt-prod
+      secretName: letsencrypt-prod-lh
 
 strategy: {}
   # type: RollingUpdate
