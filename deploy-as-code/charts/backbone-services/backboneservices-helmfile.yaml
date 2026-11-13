@@ -22,6 +22,7 @@ releases:
   disableValidation: true
   values:
     - ./cert-manager/values.yaml
+    - ingressClassName: {{ .Values.global.ingressClassName }}
 
 - name: redis
   installed: true
@@ -55,6 +56,8 @@ releases:
   values:
     - ./kibana/values.yaml
     - ingress:
+        annotations:
+          kubernetes.io/ingress.class: {{ .Values.global.ingressClassName }}
         hosts:
           - host: {{ .Values.global.domain }}
             paths:
@@ -85,6 +88,12 @@ releases:
   values:
     - ./ingress-nginx/values.yaml
     - domain: {{ .Values.global.domain }}
+      controller:
+        name: {{ .Values.global.ingressClassName }}
+        ingressClass: {{ .Values.global.ingressClassName }}
+        ingressClassResource:
+          name: {{ .Values.global.ingressClassName }}
+          controllerValue: k8s.io/{{ .Values.global.ingressClassName }}
 
 - name: playground
   installed: true
@@ -102,6 +111,8 @@ releases:
 #  values:
 #    - ./jupyterhub/values.yaml
 #    - ingress:
+#        annotations:
+#          kubernetes.io/ingress.class: {{ .Values.global.ingressClassName }}
 #        hosts:
 #          - {{ .Values.global.domain }}
 #        tls:
@@ -120,6 +131,8 @@ releases:
         email: {{ .Values.secrets.pgadmin.email }}
         password: {{ .Values.secrets.pgadmin.password }}
     - ingress:
+        annotations:
+          kubernetes.io/ingress.class: {{ .Values.global.ingressClassName }}
         hosts:
           - host: {{ .Values.global.domain }}
             paths:

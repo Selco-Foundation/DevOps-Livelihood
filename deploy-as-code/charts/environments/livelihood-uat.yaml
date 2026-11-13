@@ -1,14 +1,15 @@
 global:
   domain: setu4livelihood-uat.selcofoundation.org
+  ingressClassName: ingress-livelihood
 root-ingress:
-  cert-issuer: "letsencrypt-prod"
+  cert-issuer: "letsencrypt-prod-lh"
 configmaps:
   egov-config:
     data:
-      db-host: "livelihood-prod-db.cv8qq86uu7ec.ap-south-2.rds.amazonaws.com" ## Add db-host name eg: egov-demo.database.azure.com
+      db-host: "selco-prod-db.c1yks4g2c2zp.ap-south-1.rds.amazonaws.com" ## Add db-host name eg: egov-demo.database.azure.com
       db-name: "livelihooduatdb" ## Add db-name
-      db-url: "jdbc:postgresql://livelihood-prod-db.cv8qq86uu7ec.ap-south-2.rds.amazonaws.com/livelihooduatdb"
-      db-otel-url: "jdbc:otel:postgresql://livelihood-prod-db.cv8qq86uu7ec.ap-south-2.rds.amazonaws.com/livelihooduatdb"
+      db-url: "jdbc:postgresql://selco-prod-db.c1yks4g2c2zp.ap-south-1.rds.amazonaws.com/livelihooduatdb"
+      db-otel-url: "jdbc:otel:postgresql://selco-prod-db.c1yks4g2c2zp.ap-south-1.rds.amazonaws.com/livelihooduatdb"
       es-host: "elasticsearch-data.backbone"
       es-indexer-host: "https://elasticsearch-data.backbone:9200/"
       kafka-brokers: "kafka-kraft-controller-headless.backbone:9092"
