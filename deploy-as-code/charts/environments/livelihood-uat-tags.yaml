@@ -8,12 +8,12 @@ amc-service:
 
 asset-registry:
   image:
-    tag: staging-7fb4f69616cda2c865daa2440e66fddf14bb6d68
+    tag: admin_module_uat-03a76261a2397b57bcf3d398a6809dcb4d072bce
     repository: selcohub/asset-registry-lh
   initContainers:
     dbMigration:
       image:
-        tag: staging-7fb4f69616cda2c865daa2440e66fddf14bb6d68
+        tag: admin_module_uat-03a76261a2397b57bcf3d398a6809dcb4d072bce
         repository: selcohub/asset-registry-db-lh
 
 field-planner-activity:
@@ -53,12 +53,12 @@ project:
 
 vendor-registry:
   image:
-    tag: staging-7fb4f69616cda2c865daa2440e66fddf14bb6d68
+    tag: admin_module_uat-03a76261a2397b57bcf3d398a6809dcb4d072bce
     repository: selcohub/vendor-registry-lh
   initContainers:
     dbMigration:
       image:
-        tag: staging-7fb4f69616cda2c865daa2440e66fddf14bb6d68
+        tag: admin_module_uat-03a76261a2397b57bcf3d398a6809dcb4d072bce
         repository: selcohub/vendor-registry-db-lh
 
 installation-qc:
@@ -71,7 +71,7 @@ pdf-service:
 
 workbench-ui:
   image:
-    tag: v3.3.7-73d0cc3be378c4495e6f7d7162b2c5d8c1951487
+    tag: feature-mdms-ui-screen-346543421e84c6db92ca263b3df1b4a904c27932
 
 rms-service:
   image:
@@ -148,7 +148,7 @@ im-services:
 livelihood-ui:
   image:
     repository: selcohub/livelihood-ui-lh
-    tag: staging-6d62f82430d75c30089c466927f821527ec50eef
+    tag: staging-96c7f5fcf86bbc819ae6339afdfd040278e67bf5
 
 digit-ui:
   image:
