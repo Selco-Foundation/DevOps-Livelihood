@@ -90,9 +90,9 @@ releases:
 #   installed: true
 #   <<: *default
 
-# - name: livelihood-ui # Replace with your desired namespace
-#   installed: true
-#   <<: *default
+- name: livelihood-ui # Replace with your desired namespace
+  installed: true
+  <<: *default
 
 # - name: digit-ui # Replace with your desired namespace
 #   installed: true
@@ -126,9 +126,9 @@ releases:
 #   installed: true
 #   <<: *default
 
-# - name: processor-services # Replace with your desired namespace
-#   installed: true
-#   <<: *default
+- name: processor-services # Replace with your desired namespace
+  installed: true
+  <<: *default
 
 # - name: facility-service  # Replace with your desired namespace
 #   installed: true
@@ -150,9 +150,9 @@ releases:
 #   installed: true
 #   <<: *default
 
-- name: pdf-service
-  installed: true
-  <<: *default
+# - name: pdf-service
+#   installed: true
+#   <<: *default
 
 # - name: field-planner
 #   installed: true
