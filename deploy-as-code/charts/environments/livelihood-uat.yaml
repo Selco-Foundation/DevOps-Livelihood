@@ -148,7 +148,7 @@ pdf-service:
     gitSync:
       repo: "git@github.com:Selco-Foundation/Configs-Livelihood"
       branch: "uat_dev"
-      rev: 86a5acceec6067d1db0fd1547e5338fef4a7a87f
+      rev: 1aad100f1d02031f71ddb5f27bcfce084241020e
 
 audit-service:
   memory_requests: "256Mi"
