@@ -106,6 +106,21 @@ env: |
       configMapKeyRef:
         name: egov-service-host
         key: egov-otp
+  - name: EGOV_PDF_HOST
+    valueFrom:
+      configMapKeyRef:
+        key: pdf-service
+        name: egov-service-host
+  - name: EGOV_LOCALIZATION_HOST
+    valueFrom:
+      configMapKeyRef:
+        key: egov-localization
+        name: egov-service-host
+  - name: EGOV_ENC_HOST
+    valueFrom:
+      configMapKeyRef:
+        key: egov-enc-service
+        name: egov-service-host
 
 
 
