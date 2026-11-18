@@ -55,10 +55,6 @@ tracing-enabled: true
 heap: "-Xmx256m -Xms256m"
 memory_requests: 512Mi
 memory_limits: 768Mi
-minReplicas: 1
-
-hparam:
-  enabled: false
 
 persistence:
   enabled: false
