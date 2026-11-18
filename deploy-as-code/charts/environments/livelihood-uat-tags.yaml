@@ -19,12 +19,12 @@ asset-registry:
 field-planner-activity:
   image:
     repository: selcohub/field-planner-activity-lh
-    tag: staging-8b7a01952ffb958ed84dd446a8c9715daf4bd2ee
+    tag: cherry-pick-bom-pdf-missmatch-fix-8f693bf146a193f29a2c225848bd000f8e7d9fc6
   initContainers:
     dbMigration:
       image:
         repository: selcohub/field-planner-activity-db-lh
-        tag: staging-8b7a01952ffb958ed84dd446a8c9715daf4bd2ee
+        tag: cherry-pick-bom-pdf-missmatch-fix-8f693bf146a193f29a2c225848bd000f8e7d9fc6
 
 field-planner:
   image:
@@ -75,11 +75,11 @@ workbench-ui:
 
 rms-service:
   image:
-    tag: v3.15.42-5a0319f9a5dfd891427e1b7e79f4ffae09d7fedc
+    tag: staging-122aa3a90ee3f772cf4ee208ce1d8854eb59f89e
   initContainers:
     dbMigration:
       image:
-        tag: v3.15.42-5a0319f9a5dfd891427e1b7e79f4ffae09d7fedc
+        tag: staging-122aa3a90ee3f772cf4ee208ce1d8854eb59f89e
 
 boundary-service:
   image:
@@ -103,11 +103,11 @@ facility-service:
 
 egov-hrms:
   image:
-    tag: v3.6.24-1e609f3077d20ec6cc98ef672923329c68de19a4
+    tag: staging-122aa3a90ee3f772cf4ee208ce1d8854eb59f89e
   initContainers:
     dbMigration:
       image:
-        tag: v3.6.24-1e609f3077d20ec6cc98ef672923329c68de19a4
+        tag: staging-122aa3a90ee3f772cf4ee208ce1d8854eb59f89e
 
 egov-filestore:
   image:
@@ -121,11 +121,11 @@ egov-filestore:
 
 egov-workflow-v2:
   image:
-    tag: staging-d0c9ccd8b8fb5b416867bae62f3f7720924d9dd1
+    tag: staging-122aa3a90ee3f772cf4ee208ce1d8854eb59f89e
   initContainers:
     dbMigration:
       image:
-        tag: staging-d0c9ccd8b8fb5b416867bae62f3f7720924d9dd1
+        tag: staging-122aa3a90ee3f772cf4ee208ce1d8854eb59f89e
 
 im-services-analytics:
   image:

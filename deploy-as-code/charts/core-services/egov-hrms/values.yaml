@@ -15,12 +15,12 @@ initContainers:
     enabled: true
     schemaTable: "egov_hrms_schema"
     image:
-      repository: "selcohub/hrms-db"
+      repository: "selcohub/hrms-db-lh"
       tag: main-9577b7cb41f4de9f0a720ca168339c7c514c6a61
 
 # Container Configs
 image:
-  repository: "selcohub/hrms"
+  repository: "selcohub/hrms-lh"
   tag: main-9577b7cb41f4de9f0a720ca168339c7c514c6a61
 replicas: "1"
 healthChecks:
