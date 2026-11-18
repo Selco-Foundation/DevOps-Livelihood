@@ -75,11 +75,13 @@ workbench-ui:
 
 rms-service:
   image:
-    tag: v3.15.42-5a0319f9a5dfd891427e1b7e79f4ffae09d7fedc
+    tag: main-a1dacc1b751db8a868b74c329250efa781d2bbf2
+    repository: selcohub/rms-service-lh
   initContainers:
     dbMigration:
       image:
-        tag: v3.15.42-5a0319f9a5dfd891427e1b7e79f4ffae09d7fedc
+        tag: main-a1dacc1b751db8a868b74c329250efa781d2bbf2
+        repository: selcohub/rms-service-db-lh
 
 boundary-service:
   image:
