@@ -103,11 +103,13 @@ facility-service:
 
 egov-hrms:
   image:
-    tag: v3.6.24-1e609f3077d20ec6cc98ef672923329c68de19a4
+    tag: main-a1dacc1b751db8a868b74c329250efa781d2bbf2
+    repository: selcohub/hrms-lh
   initContainers:
     dbMigration:
       image:
-        tag: v3.6.24-1e609f3077d20ec6cc98ef672923329c68de19a4
+        tag: main-a1dacc1b751db8a868b74c329250efa781d2bbf2
+        repository: selcohub/hrms-db-lh
 
 egov-filestore:
   image:
