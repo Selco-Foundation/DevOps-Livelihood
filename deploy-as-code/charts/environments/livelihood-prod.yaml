@@ -228,3 +228,7 @@ user-otp:
 vendor-registry:
   heap: "-Xmx192m -Xms192m"
   memory_limits: "768Mi"
+rms-service:
+  heap: "-Xmx256m -Xms256m"
+  memory_requests: "512Mi"
+  memory_limits: "512Mi"

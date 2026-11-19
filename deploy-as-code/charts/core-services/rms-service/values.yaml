@@ -9,7 +9,7 @@ initContainers:
     enabled: true
     schemaTable: "rms_service_schema"
     image:
-      repository: "selcohub/rms-service-db"
+      repository: "selcohub/rms-service-db-lh"
       tag: RMS_Integration-ce893dce1f5805597058bbbd1590c2aad2346f74
     env: |
       - name: DB_URL
@@ -43,7 +43,7 @@ ingress:
 
 # Container Configs
 image:
-  repository: "selcohub/rms-service"
+  repository: "selcohub/rms-service-lh"
   tag: RMS_Integration-ce893dce1f5805597058bbbd1590c2aad2346f74
 replicas: "1"
 healthChecks:
@@ -55,10 +55,6 @@ tracing-enabled: true
 heap: "-Xmx256m -Xms256m"
 memory_requests: 512Mi
 memory_limits: 768Mi
-minReplicas: 1
-
-hparam:
-  enabled: false
 
 persistence:
   enabled: false
