@@ -160,7 +160,7 @@ pdf-service:
     gitSync:
       repo: "git@github.com:Selco-Foundation/Configs-Livelihood"
       branch: "main"
-      rev: f22eba323c2b17fbac7e9c52fb168d96292f6a76
+      rev: 50530d2184a824549ad64036054a311560cd0350
 
 audit-service:
   heap: "-Xmx64m -Xms64m"
