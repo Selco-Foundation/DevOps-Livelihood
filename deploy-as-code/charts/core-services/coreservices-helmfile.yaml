@@ -150,9 +150,9 @@ releases:
 #   installed: true
 #   <<: *default
 
-# - name: pdf-service
-#   installed: true
-#   <<: *default
+- name: pdf-service
+  installed: true
+  <<: *default
 
 # - name: field-planner
 #   installed: true
