@@ -1,10 +1,10 @@
 amc-service:
   image:
-    tag: v3.6.26-8bf11f800d198d8e3f10e39d49598ef2577f682f
+    tag: staging-b36d0b949cce9e8934909242496937e5fa910e06
   initContainers:
     dbMigration:
       image:
-        tag: v3.6.26-8bf11f800d198d8e3f10e39d49598ef2577f682f
+        tag: staging-b36d0b949cce9e8934909242496937e5fa910e06
 
 asset-registry:
   image:
