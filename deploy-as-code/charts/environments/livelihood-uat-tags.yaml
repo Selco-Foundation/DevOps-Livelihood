@@ -28,12 +28,12 @@ field-planner-activity:
 
 field-planner:
   image:
-    tag: staging-eaac0d31b5ef2d421c9d0fb94adb1f63b2c62fe9
+    tag: staging-46f1286513f314bd566c4d3ec1eab0252f0631dc
     repository: selcohub/field-planner-lh
   initContainers:
     dbMigration:
       image:
-        tag: staging-eaac0d31b5ef2d421c9d0fb94adb1f63b2c62fe9
+        tag: staging-46f1286513f314bd566c4d3ec1eab0252f0631dc
         repository: selcohub/field-planner-db-lh
 
 ingestion-service:
